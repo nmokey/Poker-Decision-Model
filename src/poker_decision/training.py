@@ -11,7 +11,15 @@ import torch
 from torch import Tensor
 from torch.nn import functional as F
 
-from poker_decision.data import DATA_REVISION, DecisionExample, DecisionInputs
+from poker_decision.data import (
+    DATA_REVISION,
+    SHA256,
+    TRAIN_FILES,
+    DecisionExample,
+    DecisionInputs,
+    build_examples,
+    read_rows,
+)
 from poker_decision.evaluation import evaluate_by_street
 from poker_decision.models.encoder import (
     EncodedDecision,
@@ -39,8 +47,15 @@ def load_prepared(
     current_hash = hashlib.sha256(Path(__file__).with_name("data.py").read_bytes()).hexdigest()
     if manifest["package_code_sha256"]["data.py"] != current_hash:
         raise ValueError("Preprocessing code changed; rerun Meeting 1 preparation")
+    for kind, source in manifest["sources"].items():
+        if kind not in SHA256 or source["sha256"] != SHA256[kind]:
+            raise ValueError("Source provenance does not match pinned training files")
     splits = []
     for split in ("train", "validation"):
+        if "split_sha256" in manifest and hashlib.sha256(
+            (directory / f"{split}.jsonl").read_bytes()
+        ).hexdigest() != manifest["split_sha256"].get(split):
+            raise ValueError(f"{split} file content/membership checksum mismatch")
         rows = [
             json.loads(line) for line in (directory / f"{split}.jsonl").read_text().splitlines()
         ]
@@ -62,6 +77,31 @@ def load_prepared(
     ids = [e.source_id for e in train + validation]
     if len(ids) != len(set(ids)):
         raise ValueError("Repeated source IDs")
+    if "split_sha256" not in manifest:
+        # Older manifests have no content hashes. Check against pinned cached raw
+        # rows before trusting targets, contexts, or menus; never silently resplit.
+        actual = {e.source_id: e.to_record() for e in train + validation}
+        verified: dict[str, dict[str, object]] = {}
+        for kind, filename in TRAIN_FILES.items():
+            if kind not in manifest["sources"]:
+                continue
+            raw = root / "data/raw/pokerbench" / filename
+            if not raw.exists() or hashlib.sha256(raw.read_bytes()).hexdigest() != SHA256[kind]:
+                raise ValueError("Legacy split requires pinned raw files; rerun preparation")
+            selected_rows = []
+            selected_ids = []
+            for i, row in enumerate(read_rows(raw)):
+                source_id = f"{kind}-train-{i}"
+                if source_id in actual:
+                    selected_rows.append(row)
+                    selected_ids.append(source_id)
+            parsed, failures = build_examples(selected_rows, kind)
+            if failures:
+                raise ValueError("Legacy source rows fail validation")
+            for source_id, example in zip(selected_ids, parsed, strict=True):
+                verified[source_id] = {**example.to_record(), "source_id": source_id}
+        if verified != actual:
+            raise ValueError("Legacy split contents differ from pinned source rows")
     return train, validation, manifest
 
 
@@ -169,6 +209,11 @@ def save_checkpoint(
 ) -> None:
     """Save a self-contained encoder/tokenizer plus head weights and provenance."""
     path.mkdir(parents=True, exist_ok=True)
+    metadata = {
+        **metadata,
+        "head_type": model.head_type,
+        "head_width": model.head_width,
+    }
     model.encoder.save_pretrained(path / "encoder")
     tokenizer.save_pretrained(path / "tokenizer")
     torch.save(model.head.state_dict(), path / "head.pt")
@@ -181,7 +226,12 @@ def load_checkpoint(path: Path) -> tuple[Any, PokerDecisionModel, dict[str, Any]
     tokenizer = AutoTokenizer.from_pretrained(  # type: ignore[no-untyped-call]
         path / "tokenizer", local_files_only=True
     )
-    model = PokerDecisionModel(AutoModel.from_pretrained(path / "encoder", local_files_only=True))
+    metadata = json.loads((path / "metadata.json").read_text())
+    model = PokerDecisionModel(
+        AutoModel.from_pretrained(path / "encoder", local_files_only=True),
+        head_type=metadata.get("head_type", "linear"),
+        head_width=metadata.get("head_width", 64),
+    )
     model.head.load_state_dict(torch.load(path / "head.pt", map_location="cpu", weights_only=True))
     model.eval()
-    return tokenizer, model, json.loads((path / "metadata.json").read_text())
+    return tokenizer, model, metadata

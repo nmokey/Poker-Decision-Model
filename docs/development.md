@@ -44,7 +44,7 @@ Future training scripts and the demo should import the package directly.
 Meeting 2 calls `models/encoder.py` for joint tokenization, candidate pooling and
 scoring, and `training.py` for training, saved-split loading, batched prediction,
 and self-contained checkpoints. Install both `analysis` and `ml` extras for this
-notebook and full mypy checks. Core-only mypy excludes these two optional ML modules;
+notebook and full mypy checks. Core-only mypy excludes the optional ML modules;
 the separate ML CI job checks all modules and runs offline randomly initialized
 BERT tests without fetching pretrained weights.
 
@@ -72,3 +72,21 @@ Future evaluation should include agreement, log loss, Brier score, calibration,
 latency, throughput, and opponent-history ablations. Fit calibration on validation
 only and preserve an untouched test set. Record hardware and workload when
 benchmarking; compare identical candidate options across systems.
+
+## Scientific integrity checks
+
+`scenarios.py` defines answer-free grouping; `cross_validation.py` fixes fold
+memberships and settings before fitting, refits every baseline/model, and evaluates
+held-out folds only after the fixed training budget. `diagnostics.py` measures
+reliability, confusion/sizing errors, training-only menu association and conditional
+paired grouped intervals. `source_experiments.py` keeps source label semantics separate.
+
+New preparation writes train/validation file hashes. Legacy manifests are checked
+against pinned cached raw rows; missing/corrupted legacy provenance requires explicit
+re-preparation, not a silent new split. Never use the outer CV folds for early stopping,
+calibration fitting, or reporting an unbiased score after tuning against them.
+
+Run `uv sync --locked --extra analysis --extra ml --extra experiments` and
+`uv run --locked --extra analysis --extra ml --extra experiments pytest` for all
+offline safeguards. No test downloads pretrained weights or data. Full training
+belongs on Colab; the unit tests use tiny randomly initialized BERTs.

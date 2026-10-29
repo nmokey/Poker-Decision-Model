@@ -162,3 +162,18 @@ scenario grouping, alternative card representations/backbones, class-aware
 training, and validation-only calibration. Opponent adaptation requires labels
 that actually depend on histories or opponent profiles, beyond adding prose to
 unchanged examples.
+
+## Late submissions and scientific audit
+
+Two additional notebooks were incorporated after the initial four-source synthesis:
+
+| Source | Added contribution | Canonical treatment |
+| --- | --- | --- |
+| [ACM AI – Poker](https://colab.research.google.com/drive/1GHX6o-6mzOQirpwDJlrc1yZ5bD1CBCCC) | Scenario-grouped five-fold CV, reliability and uncertainty diagnostics, menu association, Pluribus replay and Leduc distribution targets | Add `03_scenario_evaluation.ipynb` and a separate opt-in `04_alternative_data_sources.ipynb`. Preserve the joint all-options encoder rather than silently substituting its context/candidate pair architecture. Source results are not copied as results of our implementation. |
+| [day2_colab.ipynb](https://colab.research.google.com/drive/1M-aPyxDIUkv9k3zTd2PkASfhA2cSn8pG) | Nonlinear shared head; clearer offset masks and training/evaluation explanations; external Colab training script | Add a controlled `linear`/`mlp` head choice with saved architecture metadata and tests. Keep our audited parser and self-contained package training; the source's external `train_day2.py` was not supplied. |
+
+The current walkthrough accounts for six sources. Optional libraries are confined
+to the `experiments` extra. Pretrained-model training is guarded for Colab; no new
+full training was run locally. Full source replay/CV execution remains opt-in.
+See [scientific audit](scientific-audit.md) for the real-data overlap finding,
+strengthened provenance/resume checks, test evidence, and limits of the claims.

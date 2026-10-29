@@ -152,9 +152,13 @@ def prepare(
             for p in sorted(Path(__file__).parent.glob("*.py"))
         },
     }
-    write_json(processed / "manifest.json", manifest)
     write_jsonl(processed / "train.jsonl", [e.to_record() for e in train])
     write_jsonl(processed / "validation.jsonl", [e.to_record() for e in validation])
+    manifest["split_sha256"] = {
+        name: hashlib.sha256((processed / f"{name}.jsonl").read_bytes()).hexdigest()
+        for name in ("train", "validation")
+    }
+    write_json(processed / "manifest.json", manifest)
     return train, validation, manifest
 
 

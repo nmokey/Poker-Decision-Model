@@ -30,7 +30,7 @@ rather than modifying Python's import path.
 ## Meeting 2
 
 Continue with [Meeting 2: single-pass decision model](02_pokerbench_decision_model.ipynb),
-consolidated from three shared Colabs and the local `week2.ipynb` submission.
+consolidated from five shared Colabs and the local `week2.ipynb` submission.
 
 ```sh
 uv sync --locked --extra analysis --extra ml
@@ -43,7 +43,7 @@ a tiny training-set learning check, resets the model for real training, selects 
 checkpoint by validation log loss, reloads it, compares all baselines, shows five
 mistakes, and measures candidate-order sensitivity. Encoder revisions are pinned.
 
-Use Colab's GPU runtime or a local ML environment. The Colab bootstrap clones the
+Use Colab's GPU runtime for pretrained training. Local environments support inspection and offline tests. The Colab bootstrap clones the
 repository only if needed; the Meeting 2 changes must be published before that
 route works. Existing local checkouts work immediately. `POKER_SMOKE=1` before
 launching Jupyter selects 128 train / 64 validation rows for quick verification;
@@ -54,3 +54,41 @@ Generated checkpoints, split copies, training history, comparisons, probabilitie
 and errors live under `artifacts/pokerbench_meeting2/<backbone>-<timestamp>/`.
 No official test data is loaded and no tokenization failures are silently skipped.
 See [Meeting 2 integration notes](../docs/meeting2-integration.md).
+
+## Scientific evaluation extensions
+
+- [Scenario evaluation](03_scenario_evaluation.ipynb): inspect historical scenario
+  overlap; save five fixed grouped folds; refit all models; compare linear/MLP heads
+  under identical settings. Training is disabled by default and guarded for Colab GPU.
+  Completed folds are resumed only after checking protocol, prediction and weight
+  hashes and recomputing metrics. Use persistent output storage or download before
+  Colab ends. These changes must be present in the checkout before running the new notebooks.
+- [Alternative data sources](04_alternative_data_sources.ipynb): opt-in PHH/Pluribus
+  replay and Leduc mixed-policy target generation, requiring `--extra experiments`.
+  Neither silently changes PokerBench inputs, labels or memberships.
+
+The main Meeting 2 notebook now supports `HEAD_TYPE="linear"` or `"mlp"`, with the
+choice persisted in portable checkpoints (old linear checkpoints remain readable).
+Its added diagnostics characterize reliability and uncertainty without fitting a
+calibrator on evaluation rows. See [scientific audit](../docs/scientific-audit.md).
+
+## Swapping encoders and sweeping settings
+
+Notebook 02 has one configuration block for `BACKBONE`, head type/width, encoder
+and head learning rates, weight decay, epochs, batch size, token limit, seed, and
+separate tiny-check settings. Choose `bert_mini`, `minilm`, `distilbert`, or
+`modernbert`; tokenizer and encoder share a pinned revision. Restart the runtime
+and run all cells after edits. ModernBERT uses PyTorch SDPA without optional
+compilation. Architecture compatibility is checked offline with tiny BERT,
+DistilBERT, and ModernBERT models; this does not establish pretrained-model quality.
+
+Notebook 03 exposes every `CVConfig` setting and an optional bounded `GRID`.
+`sweep_configs` checks settings before fitting, keeps fold seed/count fixed, and
+rejects duplicate or oversized grids. The preview prints trial and encoder-fit
+counts; `RUN_SWEEP=False` initially. Four encoders with two heads over five folds
+cost 40 encoder fits. Start with one head or a smaller grid. Each trial has its own
+hashed protocol and saved configuration. Use persistent storage for long Colab runs.
+
+Sweeps are exploratory development comparisons. A winner selected from those
+scores needs an untouched final test or nested grouped selection for an independent
+estimate. The sweep does not implement nested CV or automatically select a winner.

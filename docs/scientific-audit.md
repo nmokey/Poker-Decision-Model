@@ -1,0 +1,177 @@
+# Scientific integrity audit — October 28, 2026
+
+## Scope and conclusion
+
+The maintained Meeting 2 notebook and its late-submission extensions were reviewed
+for input/label separation, related-example isolation, fit/evaluation boundaries,
+checkpoint selection, reproducibility, metric semantics, and source-specific claims.
+The implementation has executable safeguards; this is not proof that all dataset
+biases, label errors, or forms of dependence have been eliminated.
+
+No new full pretrained-model training was performed locally. The full five-fold
+experiment is prepared for Colab, disabled by default until its fixed protocol is
+reviewed. New local model tests use tiny random BERTs on synthetic examples, not
+pretrained poker training. The historical Meeting 2 scores remain historical.
+
+## Findings and fixes
+
+### The original holdout measures a narrower kind of generalization
+
+On the original 8,000/2,000 saved partitions, exact-context overlap is zero. Under
+the new answer-free scenario definition, 515 groups are shared; **91.8% of validation
+rows have a scenario group present in training**. That is not proof of answer leakage.
+It means an exact-context holdout is not an unseen-scenario benchmark.
+
+The stress-test grouping uses the full preflop betting history, and the sorted
+ranks of the first three board cards for postflop examples, including suit variants
+and later streets. Five deterministic grouped folds have these sizes:
+
+| Fold | Training rows | Held-out rows | Shared scenario groups | Shared exact contexts |
+| --- | ---: | ---: | ---: | ---: |
+| 1 | 8,070 | 1,930 | 0 | 0 |
+| 2 | 7,889 | 2,111 | 0 | 0 |
+| 3 | 8,067 | 1,933 | 0 | 0 |
+| 4 | 7,911 | 2,089 | 0 | 0 |
+| 5 | 8,063 | 1,937 | 0 | 0 |
+
+Grouping never reads targets. Approximate street/action-label stratification is
+used only for fold allocation, not as a predictive feature. All duplicates and
+conflicting labels with identical context stay together. Every source row is held
+out exactly once. This grouping is deliberately broad; it is not a claim that all
+hands, opponent sessions, or semantically related situations are independent.
+
+### Content checks now protect saved targets as well as membership
+
+Previously, saved membership checks did not reject every edit to a context,
+candidate menu, or label if IDs stayed unchanged. New preparation writes hashes
+of complete train/validation JSONL files and writes the manifest last. Loading
+checks those hashes, pinned source provenance, IDs, and context separation.
+Legacy manifests without file hashes are compared against the selected rows of
+checksum-verified cached raw CSVs. Missing or inconsistent provenance stops loading;
+it does not silently create a different split. These hashes detect changed files,
+not intentional coordinated changes to both data and provenance.
+
+### Cross-validation fits are isolated and fixed-budget
+
+`03_scenario_evaluation.ipynb` saves protocol and memberships before fitting. Each
+fold refits the option prior and linear baseline, then initializes a fresh pinned
+encoder, head, and optimizer for each selected head architecture. Only fold-training
+inputs and labels reach fitting. Tokenization is stateless and label-free.
+
+Outer-fold predictions are computed after the fixed epoch budget; they cannot
+select epochs, calibration, or an early-stopping checkpoint in this runner. Linear
+and nonlinear heads use the same pool, folds, backbone and training settings. They
+are comparisons of alternative heads, not claims that complexity necessarily helps.
+The joint all-options architecture remains distinct from the source notebook's
+context/candidate pair architecture.
+
+Resumption now requires matching protocol, source membership, prediction hashes,
+checkpoint-file hashes, model coverage and the recorded reload check. Metrics are
+recomputed from held-out probabilities before accepting saved reports. Exactly one
+held-out prediction is required per source row/model. Pooled log loss is checked
+against the row-weighted fold losses, including unequal fold sizes.
+
+### Evaluation is not training or calibration
+
+The original Meeting 2 walkthrough selects a checkpoint using validation log loss;
+its reported validation performance is a development estimate, not a final test.
+The current CV pool has also been inspected previously. Choosing the best head or
+other settings from these results and quoting the same scores as unbiased final
+performance would be inappropriate. Use inner folds or a new held-out evaluation
+for subsequent tuning. Some team notebooks have already inspected official-test
+examples; do not describe that test as pristine for the whole team's history.
+
+Inference uses eval mode and disables gradient tracking. Tests verify that it
+neither changes weights nor accumulates gradients. Candidate padding receives
+zero probability; cross-entropy receives raw logits. Changing metadata/labels does
+not change encoded inputs. Existing parsing tests exclude future board cards,
+reference answers, and arbitrary extra source fields.
+
+### Statistics have explicit meanings and limits
+
+Reliability bins and ECE concern agreement with the reference labels, not a
+solver's mixed strategy. Binning is fixed in advance and counts are reported.
+Confusion counts distinguish action-type errors from same-type amount errors.
+Paired bootstrap comparisons resample whole specified groups and use the exact
+same examples/predictions for both models. Their percentile bounds condition on
+these fitted models and groups; they do not include retraining uncertainty or
+establish independence of all scenarios. Fold SD is descriptive, not a confidence
+interval. Neither statistic justifies a general superiority claim by itself.
+
+Menu/target association is computed using only supplied training contexts and a
+seeded representative per duplicate context. Within-street shuffled-label values
+are an exploratory reference: related-scenario dependence limits formal p-value
+interpretation. Legal-action restrictions can naturally make menus predictive;
+association is not, by itself, evidence of leakage or dataset construction errors.
+
+### Alternative sources remain separate tasks
+
+`04_alternative_data_sources.ipynb` has opt-in source experiments:
+
+- Pluribus: strict PokerKit replay, acting-player cards and prior public information
+  only; menus are built before the observed label is read. Exact sizing is
+  abstracted. Replay failures are saved and block modeling exports. Shared hands
+  or identical contexts are joined into connected split components. Player/session
+  dependence and longitudinal opponent-feature construction still need investigation.
+- Leduc: acting-player information-state inputs, approximate CFR+ teacher
+  distributions, argmax labels and sampled actions saved separately. Exploitability
+  measures the teacher only. No learned neural student's exploitability is claimed,
+  and no student train/test split is silently invented.
+
+Hidden-card mutation controls check both sources. Public data availability and a
+publisher license do not independently establish every upstream redistribution
+right. Full archive replay and full solver-generation runs are not verified by the
+small offline fixtures used here.
+
+## Executable checks
+
+Verified locally: **93 tests passed, 89% overall statement coverage**, with Ruff
+lint/format checks, full package mypy, and offline lockfile consistency checks passing.
+CV runner coverage is 91%, diagnostics 96%, and saved-split/training helpers 91%.
+Coverage measures executed code, not scientific correctness or proof of no leakage.
+
+Tests cover:
+
+- Label/future-card exclusion and exact candidate normalization.
+- Scenario-key independence from targets, action menus, suits and later streets.
+- Zero cross-fold group/context/ID overlap, complete coverage, deterministic
+  memberships, and conflicting duplicates kept together.
+- Spy-verified training memberships for both baselines and neural training; fresh
+  models and empty-state optimizers for every fold/head.
+- Known reliability/error counts, probability metrics, whole-cluster resampling,
+  paired differences and seeded menu-association diagnostics.
+- Unchanged weights/gradients during evaluation; correct masking and gradient flow.
+- Linear/MLP checkpoint reloads; rejection of corrupted split content, predictions,
+  stored metrics and checkpoint weights.
+- Hidden-card controls, strict replay failure accounting, connected hand/context
+  splits, and separate Leduc teacher target semantics.
+- Notebook schema, syntax, cleared outputs, training-disabled defaults and Colab guards.
+
+The new scenario and source notebooks also executed from fresh local Jupyter
+kernels with their default training/download/solver flags disabled. The actual
+10,000-row grouping/provenance audit completed without training a model.
+
+## What remains an empirical question
+
+Reference-action agreement does not establish profitable or unexploitable poker.
+Single labels do not recover full mixed strategies. Tests cannot prove that the
+reference action is optimal, menus exhaust legal actions, or all dataset shortcuts
+have disappeared. The next empirical step is a predeclared Colab run of the grouped
+protocol, preserving all fold predictions and reporting failures as well as successes.
+
+
+### Encoder swaps and development sweeps
+
+All four requested encoder choices are pinned, including ModernBERT-base at
+`8949b909ec900327062f0ebf497f51aef5e6f0c8`. The main notebook centralizes optimizer,
+head, training and tiny-check settings and records them in metadata. ModernBERT
+loads through SDPA with optional reference compilation disabled. Offline tests
+exercise actual tiny BERT, DistilBERT and ModernBERT forward/backward and checkpoint
+APIs for both head types, verify matching tokenizer/encoder revisions, and check
+that the displayed learning rates and decay reach AdamW. No new pretrained runs
+were performed locally.
+
+The optional notebook 03 grid validates settings, prints fit count, preserves fold
+membership/seed, and saves every trial through the existing protocol runner.
+It explicitly produces development comparisons, not nested model selection.
+Winning sweep scores cannot be reported as independent final test performance.

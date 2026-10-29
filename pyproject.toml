@@ -15,6 +15,10 @@ ml = ["torch>=2.6,<3", "transformers>=4.48,<5"]
 analysis = ["pandas>=2.2,<3", "scikit-learn>=1.6,<2", "jupyterlab>=4.3,<5", "matplotlib>=3.10,<4"]
 demo = ["streamlit>=1.42,<2"]
 llm = ["openai>=1.60,<3"]
+experiments = [
+    "open-spiel>=2.0.2,<3",
+    "pokerkit>=0.7,<1",
+]
 
 [dependency-groups]
 dev = ["pytest>=8.3,<10", "pytest-cov>=6,<8", "ruff>=0.11,<1", "mypy>=1.15,<2"]
@@ -40,5 +44,5 @@ strict = true
 files = ["src/poker_decision"]
 
 [[tool.mypy.overrides]]
-module = ["sklearn.*"]
+module = ["sklearn.*", "pyspiel", "pokerkit.*"]
 ignore_missing_imports = true

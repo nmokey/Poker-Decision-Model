@@ -46,13 +46,30 @@ uv sync --locked --extra analysis --extra ml
 uv run --locked --extra analysis --extra ml jupyter lab notebooks/02_pokerbench_decision_model.ipynb
 ```
 
-BERT Mini is the pinned default; MiniLM and DistilBERT are alternatives. A GPU is
+BERT Mini is the pinned default; MiniLM, DistilBERT cased, and ModernBERT-base are alternatives. A GPU is
 recommended; CPU works for small experiments. It reuses the saved Meeting 1 split
 or prepares it if absent. Nothing is silently truncated or removed. Outputs go to
 an individual ignored `artifacts/pokerbench_meeting2/` run folder. For a smaller
 end-to-end check, launch Jupyter with `POKER_SMOKE=1`; this uses 128 training and 64
 validation examples and recomputes the baselines. See the notebook for Colab setup
 and [integration notes](docs/meeting2-integration.md) for attribution and limits.
+
+## Stronger evaluation and optional sources
+
+[Scenario evaluation](notebooks/03_scenario_evaluation.ipynb) adds five-fold scenario
+splits, a controlled linear/MLP head comparison, reliability/error diagnostics,
+paired grouped intervals, and verified resumable outputs. Review the protocol,
+then enable `RUN_CV` on a Colab GPU. Every fold starts fresh; held-out folds never
+select epochs. This remains development evaluation on an inspected pool.
+
+[Alternative sources](notebooks/04_alternative_data_sources.ipynb) keeps Pluribus
+observed-play replay and Leduc solver-policy generation separate from PokerBench.
+Install `--extra experiments` for those opt-in sections. Teacher exploitability
+is not evidence of a learned model's exploitability.
+
+Pretrained-model training is reserved for Colab. Local checks use data audits and
+small offline randomly initialized models. See the [scientific audit](docs/scientific-audit.md)
+for verified safeguards, current limitations, and the original split's scenario overlap.
 
 ## Development
 
@@ -66,7 +83,7 @@ uv sync --locked
 uv run --locked pytest
 uv run --locked ruff check .
 uv run --locked ruff format --check .
-uv run --locked mypy --exclude 'src/poker_decision/(training|models/encoder)\.py$'
+uv run --locked mypy --exclude 'src/poker_decision/(training|cross_validation|models/encoder)\.py$'
 # With ML dependencies installed, check all modules:
 uv run --locked --extra analysis --extra ml mypy
 ```

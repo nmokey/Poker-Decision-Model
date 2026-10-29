@@ -23,6 +23,10 @@ BACKBONES = {
         "distilbert/distilbert-base-cased",
         "6ea81172465e8b0ad3fddeed32b986cdcdcffcf0",
     ),
+    "modernbert": (
+        "answerdotai/ModernBERT-base",
+        "8949b909ec900327062f0ebf497f51aef5e6f0c8",
+    ),
 }
 
 
@@ -92,10 +96,19 @@ def collate_decisions(rows: Sequence[EncodedDecision], *, pad_token_id: int) -> 
 class PokerDecisionModel(nn.Module):
     """One encoder sequence per decision; mean-pool each option's contextual tokens."""
 
-    def __init__(self, encoder: Any) -> None:
+    def __init__(self, encoder: Any, *, head_type: str = "linear", head_width: int = 64) -> None:
         super().__init__()
+        if head_type not in {"linear", "mlp"} or head_width < 1:
+            raise ValueError("Choose a linear or mlp head with a positive hidden width")
         self.encoder = encoder
-        self.head = nn.Linear(int(encoder.config.hidden_size), 1)
+        self.head_type = head_type
+        self.head_width = head_width
+        hidden = int(encoder.config.hidden_size)
+        self.head = (
+            nn.Linear(hidden, 1)
+            if head_type == "linear"
+            else nn.Sequential(nn.Linear(hidden, head_width), nn.ReLU(), nn.Linear(head_width, 1))
+        )
 
     def forward(
         self, input_ids: Tensor, attention_mask: Tensor, candidate_token_mask: Tensor
@@ -118,10 +131,19 @@ class PokerDecisionModel(nn.Module):
         return logits.masked_fill(~valid, float("-inf"))
 
 
-def load_pretrained(name: str, revision: str) -> tuple[Any, PokerDecisionModel]:
+def load_pretrained(
+    name: str, revision: str, *, head_type: str = "linear", head_width: int = 64
+) -> tuple[Any, PokerDecisionModel]:
     """Load a pinned encoder without the vocabulary prediction head."""
     from transformers import AutoModel, AutoTokenizer
 
     tokenizer = AutoTokenizer.from_pretrained(name, revision=revision)  # type: ignore[no-untyped-call]
-    encoder = AutoModel.from_pretrained(name, revision=revision)
-    return tokenizer, PokerDecisionModel(encoder)
+    # ModernBERT's optional compilation/FlashAttention path adds runtime dependencies.
+    # SDPA works with the standard Colab PyTorch install and persists in checkpoints.
+    options = (
+        {"attn_implementation": "sdpa", "reference_compile": False}
+        if name == BACKBONES["modernbert"][0]
+        else {}
+    )
+    encoder = AutoModel.from_pretrained(name, revision=revision, **options)
+    return tokenizer, PokerDecisionModel(encoder, head_type=head_type, head_width=head_width)
