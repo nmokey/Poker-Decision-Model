@@ -85,7 +85,7 @@ uv sync --locked
 uv run --locked pytest
 uv run --locked ruff check .
 uv run --locked ruff format --check .
-uv run --locked mypy --exclude 'src/poker_decision/(training|cross_validation|models/encoder)\.py$'
+uv run --locked mypy --exclude 'src/poker_decision/(training|cross_validation|experiments|models/encoder)\.py$'
 # With ML dependencies installed, check all modules:
 uv run --locked --extra analysis --extra ml mypy
 ```
