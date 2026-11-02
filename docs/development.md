@@ -2,7 +2,8 @@
 
 Meeting 1 implements the PokerBench data contract, preprocessing, grouped splits,
 CPU candidate baselines, and evaluation. Meeting 2 adds the joint transformer and
-training walkthrough. The demo remains a placeholder. See the
+training walkthrough. PocketSolver serves the saved model and Groq baseline;
+see [deployment notes](deployment.md). See the
 [Meeting 1](meeting1-integration.md) and [Meeting 2](meeting2-integration.md) integration notes.
 
 ## Dependencies

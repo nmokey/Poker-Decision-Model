@@ -1,0 +1,7 @@
+{
+  "url": "https://github.com/nmokey/Poker-Decision-Model/releases/download/meeting3-demo-2026-11-02-v1/pocketsolver-demo-assets.tar.gz",
+  "sha256": "8c476c3194097e4ff7fa3d236717e01295e3d3e0d8479b11e54007b88ecf4e82",
+  "bytes": 41778616,
+  "n_hands": 256,
+  "backbone": "google/bert_uncased_L-4_H-256_A-4"
+}
