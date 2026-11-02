@@ -223,7 +223,7 @@ def test_evaluation_does_not_update_weights_or_accumulate_gradients(tokenizer):
         "04_alternative_data_sources.ipynb",
     ],
 )
-def test_notebook_syntax_schema_outputs_and_colab_training_guard(name):
+def test_notebook_syntax_schema_outputs_and_gpu_training_guard(name):
     import ast
 
     import nbformat
@@ -240,10 +240,10 @@ def test_notebook_syntax_schema_outputs_and_colab_training_guard(name):
     if name.startswith("02"):
         training_cells = [s for s in sources if "train_epoch(" in s]
         assert len(training_cells) == 2
-        assert all("if not IN_COLAB or not torch.cuda.is_available():" in s for s in training_cells)
+        assert all("if not torch.cuda.is_available():" in s for s in training_cells)
     elif name.startswith("03"):
         assert any("RUN_CV = False" in s for s in sources)
-        assert any("if not IN_COLAB or not torch.cuda.is_available():" in s for s in sources)
+        assert any("if not torch.cuda.is_available():" in s for s in sources)
     else:
         assert any("RUN_LEDUC = False" in s and "RUN_PLURIBUS = False" in s for s in sources)
 

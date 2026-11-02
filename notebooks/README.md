@@ -43,7 +43,7 @@ a tiny training-set learning check, resets the model for real training, selects 
 checkpoint by validation log loss, reloads it, compares all baselines, shows five
 mistakes, and measures candidate-order sensitivity. Encoder revisions are pinned.
 
-Use Colab's GPU runtime for pretrained training. Local environments support inspection and offline tests. The Colab bootstrap clones the
+Use a local CUDA GPU or Colab GPU runtime for pretrained training. CPU environments support inspection and offline tests. The Colab bootstrap clones the
 repository only if needed; the Meeting 2 changes must be published before that
 route works. Existing local checkouts work immediately. `POKER_SMOKE=1` before
 launching Jupyter selects 128 train / 64 validation rows for quick verification;
@@ -59,7 +59,7 @@ See [Meeting 2 integration notes](../docs/meeting2-integration.md).
 
 - [Scenario evaluation](03_scenario_evaluation.ipynb): inspect historical scenario
   overlap; save five fixed grouped folds; refit all models; compare linear/MLP heads
-  under identical settings. Training is disabled by default and guarded for Colab GPU.
+  under identical settings. Training is disabled by default and guarded for a CUDA GPU.
   Completed folds are resumed only after checking protocol, prediction and weight
   hashes and recomputing metrics. Use persistent output storage or download before
   Colab ends. These changes must be present in the checkout before running the new notebooks.
@@ -92,3 +92,5 @@ hashed protocol and saved configuration. Use persistent storage for long Colab r
 Sweeps are exploratory development comparisons. A winner selected from those
 scores needs an untouched final test or nested grouped selection for an independent
 estimate. The sweep does not implement nested CV or automatically select a winner.
+
+For the complete GPU matrix outside Jupyter, see [Week 2 training](../docs/week2-training.md).

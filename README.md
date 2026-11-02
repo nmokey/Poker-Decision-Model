@@ -67,8 +67,10 @@ observed-play replay and Leduc solver-policy generation separate from PokerBench
 Install `--extra experiments` for those opt-in sections. Teacher exploitability
 is not evidence of a learned model's exploitability.
 
-Pretrained-model training is reserved for Colab. Local checks use data audits and
-small offline randomly initialized models. See the [scientific audit](docs/scientific-audit.md)
+Pretrained-model training supports local CUDA GPUs and Colab. See the
+[Week 2 GPU matrix](docs/week2-training.md) for all four encoders and both heads.
+See [saved development results](docs/week2-results.md) for completed metrics and run status.
+Offline checks use data audits and small randomly initialized models. See the [scientific audit](docs/scientific-audit.md)
 for verified safeguards, current limitations, and the original split's scenario overlap.
 
 ## Development

@@ -245,6 +245,11 @@ def run_cross_validation(
                         seed=seed + epoch,
                     )
                     history.append({"epoch": epoch + 1, "training_loss": loss})
+                    print(
+                        f"Fold {fold}/{config.n_splits} {config.backbone}/{head} "
+                        f"epoch {epoch + 1}/{config.epochs}: training loss={loss:.6f}",
+                        flush=True,
+                    )
                 name = f"transformer_{head}"
                 values[name] = predict_encoded(
                     model, encoded_test, pad_token_id=tokenizer.pad_token_id
