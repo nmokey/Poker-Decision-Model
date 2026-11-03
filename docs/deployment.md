@@ -23,6 +23,19 @@ and inference are serialized; the previous model is released before its replacem
 loads. Downloads remain cached on disk. Selecting a model used by another visitor
 can require a reload; the demo is intended for modest traffic on free CPU hosting.
 
+## Saved results view
+
+Choose **Results matrix** to compare all eight encoder/head combinations. Both
+selectors stay visible and the current combination has a highlighted row and a
+“Current” marker. This view reads saved files without downloading weights or
+calling Groq. A direct link can use `?view=results`.
+
+Accuracy and log loss come from the 10,000-example, five-fold development matrix.
+Average latency comes from a separate local CPU benchmark, not Streamlit hosting;
+see [measurement details](week2-results.md#serving-latency). The table offers a CSV
+download. Its loader checks training protocols and serving-asset hashes, rejecting
+mismatched checkpoint timings instead of displaying stale measurements.
+
 ## Hosting configuration
 
 - Repository: `nmokey/Poker-Decision-Model`; canonical source is `main`.

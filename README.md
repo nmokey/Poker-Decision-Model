@@ -111,6 +111,9 @@ predictions with live Groq on the same 256 hands held out by every serving check
 Switching encoder/head keeps the hand and reuses its LLM result. The server keeps
 one model resident at a time, downloading selected weights on first use.
 Public request limits apply to Groq; local model predictions remain available.
+The **Results matrix** view shows all eight combinations with development accuracy,
+log loss and separately measured average CPU latency. The current encoder/head row
+is highlighted; changing the selectors updates the highlight without running inference.
 See [deployment and local setup](docs/deployment.md) for the CPU-only hosting
 environment, model asset bundle, secrets, and embedding on nmokey.com.
 
