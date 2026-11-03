@@ -10,8 +10,7 @@ Streamlit runs the real BERT Mini checkpoint and the live Groq baseline.
 - Branch: `codex/deploy-pocketsolver` (or `main` after the deployment PR is merged)
 - Entrypoint: `deploy/streamlit/app.py`
 - Python: **3.12**
-- Requested app subdomain: **nmokey-pocketsolver**
-- Expected URL, subject to name availability: `https://nmokey-pocketsolver.streamlit.app/`
+- Live app: <https://nmokey-poker-decision-model-deploystreamlitapp-codexdepl-dhuhge.streamlit.app/>
 
 The entrypoint directory has its own `pyproject.toml` and `uv.lock`, selecting
 CPU-only PyTorch and only the serving extras. The root environment retains its
@@ -25,7 +24,7 @@ and 256 seeded, multi-option PokerBench examples held out by that checkpoint.
 The archive is generated under ignored `artifacts/deployment/pocketsolver/`.
 `deploy/streamlit/assets.json` records the expected download URL and SHA-256.
 
-Publish `pocketsolver-demo-assets.tar.gz` as an asset of release
+`pocketsolver-demo-assets.tar.gz` is published as an asset of release
 `meeting3-demo-2026-11-02-v1` in this repository. Keep the binary weights and data
 outside Git history. The app checks the archive hash, safe extraction paths, and
 individual file hashes before loading. It also checks that demo source IDs are
@@ -50,13 +49,19 @@ POKER_LLM_SESSION_LIMIT = "10"
 POKER_LLM_COOLDOWN_SECONDS = "5"
 ```
 
-4. Choose the requested subdomain if available, deploy, and confirm New hand loads
+4. Deploy, and confirm New hand loads
    both real engines. If another subdomain is selected, update the portfolio iframe,
    full-screen link and page-specific CSP together before publishing the embed.
 5. Publish the prepared portfolio `/poker/` page only after the actual app URL works.
 
 The hosting sign-in and Secrets setup require the owner's account interaction;
 there is no connected Streamlit deployment tool in this session.
+For an existing app, open the workspace at `share.streamlit.io`, select the app's
+overflow menu → Settings → Secrets, paste the TOML values, and save.
+
+The Groq baseline uses temperature 0 and a 4,096-token completion limit. GPT-OSS
+models use low reasoning effort: hidden reasoning still consumes completion tokens,
+so hiding it alone does not prevent truncation before the probability array.
 
 ## Public request limits
 

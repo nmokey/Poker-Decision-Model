@@ -44,7 +44,12 @@ def call_llm(prompt: str) -> str:
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0,
                 include_reasoning=False,
-                max_completion_tokens=2048,
+                # Hiding reasoning does not disable it: its tokens share this
+                # budget with the final probability array on GPT-OSS.
+                reasoning_effort=(
+                    "low" if model in {"openai/gpt-oss-20b", "openai/gpt-oss-120b"} else None
+                ),
+                max_completion_tokens=4096,
             )
         except APITimeoutError as exc:
             raise TimeoutError(
