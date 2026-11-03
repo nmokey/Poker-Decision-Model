@@ -9,7 +9,8 @@
 - Published [accuracy, log loss, and provenance](week2-results.md) for all eight
   combinations. ModernBERT + linear leads the observed scores at 71.92% / 0.6078;
   its 0.14-point accuracy lead over DistilBERT is small and based on one seed.
-- Integrated PocketSolver with saved BERT Mini weights and a live Groq baseline;
+- Integrated PocketSolver with all eight trained encoder/head choices, a
+  ModernBERT linear default and a live Groq baseline;
   see [deployment](deployment.md). Demo results use a selected fold checkpoint.
 
 ## Next empirical work

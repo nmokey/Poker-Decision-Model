@@ -2,8 +2,9 @@
 
 Updated November 2, 2026. The Week 2 matrix is complete: four pinned pretrained
 encoders × two heads × five scenario-grouped folds, with three fixed epochs per
-fit. Every model has 10,000 held-out predictions. PocketSolver serves the existing
-BERT Mini linear fold-1 checkpoint; it is distinct from the aggregate comparison.
+fit. Every model has 10,000 held-out predictions. PocketSolver offers all eight
+trained fold-1 checkpoints and defaults to ModernBERT + linear. Its shared
+256-hand demo sample is distinct from the aggregate comparison.
 
 | Topic | Read this |
 | --- | --- |

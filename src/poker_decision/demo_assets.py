@@ -9,7 +9,8 @@ from pathlib import Path
 from typing import Any
 from urllib.request import urlopen
 
-MAX_BYTES = 100 * 1024 * 1024
+# ModernBERT-base is about 600 MB uncompressed; retain a finite per-bundle bound.
+MAX_BYTES = 1024 * 1024 * 1024
 
 
 def sha256(path: Path) -> str:

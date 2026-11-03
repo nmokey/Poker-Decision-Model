@@ -9,8 +9,11 @@ two-head comparison uses five fixed scenario folds and three epochs per fit.
 ModernBERT + linear leads at 71.92% / 0.6078, close to DistilBERT + linear at
 71.78% / 0.6164. These are one-seed development estimates on 10,000 examples.
 
-PocketSolver serves the saved BERT Mini linear fold-1 checkpoint with a live Groq
-comparison; see [deployment](deployment.md). Calibration, prior-hand opponent
+PocketSolver defaults to ModernBERT + linear, with selectors for all four encoders
+and both trained heads. Each selection restores its own fold-1 checkpoint; the
+same 256 hands are held out by every serving model. Switching models reuses the
+hand's live Groq result, and only one trained model is resident in server memory.
+See [deployment](deployment.md). Calibration, prior-hand opponent
 adaptation, profitable play, and unexploitable strategy have not been established.
 The proposal below preserves the original project goals rather than claiming that
 all requested capabilities are implemented. See the [documentation index](README.md)
