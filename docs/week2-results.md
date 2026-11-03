@@ -53,3 +53,45 @@ All recorded training-package source hashes match commit `d7f0e23`. Later demo
 changes can create a new protocol fingerprint; use the historical training revision
 when resuming these artifacts. See the [documentation index](README.md) for the
 audit, notebook walkthroughs, current demo, and remaining work.
+
+## Serving latency
+
+Measured November 3, 2026 using the eight published fold-1 serving checkpoints.
+This is a separate local CPU measurement, not the latency of Streamlit hosting or
+of the five-fold training evaluation above.
+
+| Encoder | Head | Average latency (ms) |
+| --- | --- | ---: |
+| ModernBERT | Linear | 234.84 |
+| ModernBERT | MLP | 214.55 |
+| DistilBERT | Linear | 84.96 |
+| DistilBERT | MLP | 88.07 |
+| MiniLM | Linear | 44.36 |
+| MiniLM | MLP | 45.36 |
+| BERT Mini | Linear | 7.75 |
+| BERT Mini | MLP | 7.71 |
+
+Every combination processes the same seeded sample of 64 multi-option held-out
+hands three times (192 measurements), with five excluded warm-up calls. Model
+order is seeded and shuffled; hand order is shuffled identically across models
+within each repeat. Batch size is one, with two PyTorch CPU threads on an AMD Ryzen
+Threadripper PRO 5955WX. Python 3.12.3, PyTorch 2.15.0+cpu, Transformers 4.57.6.
+Timing includes validation, tokenization, batch preparation, CPU inference and
+probability validation; it excludes loading, warm-up, queueing, network and UI.
+There is no response cache. These figures do not isolate head execution time;
+small differences between heads include run variability and independently fitted
+encoders. No full-dataset Groq accuracy/log-loss evaluation is recorded.
+
+The [latency report](results/week2-serving-latency.json) retains every measurement,
+repeat means, median/p95, hand IDs, hardware/settings and checkpoint/source hashes.
+The Results matrix view joins it to the original development CSV and highlights
+the selected encoder/head. Reproduce with unpacked deployment assets:
+
+```bash
+uv run --extra ml --extra demo python scripts/benchmark_demo_models.py \
+  --assets-root artifacts/deployment/pocketsolver-models-v2 \
+  --output /tmp/week2-serving-latency.json
+```
+
+The script refuses to overwrite an existing report. New hardware or hosting
+measurements should be saved separately and clearly labeled.

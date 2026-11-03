@@ -19,6 +19,7 @@ from apps.backend import (
 )
 from apps.benchmark_view import draw_benchmark
 from apps.contract import Prediction, Spot
+from apps.results_view import draw_results
 from apps.spot_view import draw_spot
 from apps.ui_common import fmt_ms, problem_with, run_safely
 from poker_decision.data import DecisionInputs
@@ -86,6 +87,15 @@ with st.sidebar:
     st.caption(f"Groq model: {groq_model_id()}")
     if not groq_ready():
         st.info("Live LLM comparison is not configured yet.")
+view = st.segmented_control(
+    "View",
+    ["Single hand", "Benchmark", "Results matrix"],
+    default="Results matrix" if st.query_params.get("view") == "results" else "Single hand",
+)
+if view == "Results matrix":
+    draw_results(model_id, models)
+    st.stop()
+
 try:
     with st.spinner(f"Preparing {spec.label}… First use may take a moment."):
         examples = held_out_examples(model_id)
@@ -124,7 +134,6 @@ if state.get("selected_model") != model_id:
     state.selected_model = model_id
     state.pop("demo_benchmark", None)
 
-view = st.segmented_control("View", ["Single hand", "Benchmark"], default="Single hand")
 engines = {
     f"{spec.label} · trained model": partial(model_engine, model_id=model_id),
     groq_label: partial(llm_engine, session=state.demo_session),
