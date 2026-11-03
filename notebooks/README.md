@@ -43,11 +43,12 @@ a tiny training-set learning check, resets the model for real training, selects 
 checkpoint by validation log loss, reloads it, compares all baselines, shows five
 mistakes, and measures candidate-order sensitivity. Encoder revisions are pinned.
 
-Use a local CUDA GPU or Colab GPU runtime for pretrained training. CPU environments support inspection and offline tests. The Colab bootstrap clones the
-repository only if needed; the Meeting 2 changes must be published before that
-route works. Existing local checkouts work immediately. `POKER_SMOKE=1` before
-launching Jupyter selects 128 train / 64 validation rows for quick verification;
-all baselines are refitted on that selected training subset. Normal runs reuse
+Use a local CUDA GPU or Colab GPU runtime for pretrained training. CPU environments
+support inspection and offline tests. The Colab bootstrap clones the repository
+only if needed; the maintained code is published on `main`. Use the
+recorded historical training revision to reproduce the completed matrix. Set
+`POKER_SMOKE=1` before launching Jupyter; this selects 128 train / 64 validation rows
+for quick verification. All baselines are refitted on that selected training subset. Normal runs reuse
 the complete saved Meeting 1 membership. If absent, preparation uses Meeting 1 defaults.
 
 Generated checkpoints, split copies, training history, comparisons, probabilities,
@@ -62,7 +63,7 @@ See [Meeting 2 integration notes](../docs/meeting2-integration.md).
   under identical settings. Training is disabled by default and guarded for a CUDA GPU.
   Completed folds are resumed only after checking protocol, prediction and weight
   hashes and recomputing metrics. Use persistent output storage or download before
-  Colab ends. These changes must be present in the checkout before running the new notebooks.
+  Colab ends. Resuming historical outputs requires their original code and versions.
 - [Alternative data sources](04_alternative_data_sources.ipynb): opt-in PHH/Pluribus
   replay and Leduc mixed-policy target generation, requiring `--extra experiments`.
   Neither silently changes PokerBench inputs, labels or memberships.
@@ -94,3 +95,19 @@ scores needs an untouched final test or nested grouped selection for an independ
 estimate. The sweep does not implement nested CV or automatically select a winner.
 
 For the complete GPU matrix outside Jupyter, see [Week 2 training](../docs/week2-training.md).
+
+## Completed matrix and interpretation
+
+All eight combinations of BERT Mini, MiniLM, DistilBERT, and ModernBERT with linear
+or MLP heads have completed five grouped folds, three epochs per fit: 40 full fits.
+The [complete table](../docs/week2-results.md) includes accuracy and log loss, with
+[CSV](../docs/results/week2-development.csv) and
+[JSON provenance](../docs/results/week2-development.json). ModernBERT + linear
+has the highest observed scores (71.92%, 0.6078), close to DistilBERT + linear
+(71.78%, 0.6164). The linear candidate baseline scores 69.69%, 1.0025.
+
+These results come from the fixed-budget grouped protocol, not notebook 02's
+checkpoint-selected holdout. Notebook 03's preview still defaults to one epoch;
+the published matrix fixed three epochs before training. Changing preview settings
+does not alter the recorded results. Notebook outputs remain cleared in Git;
+pretrained experiment results are published as reviewed documentation artifacts.

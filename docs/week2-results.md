@@ -4,9 +4,9 @@ Completed: November 2, 2026. All eight transformer/head combinations have comple
 five-fold results: 40 full encoder fits. Each model has exactly one held-out
 prediction for each of the same 10,000 examples.
 
-All transformer fits use five scenario-grouped folds, seed 42, three fixed epochs, batch size
-16, encoder LR 2e-5, head LR 1e-3, weight decay 0.01, and MLP width 64. Held-out
-folds never select epochs. There is zero specified scenario-group or exact-context
+All transformer fits use five scenario-grouped folds, seed 42, three fixed epochs,
+batch size 16, encoder LR 2e-5, head LR 1e-3, weight decay 0.01, and MLP width 64.
+Held-out folds never select epochs. There is zero specified scenario-group or exact-context
 overlap across folds.
 
 | Encoder | Head/model | Exact accuracy | Log loss (lower is better) |
@@ -48,3 +48,8 @@ data fingerprints, pinned encoders, settings, dependency/code versions, per-stre
 metrics, and paired intervals. Raw datasets, example-level predictions and model
 checkpoints remain in ignored local artifact folders. See
 [training instructions](week2-training.md) to reproduce or resume the runs.
+
+All recorded training-package source hashes match commit `d7f0e23`. Later demo
+changes can create a new protocol fingerprint; use the historical training revision
+when resuming these artifacts. See the [documentation index](README.md) for the
+audit, notebook walkthroughs, current demo, and remaining work.

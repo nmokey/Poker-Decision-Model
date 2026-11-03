@@ -1,4 +1,22 @@
-Here’s a compact project context you can paste into a new ChatGPT project:
+# Project context and original proposal
+
+## Current status — November 2, 2026
+
+The implemented system uses the audited PokerBench contract, joint all-options
+encoding, and a shared linear or MLP candidate head. The completed four-encoder /
+two-head comparison uses five fixed scenario folds and three epochs per fit.
+[Results](week2-results.md) report accuracy and log loss for all eight combinations:
+ModernBERT + linear leads at 71.92% / 0.6078, close to DistilBERT + linear at
+71.78% / 0.6164. These are one-seed development estimates on 10,000 examples.
+
+PocketSolver serves the saved BERT Mini linear fold-1 checkpoint with a live Groq
+comparison; see [deployment](deployment.md). Calibration, prior-hand opponent
+adaptation, profitable play, and unexploitable strategy have not been established.
+The proposal below preserves the original project goals rather than claiming that
+all requested capabilities are implemented. See the [documentation index](README.md)
+for the maintained implementation, audit, and reproduction instructions.
+
+## Original planning context
 
 ---
 

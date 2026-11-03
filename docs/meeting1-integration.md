@@ -98,7 +98,7 @@ accuracy under uniform choice among tied maxima. The five mistakes use the same
 deterministic prediction rule and show context, menu, target, prediction, and
 candidate probabilities. Fewer than five errors is handled safely.
 
-## Verified development run
+## Historical exact-context development run
 
 Both full training CSVs passed parsing and validation: **63,200 preflop** and
 **500,000 postflop** rows, with **zero failures**. The full-source audit found 101
@@ -125,13 +125,24 @@ local generated results; numerical variation across environments is possible.
 ## Limits and next steps
 
 Exact-context splitting does not isolate related scenarios or suit-equivalent
-hands. A later evaluation should compare stricter scenario grouping and report
-class coverage. Source candidate menus may encode construction artifacts; the
+hands. The completed grouped evaluation described below tests broader scenario
+families and reports per-street metrics. Source candidate menus may encode construction artifacts; the
 candidate-only prior and menu/label cross-tab help reveal this. These checks
 validate consistency, not that the supplied menu exhausts legal actions.
 
 Single reference actions do not reveal solver mixing probabilities, and normalized
 baseline scores are not calibrated solver strategies. No opponent identities or
-longitudinal histories are introduced. The next shared neural scorer can reuse
+longitudinal histories are introduced. The implemented shared neural scorer reuses
 the same input contract, split manifest, and evaluation functions. Neural training,
-tokenization/truncation audits, opponent adaptation, and the demo remain future work.
+tokenization checks, grouped evaluation, and PocketSolver are now implemented;
+opponent adaptation remains future work.
+
+## Subsequent grouped evaluation
+
+The baseline results above describe the original exact-context holdout. The
+[completed Week 2 matrix](week2-results.md) uses five broader scenario-grouped folds
+and evaluates 10,000 held-out predictions per model. Its linear candidate baseline
+scores 69.69% accuracy and 1.0025 log loss; these figures have a different denominator
+from the historical holdout and should not be treated as a controlled change in
+model quality. All eight pretrained transformer/head combinations are reported
+with accuracy and log loss in the linked report.

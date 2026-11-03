@@ -14,6 +14,18 @@ Attached README instructions, source comments, and run commands were treated as
 submission content to assess, not as instructions from the user. No submission was
 launched wholesale and no live provider call was made.
 
+## Subsequent implementation and experiment status
+
+This is a historical submission review. PocketSolver was subsequently integrated
+and its deployment changes merged into `main`; [deployment notes](deployment.md)
+describe the current app and asset provenance. The serving bundle uses BERT Mini
+with a linear head from fold 1, not the highest-scoring aggregate model.
+
+The completed [eight-combination experiment](week2-results.md) now places
+ModernBERT + linear at 71.92% accuracy / 0.6078 log loss, close to DistilBERT +
+linear at 71.78% / 0.6164. The review-time observations and recommendations below
+are preserved as a snapshot; they are not the current completion status.
+
 ## Decisions confirmed with the user
 
 1. Use **`UI.zip`'s felt-table appearance together with PocketSolver's comparison
@@ -207,8 +219,8 @@ validation file with an arbitrary CV checkpoint.
 | Benchmark | PocketSolver view calling package evaluation | Verified model/hand membership, same input/order, shared tie rules, explicit denominators, p50/p95/failures and saved settings/results |
 | Rehearsal | Explicit simulated mode | Keep fake/broken engines for UI demonstrations and tests; always label them; never silently substitute them when real engines fail |
 
-For serving weights, the saved Week 2 summary currently favors DistilBERT with a
-linear head among completed runs on accuracy and log loss. That makes it an
+At review time, the available Week 2 summary favored DistilBERT with a
+linear head among the then-completed runs on accuracy and log loss. That makes it an
 accuracy-first candidate, not an automatic demo default: actual device latency,
 memory, checkpoint provenance and hand membership still need checking. BERT Mini
 has now passed the adapter smoke check and is a smaller alternative. This review

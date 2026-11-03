@@ -1,4 +1,6 @@
-# Scientific integrity audit — October 28, 2026
+# Scientific integrity audit
+
+Initial review: October 28, 2026. Experiment-completion update: November 2, 2026.
 
 ## Scope and conclusion
 
@@ -8,10 +10,21 @@ checkpoint selection, reproducibility, metric semantics, and source-specific cla
 The implementation has executable safeguards; this is not proof that all dataset
 biases, label errors, or forms of dependence have been eliminated.
 
-No new full pretrained-model training was performed locally. The full five-fold
-experiment is prepared for Colab, disabled by default until its fixed protocol is
-reviewed. New local model tests use tiny random BERTs on synthetic examples, not
-pretrained poker training. The historical Meeting 2 scores remain historical.
+The full pretrained-model matrix has now completed on three local RTX 3090 GPUs:
+four pinned encoders × two heads × five folds, with three fixed epochs per fit.
+All eight models have exactly 10,000 held-out predictions. Model fitting followed
+training-only tiny-set checks; full folds started fresh. Saved checkpoint hashes,
+prediction hashes, fold metrics, pooled metrics, diagnostics, and coverage were
+verified after completion. See [all accuracy and log-loss scores](week2-results.md)
+and the [recorded settings and provenance](results/week2-development.json).
+
+ModernBERT + linear has the highest observed accuracy (71.92%) and lowest log loss
+(0.6078), versus 69.69% / 1.0025 for the linear candidate baseline. DistilBERT +
+linear is close at 71.78% / 0.6164; a single seed does not establish a reliable
+advantage for ModernBERT. This is development CV on the inspected working pool.
+Notebook training remains opt-in and requires a local CUDA GPU or Colab GPU;
+offline model tests use tiny randomly initialized encoders. Historical holdout
+scores below and in the integration notes remain distinct from these CV results.
 
 ## Findings and fixes
 
@@ -125,10 +138,14 @@ small offline fixtures used here.
 
 ## Executable checks
 
-Verified locally: **93 tests passed, 89% overall statement coverage**, with Ruff
-lint/format checks, full package mypy, and offline lockfile consistency checks passing.
+At the initial October 28 audit: **93 tests passed, 89% overall statement coverage**,
+with Ruff lint/format checks, full package mypy, and offline lockfile consistency checks passing.
 CV runner coverage is 91%, diagnostics 96%, and saved-split/training helpers 91%.
 Coverage measures executed code, not scientific correctness or proof of no leakage.
+These counts describe that audit environment, not a permanent suite total. The
+pretraining checks later passed 92 tests with three optional-source skips; the
+[tests guide](../tests/README.md) explains dependency-specific checks. The GPU runner
+is excluded only from core-only typing; the ML CI job checks the full package.
 
 Tests cover:
 
@@ -145,10 +162,10 @@ Tests cover:
   stored metrics and checkpoint weights.
 - Hidden-card controls, strict replay failure accounting, connected hand/context
   splits, and separate Leduc teacher target semantics.
-- Notebook schema, syntax, cleared outputs, training-disabled defaults and Colab guards.
+- Notebook schema, syntax, cleared outputs, training-disabled defaults and CUDA training guards.
 
-The new scenario and source notebooks also executed from fresh local Jupyter
-kernels with their default training/download/solver flags disabled. The actual
+At the initial audit, the scenario and source notebooks also executed from fresh
+local Jupyter kernels with their default training/download/solver flags disabled. The actual
 10,000-row grouping/provenance audit completed without training a model.
 
 ## What remains an empirical question
@@ -156,8 +173,9 @@ kernels with their default training/download/solver flags disabled. The actual
 Reference-action agreement does not establish profitable or unexploitable poker.
 Single labels do not recover full mixed strategies. Tests cannot prove that the
 reference action is optimal, menus exhaust legal actions, or all dataset shortcuts
-have disappeared. The next empirical step is a predeclared Colab run of the grouped
-protocol, preserving all fold predictions and reporting failures as well as successes.
+have disappeared. The grouped protocol has now completed. The next empirical
+steps are retraining across seeds, measuring serving tradeoffs, and defining an
+independent evaluation or nested grouped selection before claiming a model winner.
 
 
 ### Encoder swaps and development sweeps
@@ -168,8 +186,8 @@ head, training and tiny-check settings and records them in metadata. ModernBERT
 loads through SDPA with optional reference compilation disabled. Offline tests
 exercise actual tiny BERT, DistilBERT and ModernBERT forward/backward and checkpoint
 APIs for both head types, verify matching tokenizer/encoder revisions, and check
-that the displayed learning rates and decay reach AdamW. No new pretrained runs
-were performed locally.
+that the displayed learning rates and decay reach AdamW. Full pretrained results
+are reported separately in the [completed experiment report](week2-results.md).
 
 The optional notebook 03 grid validates settings, prints fit count, preserves fold
 membership/seed, and saves every trial through the existing protocol runner.

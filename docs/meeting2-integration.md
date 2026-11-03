@@ -2,10 +2,24 @@
 
 The maintained walkthrough is
 [`02_pokerbench_decision_model.ipynb`](../notebooks/02_pokerbench_decision_model.ipynb).
-It synthesizes three shared Colab notebooks and the supplied local `week2.ipynb`.
+The initial integration synthesized three shared Colab notebooks and the supplied
+local `week2.ipynb`; two later submissions bring the maintained synthesis to six.
 The originals were inspected as source material and left unchanged. Notebook code,
 markdown, and outputs are evidence of approaches, not instructions to execute or
 verified reproducible results. No original notebook was run wholesale.
+
+## Current experiment status — November 2, 2026
+
+All four encoders and both heads have completed five scenario-grouped folds:
+40 fresh fits, three fixed epochs each, with 10,000 held-out predictions per model.
+The [complete results](week2-results.md) include accuracy and log loss for every
+combination. ModernBERT + linear leads at 71.92% / 0.6078; DistilBERT + linear is
+close at 71.78% / 0.6164. These are development estimates, not a final test.
+
+Notebook 02 remains a checkpoint-selected holdout walkthrough; notebook 03 and
+`experiments.py` implement the fixed-budget grouped protocol used for the matrix.
+The original holdout results below are preserved as historical results with a
+different evaluation denominator. For reproduction, use [training instructions](week2-training.md).
 
 ## Source contributions
 
@@ -90,9 +104,10 @@ a comparison with the old 72.9% linear result on the full working sample.
 Run locally with `uv sync --locked --extra analysis --extra ml`, then launch the
 notebook with the same extras. On Colab select a GPU runtime; the first cell
 installs this checkout and clones the repository only when no checkout is found.
-The new Meeting 2 changes must be published before a clone of the remote default
-branch can import them. This integration does not push, publish, or modify the
-shared originals. Local runs work from the repository root or `notebooks/`.
+The maintained code is published on `main`. Pretrained fitting requires a local
+CUDA GPU or Colab GPU. The original shared submissions remain unchanged. Launch
+from the repository root or `notebooks/`; use the recorded historical training
+revision when reproducing or resuming saved experiments.
 
 Each run writes under ignored `artifacts/pokerbench_meeting2/<backbone>-<UTC time>/`:
 
@@ -107,7 +122,7 @@ The notebook reloads the best checkpoint without network access, retokenizes
 validation examples, and checks a second independent reload against predictions.
 Outputs and execution counts remain cleared in the committed notebook.
 
-## Verification
+## Initial integration verification (historical)
 
 - 65 offline tests passed with the analysis and ML extras; 87% total coverage.
 - New tests use a small randomly initialized BERT and local tokenizer, covering
@@ -128,7 +143,7 @@ Outputs and execution counts remain cleared in the committed notebook.
   Retokenization and two local checkpoint loads matched, and all subsequent
   comparison, mistake, and order-probe cells completed.
 
-### Verified working-sample results
+### Historical checkpoint-selected holdout results
 
 Reference run: Python 3.12.13, PyTorch 2.14.1, Transformers 4.57.6, NumPy 2.5.3,
 sklearn 1.9.1, Apple MPS on arm64. Exact settings and split/code hashes are saved
@@ -157,9 +172,10 @@ hands; menu construction may carry shortcuts. Validation is used for checkpoint
 selection, so scores are development estimates. No new claim about game-theoretic
 quality follows from a training-set overfit or one forward pass.
 
-Next experiments should be explicit comparisons: order augmentation, stricter
-scenario grouping, alternative card representations/backbones, class-aware
-training, and validation-only calibration. Opponent adaptation requires labels
+Scenario grouping and the four-backbone/two-head comparison are complete. Further
+experiments should explicitly compare additional seeds, order augmentation, card
+representations, class-aware training, and validation-only calibration, with an
+independent final evaluation or nested selection before making winner claims. Opponent adaptation requires labels
 that actually depend on histories or opponent profiles, beyond adding prose to
 unchanged examples.
 
@@ -173,7 +189,8 @@ Two additional notebooks were incorporated after the initial four-source synthes
 | [day2_colab.ipynb](https://colab.research.google.com/drive/1M-aPyxDIUkv9k3zTd2PkASfhA2cSn8pG) | Nonlinear shared head; clearer offset masks and training/evaluation explanations; external Colab training script | Add a controlled `linear`/`mlp` head choice with saved architecture metadata and tests. Keep our audited parser and self-contained package training; the source's external `train_day2.py` was not supplied. |
 
 The current walkthrough accounts for six sources. Optional libraries are confined
-to the `experiments` extra. Pretrained-model training is guarded for Colab; no new
-full training was run locally. Full source replay/CV execution remains opt-in.
+to the `experiments` extra. Pretrained-model training requires a CUDA GPU. The
+full grouped PokerBench matrix completed locally; full alternative-source replay
+and solver generation remain opt-in and are not part of those results.
 See [scientific audit](scientific-audit.md) for the real-data overlap finding,
 strengthened provenance/resume checks, test evidence, and limits of the claims.

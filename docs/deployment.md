@@ -7,7 +7,8 @@ Streamlit runs the real BERT Mini checkpoint and the live Groq baseline.
 ## Prepared deployment
 
 - Repository: `nmokey/Poker-Decision-Model`
-- Branch: `codex/deploy-pocketsolver` (or `main` after the deployment PR is merged)
+- Published source branch: `main` (deployment PR merged); the existing hosted app
+  may still track `codex/deploy-pocketsolver` until its owner changes that setting
 - Entrypoint: `deploy/streamlit/app.py`
 - Python: **3.12**
 - Live app: <https://nmokey-poker-decision-model-deploystreamlitapp-codexdepl-dhuhge.streamlit.app/>
@@ -97,3 +98,17 @@ come from Streamlit Secrets or server environment variables.
 References: [dependency discovery](https://docs.streamlit.io/deploy/streamlit-community-cloud/deploy-your-app/app-dependencies),
 [deployment](https://docs.streamlit.io/deploy/streamlit-community-cloud/deploy-your-app/deploy),
 [public embedding](https://docs.streamlit.io/deploy/streamlit-community-cloud/share-your-app/embed-your-app).
+
+## Experiment results versus the serving model
+
+All eight Week 2 combinations completed their five-fold development evaluation.
+The [full table](week2-results.md) reports accuracy and log loss; ModernBERT + linear
+has the highest observed scores at 71.92% accuracy / 0.6078 log loss, with
+DistilBERT + linear close at 71.78% / 0.6164.
+
+The packaged serving checkpoint remains BERT Mini + linear, fold 1. Its aggregate
+five-fold result is 68.96% / 0.6722, while the hosted benchmark uses a selected
+256-example fold-1 subset. Neither that subset nor a single checkpoint's score
+is interchangeable with the pooled 10,000-example CV score. Changing the serving
+model requires a new verified asset bundle and host latency/memory checks; the
+experiment ranking alone does not change the deployed model.
