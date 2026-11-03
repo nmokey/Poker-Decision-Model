@@ -1,7 +1,86 @@
 {
-  "url": "https://github.com/nmokey/Poker-Decision-Model/releases/download/meeting3-demo-2026-11-02-v1/pocketsolver-demo-assets.tar.gz",
-  "sha256": "8c476c3194097e4ff7fa3d236717e01295e3d3e0d8479b11e54007b88ecf4e82",
-  "bytes": 41778616,
-  "n_hands": 256,
-  "backbone": "google/bert_uncased_L-4_H-256_A-4"
+  "schema": 2,
+  "default_model": "modernbert-linear",
+  "models": {
+    "modernbert-linear": {
+      "encoder": "modernbert",
+      "head": "linear",
+      "backbone": "answerdotai/ModernBERT-base",
+      "url": "https://github.com/nmokey/Poker-Decision-Model/releases/download/meeting3-demo-models-2026-11-02-v2/modernbert-linear.tar.gz",
+      "sha256": "af58da6c414b9494545b8d77e1b9778ecd62b29c536b656b32e443e3edc4ca00",
+      "n_hands": 256,
+      "fold": 1,
+      "protocol_sha256": "baef9f45180ebbcb25347e92bff9eba5ea87dcb6cf0a3ce00184cddd90953c0a"
+    },
+    "modernbert-mlp": {
+      "encoder": "modernbert",
+      "head": "mlp",
+      "backbone": "answerdotai/ModernBERT-base",
+      "url": "https://github.com/nmokey/Poker-Decision-Model/releases/download/meeting3-demo-models-2026-11-02-v2/modernbert-mlp.tar.gz",
+      "sha256": "29f9d0988ef35ce94d6e9048aadd4d8a4b9a7ed4b884060e82983ddfd1e9a67c",
+      "n_hands": 256,
+      "fold": 1,
+      "protocol_sha256": "baef9f45180ebbcb25347e92bff9eba5ea87dcb6cf0a3ce00184cddd90953c0a"
+    },
+    "distilbert-linear": {
+      "encoder": "distilbert",
+      "head": "linear",
+      "backbone": "distilbert/distilbert-base-cased",
+      "url": "https://github.com/nmokey/Poker-Decision-Model/releases/download/meeting3-demo-models-2026-11-02-v2/distilbert-linear.tar.gz",
+      "sha256": "292a3de06ddce8dacac3acd7c3477d7e591c57b9be4b7929ac23565d7e3f8567",
+      "n_hands": 256,
+      "fold": 1,
+      "protocol_sha256": "e4bb898a213d817bcb0a86df8fd561075c426ac273ab9a1a06f41918b77a6f91"
+    },
+    "distilbert-mlp": {
+      "encoder": "distilbert",
+      "head": "mlp",
+      "backbone": "distilbert/distilbert-base-cased",
+      "url": "https://github.com/nmokey/Poker-Decision-Model/releases/download/meeting3-demo-models-2026-11-02-v2/distilbert-mlp.tar.gz",
+      "sha256": "9fed0b7ec2472bd9aad1c28162025aa8273b538c5672f66ba106d6287d8daac4",
+      "n_hands": 256,
+      "fold": 1,
+      "protocol_sha256": "e4bb898a213d817bcb0a86df8fd561075c426ac273ab9a1a06f41918b77a6f91"
+    },
+    "minilm-linear": {
+      "encoder": "minilm",
+      "head": "linear",
+      "backbone": "microsoft/MiniLM-L12-H384-uncased",
+      "url": "https://github.com/nmokey/Poker-Decision-Model/releases/download/meeting3-demo-models-2026-11-02-v2/minilm-linear.tar.gz",
+      "sha256": "529af794d723b4f97420bf2e77bcedc9b76b76ca38f3162919f3e9b69fe5923b",
+      "n_hands": 256,
+      "fold": 1,
+      "protocol_sha256": "702d785462c884e17e9032d32dc1becc2f3298bbaf11ad98a7da95b622b7db71"
+    },
+    "minilm-mlp": {
+      "encoder": "minilm",
+      "head": "mlp",
+      "backbone": "microsoft/MiniLM-L12-H384-uncased",
+      "url": "https://github.com/nmokey/Poker-Decision-Model/releases/download/meeting3-demo-models-2026-11-02-v2/minilm-mlp.tar.gz",
+      "sha256": "6a98a1706709d8d77cd4ff8d56c33b9dee9fbf1604493cd4122ca712c752299c",
+      "n_hands": 256,
+      "fold": 1,
+      "protocol_sha256": "702d785462c884e17e9032d32dc1becc2f3298bbaf11ad98a7da95b622b7db71"
+    },
+    "bert_mini-linear": {
+      "encoder": "bert_mini",
+      "head": "linear",
+      "backbone": "google/bert_uncased_L-4_H-256_A-4",
+      "url": "https://github.com/nmokey/Poker-Decision-Model/releases/download/meeting3-demo-models-2026-11-02-v2/bert_mini-linear.tar.gz",
+      "sha256": "ae0b59b3c37b6d851617cee2e07651d97591384a88b95913c8609194b8ccdd84",
+      "n_hands": 256,
+      "fold": 1,
+      "protocol_sha256": "7038ddd3689c844c172ea150b1fc49f3172308a43c4b12be798b1200b02d5839"
+    },
+    "bert_mini-mlp": {
+      "encoder": "bert_mini",
+      "head": "mlp",
+      "backbone": "google/bert_uncased_L-4_H-256_A-4",
+      "url": "https://github.com/nmokey/Poker-Decision-Model/releases/download/meeting3-demo-models-2026-11-02-v2/bert_mini-mlp.tar.gz",
+      "sha256": "7ac02387d9295ae6272c215e306ac41ef38dc99f3d7154ae031cd2666c5ba416",
+      "n_hands": 256,
+      "fold": 1,
+      "protocol_sha256": "7038ddd3689c844c172ea150b1fc49f3172308a43c4b12be798b1200b02d5839"
+    }
+  }
 }

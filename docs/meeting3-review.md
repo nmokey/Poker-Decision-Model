@@ -18,8 +18,10 @@ launched wholesale and no live provider call was made.
 
 This is a historical submission review. PocketSolver was subsequently integrated
 and its deployment changes merged into `main`; [deployment notes](deployment.md)
-describe the current app and asset provenance. The serving bundle uses BERT Mini
-with a linear head from fold 1, not the highest-scoring aggregate model.
+describe the current app and asset provenance. The original serving bundle used
+BERT Mini with a linear head from fold 1. The app now defaults to ModernBERT linear
+and offers all eight trained encoder/head combinations, with verified common
+held-out hands, one resident model and Groq-result reuse during selection changes.
 
 The completed [eight-combination experiment](week2-results.md) now places
 ModernBERT + linear at 71.92% accuracy / 0.6078 log loss, close to DistilBERT +

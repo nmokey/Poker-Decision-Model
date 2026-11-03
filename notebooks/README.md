@@ -111,3 +111,12 @@ checkpoint-selected holdout. Notebook 03's preview still defaults to one epoch;
 the published matrix fixed three epochs before training. Changing preview settings
 does not alter the recorded results. Notebook outputs remain cleared in Git;
 pretrained experiment results are published as reviewed documentation artifacts.
+
+## Serving the trained models
+
+[PocketSolver](https://www.nmokey.com/poker/) offers all four pretrained encoders
+with their trained linear or MLP heads. ModernBERT linear is the default. These
+are independent fine-tuned fold-1 checkpoints, not randomly initialized heads
+attached at selection time. The demo's shared 256 hands were held out by every
+serving checkpoint; they do not replace the complete CV results above. See
+[deployment](../docs/deployment.md) for CPU hosting and asset packaging.

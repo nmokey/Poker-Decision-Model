@@ -13,7 +13,7 @@ from apps.ui_common import problem_with, run_safely
 from poker_decision.evaluation import evaluate
 
 
-def draw_benchmark(engines: dict[str, Callable[[Spot], Prediction]]) -> None:
+def draw_benchmark(engines: dict[str, Callable[[Spot], Prediction]], *, model_id: str) -> None:
     st.subheader("Benchmark")
     st.caption("A development comparison on the same held-out multi-option hands.")
     live = st.checkbox("Include live Groq requests", value=False, disabled=not groq_ready())
@@ -22,7 +22,7 @@ def draw_benchmark(engines: dict[str, Callable[[Spot], Prediction]]) -> None:
     if live:
         st.caption(f"This makes up to {count} live requests from the shared allowance.")
     if st.button("Run benchmark", type="primary"):
-        source = HandSource(seed)
+        source = HandSource(seed, model_id=model_id)
         examples = [source.next() for _ in range(count)]
         names = list(engines) if live else list(engines)[:1]
         results: dict[str, list[Prediction]] = {}

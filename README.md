@@ -104,8 +104,12 @@ for verified safeguards, current limitations, and the original split's scenario 
 
 ## PocketSolver demo
 
-The demo restores the saved BERT Mini transformer and trained decision head,
-displays held-out PokerBench hands, and compares predictions with live Groq calls.
+The full-window [demo](https://www.nmokey.com/poker/) defaults to **ModernBERT + linear**.
+Select BERT Mini, MiniLM, DistilBERT or ModernBERT and a **linear or MLP** head;
+each choice restores its own fine-tuned encoder and trained head. It compares
+predictions with live Groq on the same 256 hands held out by every serving checkpoint.
+Switching encoder/head keeps the hand and reuses its LLM result. The server keeps
+one model resident at a time, downloading selected weights on first use.
 Public request limits apply to Groq; local model predictions remain available.
 See [deployment and local setup](docs/deployment.md) for the CPU-only hosting
 environment, model asset bundle, secrets, and embedding on nmokey.com.
@@ -148,6 +152,6 @@ docs/                project context, development notes, integration decisions
 
 See [project context](docs/project-context.md), [development guide](docs/development.md),
 and [roadmap](docs/roadmap.md). Neural training is introduced in Meeting 2;
-the eight-combination grouped experiment is complete and PocketSolver serves a
-saved BERT Mini checkpoint. Opponent adaptation remains future work. Scores
+the eight-combination grouped experiment is complete and PocketSolver serves all
+eight trained combinations, defaulting to ModernBERT + linear. Opponent adaptation remains future work. Scores
 measure reference-action agreement.
