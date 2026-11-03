@@ -73,12 +73,20 @@ See [saved development results](docs/week2-results.md) for completed metrics and
 Offline checks use data audits and small randomly initialized models. See the [scientific audit](docs/scientific-audit.md)
 for verified safeguards, current limitations, and the original split's scenario overlap.
 
+## PocketSolver demo
+
+The demo restores the saved BERT Mini transformer and trained decision head,
+displays held-out PokerBench hands, and compares predictions with live Groq calls.
+Public request limits apply to Groq; local model predictions remain available.
+See [deployment and local setup](docs/deployment.md) for the CPU-only hosting
+environment, model asset bundle, secrets, and embedding on nmokey.com.
+
 ## Development
 
 Python 3.12 is the team default; 3.13 is supported. Core parsing and evaluation
 need no optional ML dependencies. Install extras as needed: `analysis` (pandas,
 sklearn, JupyterLab, plots), `ml` (torch, transformers), `demo` (Streamlit), and
-`llm` (OpenAI SDK). Keep extra flags on `uv run` to retain those dependencies.
+`llm` (Groq client). Keep extra flags on `uv run` to retain those dependencies.
 
 ```sh
 uv sync --locked
@@ -99,7 +107,7 @@ generated reports stay out of Git.
 ```text
 src/poker_decision/   data contract, preprocessing, baselines, evaluation, workflow
 notebooks/           consolidated Meeting 1 walkthrough
-apps/                demo placeholder
+apps/                PocketSolver presentation and serving adapters
 tests/               offline parsing, leakage, splitting, metrics, model tests
 data/raw/            local source training CSVs (ignored)
 data/processed/      generated datasets, failure reports, manifest (ignored)
