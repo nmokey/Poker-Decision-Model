@@ -2,411 +2,6 @@
   "as_of": "2026-11-02",
   "scope": "Development CV, not independent final test performance",
   "runs": {
-    "minilm": {
-      "protocol_sha256": "702d785462c884e17e9032d32dc1becc2f3298bbaf11ad98a7da95b622b7db71",
-      "pool_sha256": "799e4cc5133e0cc18c3a6637825e0cd3246a2120e0016188f8f44a1274a3ea9d",
-      "settings": {
-        "backbone": "minilm",
-        "heads": [
-          "linear",
-          "mlp"
-        ],
-        "head_width": 64,
-        "n_splits": 5,
-        "seed": 42,
-        "epochs": 3,
-        "batch_size": 16,
-        "max_length": 512,
-        "encoder_lr": 2e-05,
-        "head_lr": 0.001,
-        "weight_decay": 0.01
-      },
-      "encoder": "microsoft/MiniLM-L12-H384-uncased",
-      "revision": "44acabbec0ef496f6dbc93adadea57f376b7c0ec",
-      "versions": {
-        "torch": "2.14.1",
-        "transformers": "4.57.6",
-        "scikit-learn": "1.9.1",
-        "numpy": "2.5.3"
-      },
-      "code_sha256": {
-        "__init__.py": "d059d4a4c1d33ccd0921b63bda376d4a9640a32b8e2a0fa816c61460812a0ebf",
-        "baselines.py": "7b82635d0c4f0a5778080c87566d7bda89e556621878e6c1dcee586a386eab08",
-        "cross_validation.py": "10128d5bf3a3934f892b5613acea37975bde1437f41877f644f4bfa1d23d0721",
-        "data.py": "b1e04605829299b58a506918bb8492b94b55dbdae9748e171f2a2bc73a9a3553",
-        "diagnostics.py": "3b6fe67d9e062e7bb79d32d7769d4678e37c068fcb81863e014c8db87212cced",
-        "evaluation.py": "363a5fe5aef6b86d6739fc79e452903a871f296de45abbcc6b2debfbe058b1c8",
-        "experiments.py": "66fc0d6686c8d3fce1b4b52ef0bad63c8055d73c8b338c3a25806b1008ce4426",
-        "models/__init__.py": "7b352b8707d13a23c924aaef10260ff64385b66ac39e464d1e163e546464d7bb",
-        "models/encoder.py": "4b9b37352e4dafaafd4466634d7be48468a586329939e543e2f1aba72d234f7c",
-        "pipeline.py": "b69e85a66a2d123f59cf06d208a81d7dae0f8616162a9ad39f43bc9bec71988f",
-        "scenarios.py": "14eb870d36424e9ea88c7d54395370801af29aabafe8b064b5490ae238749cb2",
-        "source_experiments.py": "a4d3ed9b286170ae7259f981545d7a6183ddb2f9caaba482da3a01f84fcd678f",
-        "training.py": "8368b7d5edeb5abe76839183a25fa403e595df939290585cc428f6a353b3c5ae"
-      },
-      "completed_folds": 5,
-      "status": "complete",
-      "coverage": {
-        "n": 10000,
-        "held_out_predictions_per_row": 1,
-        "folds": 5
-      },
-      "models": {
-        "uniform": {
-          "n": 10000.0,
-          "exact_accuracy": 0.4128,
-          "tie_expected_accuracy": 0.4457083333333333,
-          "action_type_macro_f1": 0.23928090775611613,
-          "log_loss": 0.8551043266592633,
-          "brier_score": 0.5542916666666667,
-          "single_option_rate": 0.0464,
-          "multi_option_exact_accuracy": 0.38422818791946306,
-          "fold_log_loss_mean": 0.8547627932039935,
-          "fold_log_loss_sd": 0.015582441799997552
-        },
-        "option_prior": {
-          "n": 10000.0,
-          "exact_accuracy": 0.5764,
-          "tie_expected_accuracy": 0.5755,
-          "action_type_macro_f1": 0.4516097306483028,
-          "log_loss": 0.7623412668566131,
-          "brier_score": 0.4925290883564907,
-          "single_option_rate": 0.0464,
-          "multi_option_exact_accuracy": 0.5557885906040269,
-          "fold_log_loss_mean": 0.7617776694175198,
-          "fold_log_loss_sd": 0.023768840177780512
-        },
-        "linear_candidate": {
-          "n": 10000.0,
-          "exact_accuracy": 0.6969,
-          "tie_expected_accuracy": 0.6969,
-          "action_type_macro_f1": 0.602897312156557,
-          "log_loss": 1.0025366552691382,
-          "brier_score": 0.47346738299458996,
-          "single_option_rate": 0.0464,
-          "multi_option_exact_accuracy": 0.6821518456375839,
-          "fold_log_loss_mean": 1.002763986317316,
-          "fold_log_loss_sd": 0.035274346655194
-        },
-        "transformer_linear": {
-          "n": 10000.0,
-          "exact_accuracy": 0.6957,
-          "tie_expected_accuracy": 0.6957,
-          "action_type_macro_f1": 0.5779532327609554,
-          "log_loss": 0.6849210212886455,
-          "brier_score": 0.40636208352702213,
-          "single_option_rate": 0.0464,
-          "multi_option_exact_accuracy": 0.680893456375839,
-          "fold_log_loss_mean": 0.6856267727185928,
-          "fold_log_loss_sd": 0.06340948290045677
-        },
-        "transformer_mlp": {
-          "n": 10000.0,
-          "exact_accuracy": 0.6883,
-          "tie_expected_accuracy": 0.6883,
-          "action_type_macro_f1": 0.5758782581243127,
-          "log_loss": 0.6763659761426913,
-          "brier_score": 0.4115917931110651,
-          "single_option_rate": 0.0464,
-          "multi_option_exact_accuracy": 0.6731333892617449,
-          "fold_log_loss_mean": 0.6757825699072053,
-          "fold_log_loss_sd": 0.06313629925702106
-        }
-      },
-      "by_street": {
-        "uniform": {
-          "overall": {
-            "n": 10000.0,
-            "exact_accuracy": 0.4128,
-            "tie_expected_accuracy": 0.4457083333333333,
-            "action_type_macro_f1": 0.23928090775611613,
-            "log_loss": 0.8551043266592633,
-            "brier_score": 0.5542916666666667,
-            "single_option_rate": 0.0464,
-            "multi_option_exact_accuracy": 0.38422818791946306
-          },
-          "flop": {
-            "n": 310.0,
-            "exact_accuracy": 0.5741935483870968,
-            "tie_expected_accuracy": 0.3473118279569892,
-            "action_type_macro_f1": 0.2800846336947897,
-            "log_loss": 1.0733745202097682,
-            "brier_score": 0.6526881720430108,
-            "single_option_rate": 0.0,
-            "multi_option_exact_accuracy": 0.5741935483870968
-          },
-          "preflop": {
-            "n": 5000.0,
-            "exact_accuracy": 0.4814,
-            "tie_expected_accuracy": 0.5097333333333333,
-            "action_type_macro_f1": 0.34438186143178007,
-            "log_loss": 0.7217632247972773,
-            "brier_score": 0.4902666666666667,
-            "single_option_rate": 0.0928,
-            "multi_option_exact_accuracy": 0.42835097001763667
-          },
-          "river": {
-            "n": 2669.0,
-            "exact_accuracy": 0.31734732109404273,
-            "tie_expected_accuracy": 0.4153240914200075,
-            "action_type_macro_f1": 0.2078364541296621,
-            "log_loss": 0.9038565156358278,
-            "brier_score": 0.5846759085799925,
-            "single_option_rate": 0.0,
-            "multi_option_exact_accuracy": 0.31734732109404273
-          },
-          "turn": {
-            "n": 2021.0,
-            "exact_accuracy": 0.34438396833250867,
-            "tie_expected_accuracy": 0.34252845126175163,
-            "action_type_macro_f1": 0.18923958364579896,
-            "log_loss": 1.0871291445369586,
-            "brier_score": 0.6574715487382484,
-            "single_option_rate": 0.0,
-            "multi_option_exact_accuracy": 0.34438396833250867
-          }
-        },
-        "option_prior": {
-          "overall": {
-            "n": 10000.0,
-            "exact_accuracy": 0.5764,
-            "tie_expected_accuracy": 0.5755,
-            "action_type_macro_f1": 0.4516097306483028,
-            "log_loss": 0.7623412668566131,
-            "brier_score": 0.4925290883564907,
-            "single_option_rate": 0.0464,
-            "multi_option_exact_accuracy": 0.5557885906040269
-          },
-          "flop": {
-            "n": 310.0,
-            "exact_accuracy": 0.5935483870967742,
-            "tie_expected_accuracy": 0.5935483870967742,
-            "action_type_macro_f1": 0.31312661498708005,
-            "log_loss": 1.0304563235434872,
-            "brier_score": 0.62636614360116,
-            "single_option_rate": 0.0,
-            "multi_option_exact_accuracy": 0.5935483870967742
-          },
-          "preflop": {
-            "n": 5000.0,
-            "exact_accuracy": 0.6596,
-            "tie_expected_accuracy": 0.6578,
-            "action_type_macro_f1": 0.6381966433239397,
-            "log_loss": 0.6109929781875502,
-            "brier_score": 0.41993834390066687,
-            "single_option_rate": 0.0928,
-            "multi_option_exact_accuracy": 0.6247795414462081
-          },
-          "river": {
-            "n": 2669.0,
-            "exact_accuracy": 0.4810790558261521,
-            "tie_expected_accuracy": 0.4810790558261521,
-            "action_type_macro_f1": 0.276621591178003,
-            "log_loss": 0.8620875206983518,
-            "brier_score": 0.5532396285663725,
-            "single_option_rate": 0.0,
-            "multi_option_exact_accuracy": 0.4810790558261521
-          },
-          "turn": {
-            "n": 2021.0,
-            "exact_accuracy": 0.4938149430974765,
-            "tie_expected_accuracy": 0.4938149430974765,
-            "action_type_macro_f1": 0.3029406819746608,
-            "log_loss": 0.9639261378456203,
-            "brier_score": 0.5714146911932532,
-            "single_option_rate": 0.0,
-            "multi_option_exact_accuracy": 0.4938149430974765
-          }
-        },
-        "linear_candidate": {
-          "overall": {
-            "n": 10000.0,
-            "exact_accuracy": 0.6969,
-            "tie_expected_accuracy": 0.6969,
-            "action_type_macro_f1": 0.602897312156557,
-            "log_loss": 1.0025366552691382,
-            "brier_score": 0.47346738299458996,
-            "single_option_rate": 0.0464,
-            "multi_option_exact_accuracy": 0.6821518456375839
-          },
-          "flop": {
-            "n": 310.0,
-            "exact_accuracy": 0.5967741935483871,
-            "tie_expected_accuracy": 0.5967741935483871,
-            "action_type_macro_f1": 0.5084315925048818,
-            "log_loss": 1.3895488958934408,
-            "brier_score": 0.6192378953490663,
-            "single_option_rate": 0.0,
-            "multi_option_exact_accuracy": 0.5967741935483871
-          },
-          "preflop": {
-            "n": 5000.0,
-            "exact_accuracy": 0.835,
-            "tie_expected_accuracy": 0.835,
-            "action_type_macro_f1": 0.6000858573091565,
-            "log_loss": 0.4721301676724672,
-            "brier_score": 0.24782261313041726,
-            "single_option_rate": 0.0928,
-            "multi_option_exact_accuracy": 0.8181216931216931
-          },
-          "river": {
-            "n": 2669.0,
-            "exact_accuracy": 0.5496440614462346,
-            "tie_expected_accuracy": 0.5496440614462346,
-            "action_type_macro_f1": 0.4530546942190716,
-            "log_loss": 1.5572910418143877,
-            "brier_score": 0.7154694697659748,
-            "single_option_rate": 0.0,
-            "multi_option_exact_accuracy": 0.5496440614462346
-          },
-          "turn": {
-            "n": 2021.0,
-            "exact_accuracy": 0.5650667986145472,
-            "tie_expected_accuracy": 0.5650667986145472,
-            "action_type_macro_f1": 0.49604248106846194,
-            "log_loss": 1.5227836546261637,
-            "brier_score": 0.6897619999654706,
-            "single_option_rate": 0.0,
-            "multi_option_exact_accuracy": 0.5650667986145472
-          }
-        },
-        "transformer_linear": {
-          "overall": {
-            "n": 10000.0,
-            "exact_accuracy": 0.6957,
-            "tie_expected_accuracy": 0.6957,
-            "action_type_macro_f1": 0.5779532327609554,
-            "log_loss": 0.6849210212886455,
-            "brier_score": 0.40636208352702213,
-            "single_option_rate": 0.0464,
-            "multi_option_exact_accuracy": 0.680893456375839
-          },
-          "flop": {
-            "n": 310.0,
-            "exact_accuracy": 0.5967741935483871,
-            "tie_expected_accuracy": 0.5967741935483871,
-            "action_type_macro_f1": 0.3402369074504781,
-            "log_loss": 0.9374472434823798,
-            "brier_score": 0.5509933205111893,
-            "single_option_rate": 0.0,
-            "multi_option_exact_accuracy": 0.5967741935483871
-          },
-          "preflop": {
-            "n": 5000.0,
-            "exact_accuracy": 0.8164,
-            "tie_expected_accuracy": 0.8164,
-            "action_type_macro_f1": 0.5953248779851232,
-            "log_loss": 0.48865004450633326,
-            "brier_score": 0.27680187987244836,
-            "single_option_rate": 0.0928,
-            "multi_option_exact_accuracy": 0.7976190476190477
-          },
-          "river": {
-            "n": 2669.0,
-            "exact_accuracy": 0.5665043087298614,
-            "tie_expected_accuracy": 0.5665043087298614,
-            "action_type_macro_f1": 0.42335692647603906,
-            "log_loss": 0.8480954653712298,
-            "brier_score": 0.5345504991699991,
-            "single_option_rate": 0.0,
-            "multi_option_exact_accuracy": 0.5665043087298614
-          },
-          "turn": {
-            "n": 2021.0,
-            "exact_accuracy": 0.5828797624938149,
-            "tie_expected_accuracy": 0.5828797624938149,
-            "action_type_macro_f1": 0.4897278523349585,
-            "log_loss": 0.9162714239482629,
-            "brier_score": 0.5354221792502641,
-            "single_option_rate": 0.0,
-            "multi_option_exact_accuracy": 0.5828797624938149
-          }
-        },
-        "transformer_mlp": {
-          "overall": {
-            "n": 10000.0,
-            "exact_accuracy": 0.6883,
-            "tie_expected_accuracy": 0.6883,
-            "action_type_macro_f1": 0.5758782581243127,
-            "log_loss": 0.6763659761426913,
-            "brier_score": 0.4115917931110651,
-            "single_option_rate": 0.0464,
-            "multi_option_exact_accuracy": 0.6731333892617449
-          },
-          "flop": {
-            "n": 310.0,
-            "exact_accuracy": 0.5838709677419355,
-            "tie_expected_accuracy": 0.5838709677419355,
-            "action_type_macro_f1": 0.38909384813911674,
-            "log_loss": 0.9576322640971855,
-            "brier_score": 0.5792030624903184,
-            "single_option_rate": 0.0,
-            "multi_option_exact_accuracy": 0.5838709677419355
-          },
-          "preflop": {
-            "n": 5000.0,
-            "exact_accuracy": 0.8056,
-            "tie_expected_accuracy": 0.8056,
-            "action_type_macro_f1": 0.5961620734479293,
-            "log_loss": 0.4505025717362007,
-            "brier_score": 0.27190819068945743,
-            "single_option_rate": 0.0928,
-            "multi_option_exact_accuracy": 0.7857142857142857
-          },
-          "river": {
-            "n": 2669.0,
-            "exact_accuracy": 0.5635069314349944,
-            "tie_expected_accuracy": 0.5635069314349944,
-            "action_type_macro_f1": 0.41531817118273756,
-            "log_loss": 0.8682302143873099,
-            "brier_score": 0.5507890989929565,
-            "single_option_rate": 0.0,
-            "multi_option_exact_accuracy": 0.5635069314349944
-          },
-          "turn": {
-            "n": 2021.0,
-            "exact_accuracy": 0.5789213260762,
-            "tie_expected_accuracy": 0.5789213260762,
-            "action_type_macro_f1": 0.49096868218636713,
-            "log_loss": 0.9386315975636083,
-            "brier_score": 0.5476338065705909,
-            "single_option_rate": 0.0,
-            "multi_option_exact_accuracy": 0.5789213260762
-          }
-        }
-      },
-      "paired_vs_linear": {
-        "transformer_linear": {
-          "accuracy_difference": {
-            "mean": -0.0012,
-            "low95": -0.012671022347810847,
-            "high95": 0.00924550855706822
-          },
-          "log_loss_difference": {
-            "mean": -0.3176156339804925,
-            "low95": -0.4007631645782447,
-            "high95": -0.21341233598792556
-          },
-          "groups": 1521,
-          "scope": "Conditional on these fitted models and chosen clusters; excludes training uncertainty."
-        },
-        "transformer_mlp": {
-          "accuracy_difference": {
-            "mean": -0.0086,
-            "low95": -0.023686450148452377,
-            "high95": 0.005809585904040359
-          },
-          "log_loss_difference": {
-            "mean": -0.3261706791264467,
-            "low95": -0.40613553815305803,
-            "high95": -0.23176899157089473
-          },
-          "groups": 1521,
-          "scope": "Conditional on these fitted models and chosen clusters; excludes training uncertainty."
-        }
-      },
-      "interpretation": "Development CV on an already inspected pool. Fold SD is descriptive, not a CI. Grouped intervals condition on fitted folds. Subsequent tuning needs inner folds or a new test."
-    },
     "bert_mini": {
       "protocol_sha256": "7038ddd3689c844c172ea150b1fc49f3172308a43c4b12be798b1200b02d5839",
       "pool_sha256": "799e4cc5133e0cc18c3a6637825e0cd3246a2120e0016188f8f44a1274a3ea9d",
@@ -812,11 +407,11 @@
       },
       "interpretation": "Development CV on an already inspected pool. Fold SD is descriptive, not a CI. Grouped intervals condition on fitted folds. Subsequent tuning needs inner folds or a new test."
     },
-    "modernbert": {
-      "protocol_sha256": null,
+    "minilm": {
+      "protocol_sha256": "702d785462c884e17e9032d32dc1becc2f3298bbaf11ad98a7da95b622b7db71",
       "pool_sha256": "799e4cc5133e0cc18c3a6637825e0cd3246a2120e0016188f8f44a1274a3ea9d",
       "settings": {
-        "backbone": "modernbert",
+        "backbone": "minilm",
         "heads": [
           "linear",
           "mlp"
@@ -831,8 +426,8 @@
         "head_lr": 0.001,
         "weight_decay": 0.01
       },
-      "encoder": "answerdotai/ModernBERT-base",
-      "revision": "8949b909ec900327062f0ebf497f51aef5e6f0c8",
+      "encoder": "microsoft/MiniLM-L12-H384-uncased",
+      "revision": "44acabbec0ef496f6dbc93adadea57f376b7c0ec",
       "versions": {
         "torch": "2.14.1",
         "transformers": "4.57.6",
@@ -854,8 +449,368 @@
         "source_experiments.py": "a4d3ed9b286170ae7259f981545d7a6183ddb2f9caaba482da3a01f84fcd678f",
         "training.py": "8368b7d5edeb5abe76839183a25fa403e595df939290585cc428f6a353b3c5ae"
       },
-      "completed_folds": 3,
-      "status": "incomplete"
+      "completed_folds": 5,
+      "status": "complete",
+      "coverage": {
+        "n": 10000,
+        "held_out_predictions_per_row": 1,
+        "folds": 5
+      },
+      "models": {
+        "uniform": {
+          "n": 10000.0,
+          "exact_accuracy": 0.4128,
+          "tie_expected_accuracy": 0.4457083333333333,
+          "action_type_macro_f1": 0.23928090775611613,
+          "log_loss": 0.8551043266592633,
+          "brier_score": 0.5542916666666667,
+          "single_option_rate": 0.0464,
+          "multi_option_exact_accuracy": 0.38422818791946306,
+          "fold_log_loss_mean": 0.8547627932039935,
+          "fold_log_loss_sd": 0.015582441799997552
+        },
+        "option_prior": {
+          "n": 10000.0,
+          "exact_accuracy": 0.5764,
+          "tie_expected_accuracy": 0.5755,
+          "action_type_macro_f1": 0.4516097306483028,
+          "log_loss": 0.7623412668566131,
+          "brier_score": 0.4925290883564907,
+          "single_option_rate": 0.0464,
+          "multi_option_exact_accuracy": 0.5557885906040269,
+          "fold_log_loss_mean": 0.7617776694175198,
+          "fold_log_loss_sd": 0.023768840177780512
+        },
+        "linear_candidate": {
+          "n": 10000.0,
+          "exact_accuracy": 0.6969,
+          "tie_expected_accuracy": 0.6969,
+          "action_type_macro_f1": 0.602897312156557,
+          "log_loss": 1.0025366552691382,
+          "brier_score": 0.47346738299458996,
+          "single_option_rate": 0.0464,
+          "multi_option_exact_accuracy": 0.6821518456375839,
+          "fold_log_loss_mean": 1.002763986317316,
+          "fold_log_loss_sd": 0.035274346655194
+        },
+        "transformer_linear": {
+          "n": 10000.0,
+          "exact_accuracy": 0.6957,
+          "tie_expected_accuracy": 0.6957,
+          "action_type_macro_f1": 0.5779532327609554,
+          "log_loss": 0.6849210212886455,
+          "brier_score": 0.40636208352702213,
+          "single_option_rate": 0.0464,
+          "multi_option_exact_accuracy": 0.680893456375839,
+          "fold_log_loss_mean": 0.6856267727185928,
+          "fold_log_loss_sd": 0.06340948290045677
+        },
+        "transformer_mlp": {
+          "n": 10000.0,
+          "exact_accuracy": 0.6883,
+          "tie_expected_accuracy": 0.6883,
+          "action_type_macro_f1": 0.5758782581243127,
+          "log_loss": 0.6763659761426913,
+          "brier_score": 0.4115917931110651,
+          "single_option_rate": 0.0464,
+          "multi_option_exact_accuracy": 0.6731333892617449,
+          "fold_log_loss_mean": 0.6757825699072053,
+          "fold_log_loss_sd": 0.06313629925702106
+        }
+      },
+      "by_street": {
+        "uniform": {
+          "overall": {
+            "n": 10000.0,
+            "exact_accuracy": 0.4128,
+            "tie_expected_accuracy": 0.4457083333333333,
+            "action_type_macro_f1": 0.23928090775611613,
+            "log_loss": 0.8551043266592633,
+            "brier_score": 0.5542916666666667,
+            "single_option_rate": 0.0464,
+            "multi_option_exact_accuracy": 0.38422818791946306
+          },
+          "flop": {
+            "n": 310.0,
+            "exact_accuracy": 0.5741935483870968,
+            "tie_expected_accuracy": 0.3473118279569892,
+            "action_type_macro_f1": 0.2800846336947897,
+            "log_loss": 1.0733745202097682,
+            "brier_score": 0.6526881720430108,
+            "single_option_rate": 0.0,
+            "multi_option_exact_accuracy": 0.5741935483870968
+          },
+          "preflop": {
+            "n": 5000.0,
+            "exact_accuracy": 0.4814,
+            "tie_expected_accuracy": 0.5097333333333333,
+            "action_type_macro_f1": 0.34438186143178007,
+            "log_loss": 0.7217632247972773,
+            "brier_score": 0.4902666666666667,
+            "single_option_rate": 0.0928,
+            "multi_option_exact_accuracy": 0.42835097001763667
+          },
+          "river": {
+            "n": 2669.0,
+            "exact_accuracy": 0.31734732109404273,
+            "tie_expected_accuracy": 0.4153240914200075,
+            "action_type_macro_f1": 0.2078364541296621,
+            "log_loss": 0.9038565156358278,
+            "brier_score": 0.5846759085799925,
+            "single_option_rate": 0.0,
+            "multi_option_exact_accuracy": 0.31734732109404273
+          },
+          "turn": {
+            "n": 2021.0,
+            "exact_accuracy": 0.34438396833250867,
+            "tie_expected_accuracy": 0.34252845126175163,
+            "action_type_macro_f1": 0.18923958364579896,
+            "log_loss": 1.0871291445369586,
+            "brier_score": 0.6574715487382484,
+            "single_option_rate": 0.0,
+            "multi_option_exact_accuracy": 0.34438396833250867
+          }
+        },
+        "option_prior": {
+          "overall": {
+            "n": 10000.0,
+            "exact_accuracy": 0.5764,
+            "tie_expected_accuracy": 0.5755,
+            "action_type_macro_f1": 0.4516097306483028,
+            "log_loss": 0.7623412668566131,
+            "brier_score": 0.4925290883564907,
+            "single_option_rate": 0.0464,
+            "multi_option_exact_accuracy": 0.5557885906040269
+          },
+          "flop": {
+            "n": 310.0,
+            "exact_accuracy": 0.5935483870967742,
+            "tie_expected_accuracy": 0.5935483870967742,
+            "action_type_macro_f1": 0.31312661498708005,
+            "log_loss": 1.0304563235434872,
+            "brier_score": 0.62636614360116,
+            "single_option_rate": 0.0,
+            "multi_option_exact_accuracy": 0.5935483870967742
+          },
+          "preflop": {
+            "n": 5000.0,
+            "exact_accuracy": 0.6596,
+            "tie_expected_accuracy": 0.6578,
+            "action_type_macro_f1": 0.6381966433239397,
+            "log_loss": 0.6109929781875502,
+            "brier_score": 0.41993834390066687,
+            "single_option_rate": 0.0928,
+            "multi_option_exact_accuracy": 0.6247795414462081
+          },
+          "river": {
+            "n": 2669.0,
+            "exact_accuracy": 0.4810790558261521,
+            "tie_expected_accuracy": 0.4810790558261521,
+            "action_type_macro_f1": 0.276621591178003,
+            "log_loss": 0.8620875206983518,
+            "brier_score": 0.5532396285663725,
+            "single_option_rate": 0.0,
+            "multi_option_exact_accuracy": 0.4810790558261521
+          },
+          "turn": {
+            "n": 2021.0,
+            "exact_accuracy": 0.4938149430974765,
+            "tie_expected_accuracy": 0.4938149430974765,
+            "action_type_macro_f1": 0.3029406819746608,
+            "log_loss": 0.9639261378456203,
+            "brier_score": 0.5714146911932532,
+            "single_option_rate": 0.0,
+            "multi_option_exact_accuracy": 0.4938149430974765
+          }
+        },
+        "linear_candidate": {
+          "overall": {
+            "n": 10000.0,
+            "exact_accuracy": 0.6969,
+            "tie_expected_accuracy": 0.6969,
+            "action_type_macro_f1": 0.602897312156557,
+            "log_loss": 1.0025366552691382,
+            "brier_score": 0.47346738299458996,
+            "single_option_rate": 0.0464,
+            "multi_option_exact_accuracy": 0.6821518456375839
+          },
+          "flop": {
+            "n": 310.0,
+            "exact_accuracy": 0.5967741935483871,
+            "tie_expected_accuracy": 0.5967741935483871,
+            "action_type_macro_f1": 0.5084315925048818,
+            "log_loss": 1.3895488958934408,
+            "brier_score": 0.6192378953490663,
+            "single_option_rate": 0.0,
+            "multi_option_exact_accuracy": 0.5967741935483871
+          },
+          "preflop": {
+            "n": 5000.0,
+            "exact_accuracy": 0.835,
+            "tie_expected_accuracy": 0.835,
+            "action_type_macro_f1": 0.6000858573091565,
+            "log_loss": 0.4721301676724672,
+            "brier_score": 0.24782261313041726,
+            "single_option_rate": 0.0928,
+            "multi_option_exact_accuracy": 0.8181216931216931
+          },
+          "river": {
+            "n": 2669.0,
+            "exact_accuracy": 0.5496440614462346,
+            "tie_expected_accuracy": 0.5496440614462346,
+            "action_type_macro_f1": 0.4530546942190716,
+            "log_loss": 1.5572910418143877,
+            "brier_score": 0.7154694697659748,
+            "single_option_rate": 0.0,
+            "multi_option_exact_accuracy": 0.5496440614462346
+          },
+          "turn": {
+            "n": 2021.0,
+            "exact_accuracy": 0.5650667986145472,
+            "tie_expected_accuracy": 0.5650667986145472,
+            "action_type_macro_f1": 0.49604248106846194,
+            "log_loss": 1.5227836546261637,
+            "brier_score": 0.6897619999654706,
+            "single_option_rate": 0.0,
+            "multi_option_exact_accuracy": 0.5650667986145472
+          }
+        },
+        "transformer_linear": {
+          "overall": {
+            "n": 10000.0,
+            "exact_accuracy": 0.6957,
+            "tie_expected_accuracy": 0.6957,
+            "action_type_macro_f1": 0.5779532327609554,
+            "log_loss": 0.6849210212886455,
+            "brier_score": 0.40636208352702213,
+            "single_option_rate": 0.0464,
+            "multi_option_exact_accuracy": 0.680893456375839
+          },
+          "flop": {
+            "n": 310.0,
+            "exact_accuracy": 0.5967741935483871,
+            "tie_expected_accuracy": 0.5967741935483871,
+            "action_type_macro_f1": 0.3402369074504781,
+            "log_loss": 0.9374472434823798,
+            "brier_score": 0.5509933205111893,
+            "single_option_rate": 0.0,
+            "multi_option_exact_accuracy": 0.5967741935483871
+          },
+          "preflop": {
+            "n": 5000.0,
+            "exact_accuracy": 0.8164,
+            "tie_expected_accuracy": 0.8164,
+            "action_type_macro_f1": 0.5953248779851232,
+            "log_loss": 0.48865004450633326,
+            "brier_score": 0.27680187987244836,
+            "single_option_rate": 0.0928,
+            "multi_option_exact_accuracy": 0.7976190476190477
+          },
+          "river": {
+            "n": 2669.0,
+            "exact_accuracy": 0.5665043087298614,
+            "tie_expected_accuracy": 0.5665043087298614,
+            "action_type_macro_f1": 0.42335692647603906,
+            "log_loss": 0.8480954653712298,
+            "brier_score": 0.5345504991699991,
+            "single_option_rate": 0.0,
+            "multi_option_exact_accuracy": 0.5665043087298614
+          },
+          "turn": {
+            "n": 2021.0,
+            "exact_accuracy": 0.5828797624938149,
+            "tie_expected_accuracy": 0.5828797624938149,
+            "action_type_macro_f1": 0.4897278523349585,
+            "log_loss": 0.9162714239482629,
+            "brier_score": 0.5354221792502641,
+            "single_option_rate": 0.0,
+            "multi_option_exact_accuracy": 0.5828797624938149
+          }
+        },
+        "transformer_mlp": {
+          "overall": {
+            "n": 10000.0,
+            "exact_accuracy": 0.6883,
+            "tie_expected_accuracy": 0.6883,
+            "action_type_macro_f1": 0.5758782581243127,
+            "log_loss": 0.6763659761426913,
+            "brier_score": 0.4115917931110651,
+            "single_option_rate": 0.0464,
+            "multi_option_exact_accuracy": 0.6731333892617449
+          },
+          "flop": {
+            "n": 310.0,
+            "exact_accuracy": 0.5838709677419355,
+            "tie_expected_accuracy": 0.5838709677419355,
+            "action_type_macro_f1": 0.38909384813911674,
+            "log_loss": 0.9576322640971855,
+            "brier_score": 0.5792030624903184,
+            "single_option_rate": 0.0,
+            "multi_option_exact_accuracy": 0.5838709677419355
+          },
+          "preflop": {
+            "n": 5000.0,
+            "exact_accuracy": 0.8056,
+            "tie_expected_accuracy": 0.8056,
+            "action_type_macro_f1": 0.5961620734479293,
+            "log_loss": 0.4505025717362007,
+            "brier_score": 0.27190819068945743,
+            "single_option_rate": 0.0928,
+            "multi_option_exact_accuracy": 0.7857142857142857
+          },
+          "river": {
+            "n": 2669.0,
+            "exact_accuracy": 0.5635069314349944,
+            "tie_expected_accuracy": 0.5635069314349944,
+            "action_type_macro_f1": 0.41531817118273756,
+            "log_loss": 0.8682302143873099,
+            "brier_score": 0.5507890989929565,
+            "single_option_rate": 0.0,
+            "multi_option_exact_accuracy": 0.5635069314349944
+          },
+          "turn": {
+            "n": 2021.0,
+            "exact_accuracy": 0.5789213260762,
+            "tie_expected_accuracy": 0.5789213260762,
+            "action_type_macro_f1": 0.49096868218636713,
+            "log_loss": 0.9386315975636083,
+            "brier_score": 0.5476338065705909,
+            "single_option_rate": 0.0,
+            "multi_option_exact_accuracy": 0.5789213260762
+          }
+        }
+      },
+      "paired_vs_linear": {
+        "transformer_linear": {
+          "accuracy_difference": {
+            "mean": -0.0012,
+            "low95": -0.012671022347810847,
+            "high95": 0.00924550855706822
+          },
+          "log_loss_difference": {
+            "mean": -0.3176156339804925,
+            "low95": -0.4007631645782447,
+            "high95": -0.21341233598792556
+          },
+          "groups": 1521,
+          "scope": "Conditional on these fitted models and chosen clusters; excludes training uncertainty."
+        },
+        "transformer_mlp": {
+          "accuracy_difference": {
+            "mean": -0.0086,
+            "low95": -0.023686450148452377,
+            "high95": 0.005809585904040359
+          },
+          "log_loss_difference": {
+            "mean": -0.3261706791264467,
+            "low95": -0.40613553815305803,
+            "high95": -0.23176899157089473
+          },
+          "groups": 1521,
+          "scope": "Conditional on these fitted models and chosen clusters; excludes training uncertainty."
+        }
+      },
+      "interpretation": "Development CV on an already inspected pool. Fold SD is descriptive, not a CI. Grouped intervals condition on fitted folds. Subsequent tuning needs inner folds or a new test."
     },
     "distilbert": {
       "protocol_sha256": "e4bb898a213d817bcb0a86df8fd561075c426ac273ab9a1a06f41918b77a6f91",
@@ -1255,6 +1210,411 @@
             "mean": -0.3811915054553132,
             "low95": -0.45714534462962486,
             "high95": -0.2905923896098649
+          },
+          "groups": 1521,
+          "scope": "Conditional on these fitted models and chosen clusters; excludes training uncertainty."
+        }
+      },
+      "interpretation": "Development CV on an already inspected pool. Fold SD is descriptive, not a CI. Grouped intervals condition on fitted folds. Subsequent tuning needs inner folds or a new test."
+    },
+    "modernbert": {
+      "protocol_sha256": "baef9f45180ebbcb25347e92bff9eba5ea87dcb6cf0a3ce00184cddd90953c0a",
+      "pool_sha256": "799e4cc5133e0cc18c3a6637825e0cd3246a2120e0016188f8f44a1274a3ea9d",
+      "settings": {
+        "backbone": "modernbert",
+        "heads": [
+          "linear",
+          "mlp"
+        ],
+        "head_width": 64,
+        "n_splits": 5,
+        "seed": 42,
+        "epochs": 3,
+        "batch_size": 16,
+        "max_length": 512,
+        "encoder_lr": 2e-05,
+        "head_lr": 0.001,
+        "weight_decay": 0.01
+      },
+      "encoder": "answerdotai/ModernBERT-base",
+      "revision": "8949b909ec900327062f0ebf497f51aef5e6f0c8",
+      "versions": {
+        "torch": "2.14.1",
+        "transformers": "4.57.6",
+        "scikit-learn": "1.9.1",
+        "numpy": "2.5.3"
+      },
+      "code_sha256": {
+        "__init__.py": "d059d4a4c1d33ccd0921b63bda376d4a9640a32b8e2a0fa816c61460812a0ebf",
+        "baselines.py": "7b82635d0c4f0a5778080c87566d7bda89e556621878e6c1dcee586a386eab08",
+        "cross_validation.py": "10128d5bf3a3934f892b5613acea37975bde1437f41877f644f4bfa1d23d0721",
+        "data.py": "b1e04605829299b58a506918bb8492b94b55dbdae9748e171f2a2bc73a9a3553",
+        "diagnostics.py": "3b6fe67d9e062e7bb79d32d7769d4678e37c068fcb81863e014c8db87212cced",
+        "evaluation.py": "363a5fe5aef6b86d6739fc79e452903a871f296de45abbcc6b2debfbe058b1c8",
+        "experiments.py": "66fc0d6686c8d3fce1b4b52ef0bad63c8055d73c8b338c3a25806b1008ce4426",
+        "models/__init__.py": "7b352b8707d13a23c924aaef10260ff64385b66ac39e464d1e163e546464d7bb",
+        "models/encoder.py": "4b9b37352e4dafaafd4466634d7be48468a586329939e543e2f1aba72d234f7c",
+        "pipeline.py": "b69e85a66a2d123f59cf06d208a81d7dae0f8616162a9ad39f43bc9bec71988f",
+        "scenarios.py": "14eb870d36424e9ea88c7d54395370801af29aabafe8b064b5490ae238749cb2",
+        "source_experiments.py": "a4d3ed9b286170ae7259f981545d7a6183ddb2f9caaba482da3a01f84fcd678f",
+        "training.py": "8368b7d5edeb5abe76839183a25fa403e595df939290585cc428f6a353b3c5ae"
+      },
+      "completed_folds": 5,
+      "status": "complete",
+      "coverage": {
+        "n": 10000,
+        "held_out_predictions_per_row": 1,
+        "folds": 5
+      },
+      "models": {
+        "uniform": {
+          "n": 10000.0,
+          "exact_accuracy": 0.4128,
+          "tie_expected_accuracy": 0.4457083333333333,
+          "action_type_macro_f1": 0.23928090775611613,
+          "log_loss": 0.8551043266592633,
+          "brier_score": 0.5542916666666667,
+          "single_option_rate": 0.0464,
+          "multi_option_exact_accuracy": 0.38422818791946306,
+          "fold_log_loss_mean": 0.8547627932039935,
+          "fold_log_loss_sd": 0.015582441799997552
+        },
+        "option_prior": {
+          "n": 10000.0,
+          "exact_accuracy": 0.5764,
+          "tie_expected_accuracy": 0.5755,
+          "action_type_macro_f1": 0.4516097306483028,
+          "log_loss": 0.7623412668566131,
+          "brier_score": 0.4925290883564907,
+          "single_option_rate": 0.0464,
+          "multi_option_exact_accuracy": 0.5557885906040269,
+          "fold_log_loss_mean": 0.7617776694175198,
+          "fold_log_loss_sd": 0.023768840177780512
+        },
+        "linear_candidate": {
+          "n": 10000.0,
+          "exact_accuracy": 0.6969,
+          "tie_expected_accuracy": 0.6969,
+          "action_type_macro_f1": 0.602897312156557,
+          "log_loss": 1.0025366552691382,
+          "brier_score": 0.47346738299458996,
+          "single_option_rate": 0.0464,
+          "multi_option_exact_accuracy": 0.6821518456375839,
+          "fold_log_loss_mean": 1.002763986317316,
+          "fold_log_loss_sd": 0.035274346655194
+        },
+        "transformer_linear": {
+          "n": 10000.0,
+          "exact_accuracy": 0.7192,
+          "tie_expected_accuracy": 0.7192,
+          "action_type_macro_f1": 0.5950209250224006,
+          "log_loss": 0.6077869381413451,
+          "brier_score": 0.3695583631660921,
+          "single_option_rate": 0.0464,
+          "multi_option_exact_accuracy": 0.7055369127516778,
+          "fold_log_loss_mean": 0.6080206834459931,
+          "fold_log_loss_sd": 0.041664028786697976
+        },
+        "transformer_mlp": {
+          "n": 10000.0,
+          "exact_accuracy": 0.7138,
+          "tie_expected_accuracy": 0.7138,
+          "action_type_macro_f1": 0.5891023860066904,
+          "log_loss": 0.6157507359539602,
+          "brier_score": 0.37378861795450313,
+          "single_option_rate": 0.0464,
+          "multi_option_exact_accuracy": 0.6998741610738255,
+          "fold_log_loss_mean": 0.6157835985761386,
+          "fold_log_loss_sd": 0.030695018121117353
+        }
+      },
+      "by_street": {
+        "uniform": {
+          "overall": {
+            "n": 10000.0,
+            "exact_accuracy": 0.4128,
+            "tie_expected_accuracy": 0.4457083333333333,
+            "action_type_macro_f1": 0.23928090775611613,
+            "log_loss": 0.8551043266592633,
+            "brier_score": 0.5542916666666667,
+            "single_option_rate": 0.0464,
+            "multi_option_exact_accuracy": 0.38422818791946306
+          },
+          "flop": {
+            "n": 310.0,
+            "exact_accuracy": 0.5741935483870968,
+            "tie_expected_accuracy": 0.3473118279569892,
+            "action_type_macro_f1": 0.2800846336947897,
+            "log_loss": 1.0733745202097682,
+            "brier_score": 0.6526881720430108,
+            "single_option_rate": 0.0,
+            "multi_option_exact_accuracy": 0.5741935483870968
+          },
+          "preflop": {
+            "n": 5000.0,
+            "exact_accuracy": 0.4814,
+            "tie_expected_accuracy": 0.5097333333333333,
+            "action_type_macro_f1": 0.34438186143178007,
+            "log_loss": 0.7217632247972773,
+            "brier_score": 0.4902666666666667,
+            "single_option_rate": 0.0928,
+            "multi_option_exact_accuracy": 0.42835097001763667
+          },
+          "river": {
+            "n": 2669.0,
+            "exact_accuracy": 0.31734732109404273,
+            "tie_expected_accuracy": 0.4153240914200075,
+            "action_type_macro_f1": 0.2078364541296621,
+            "log_loss": 0.9038565156358278,
+            "brier_score": 0.5846759085799925,
+            "single_option_rate": 0.0,
+            "multi_option_exact_accuracy": 0.31734732109404273
+          },
+          "turn": {
+            "n": 2021.0,
+            "exact_accuracy": 0.34438396833250867,
+            "tie_expected_accuracy": 0.34252845126175163,
+            "action_type_macro_f1": 0.18923958364579896,
+            "log_loss": 1.0871291445369586,
+            "brier_score": 0.6574715487382484,
+            "single_option_rate": 0.0,
+            "multi_option_exact_accuracy": 0.34438396833250867
+          }
+        },
+        "option_prior": {
+          "overall": {
+            "n": 10000.0,
+            "exact_accuracy": 0.5764,
+            "tie_expected_accuracy": 0.5755,
+            "action_type_macro_f1": 0.4516097306483028,
+            "log_loss": 0.7623412668566131,
+            "brier_score": 0.4925290883564907,
+            "single_option_rate": 0.0464,
+            "multi_option_exact_accuracy": 0.5557885906040269
+          },
+          "flop": {
+            "n": 310.0,
+            "exact_accuracy": 0.5935483870967742,
+            "tie_expected_accuracy": 0.5935483870967742,
+            "action_type_macro_f1": 0.31312661498708005,
+            "log_loss": 1.0304563235434872,
+            "brier_score": 0.62636614360116,
+            "single_option_rate": 0.0,
+            "multi_option_exact_accuracy": 0.5935483870967742
+          },
+          "preflop": {
+            "n": 5000.0,
+            "exact_accuracy": 0.6596,
+            "tie_expected_accuracy": 0.6578,
+            "action_type_macro_f1": 0.6381966433239397,
+            "log_loss": 0.6109929781875502,
+            "brier_score": 0.41993834390066687,
+            "single_option_rate": 0.0928,
+            "multi_option_exact_accuracy": 0.6247795414462081
+          },
+          "river": {
+            "n": 2669.0,
+            "exact_accuracy": 0.4810790558261521,
+            "tie_expected_accuracy": 0.4810790558261521,
+            "action_type_macro_f1": 0.276621591178003,
+            "log_loss": 0.8620875206983518,
+            "brier_score": 0.5532396285663725,
+            "single_option_rate": 0.0,
+            "multi_option_exact_accuracy": 0.4810790558261521
+          },
+          "turn": {
+            "n": 2021.0,
+            "exact_accuracy": 0.4938149430974765,
+            "tie_expected_accuracy": 0.4938149430974765,
+            "action_type_macro_f1": 0.3029406819746608,
+            "log_loss": 0.9639261378456203,
+            "brier_score": 0.5714146911932532,
+            "single_option_rate": 0.0,
+            "multi_option_exact_accuracy": 0.4938149430974765
+          }
+        },
+        "linear_candidate": {
+          "overall": {
+            "n": 10000.0,
+            "exact_accuracy": 0.6969,
+            "tie_expected_accuracy": 0.6969,
+            "action_type_macro_f1": 0.602897312156557,
+            "log_loss": 1.0025366552691382,
+            "brier_score": 0.47346738299458996,
+            "single_option_rate": 0.0464,
+            "multi_option_exact_accuracy": 0.6821518456375839
+          },
+          "flop": {
+            "n": 310.0,
+            "exact_accuracy": 0.5967741935483871,
+            "tie_expected_accuracy": 0.5967741935483871,
+            "action_type_macro_f1": 0.5084315925048818,
+            "log_loss": 1.3895488958934408,
+            "brier_score": 0.6192378953490663,
+            "single_option_rate": 0.0,
+            "multi_option_exact_accuracy": 0.5967741935483871
+          },
+          "preflop": {
+            "n": 5000.0,
+            "exact_accuracy": 0.835,
+            "tie_expected_accuracy": 0.835,
+            "action_type_macro_f1": 0.6000858573091565,
+            "log_loss": 0.4721301676724672,
+            "brier_score": 0.24782261313041726,
+            "single_option_rate": 0.0928,
+            "multi_option_exact_accuracy": 0.8181216931216931
+          },
+          "river": {
+            "n": 2669.0,
+            "exact_accuracy": 0.5496440614462346,
+            "tie_expected_accuracy": 0.5496440614462346,
+            "action_type_macro_f1": 0.4530546942190716,
+            "log_loss": 1.5572910418143877,
+            "brier_score": 0.7154694697659748,
+            "single_option_rate": 0.0,
+            "multi_option_exact_accuracy": 0.5496440614462346
+          },
+          "turn": {
+            "n": 2021.0,
+            "exact_accuracy": 0.5650667986145472,
+            "tie_expected_accuracy": 0.5650667986145472,
+            "action_type_macro_f1": 0.49604248106846194,
+            "log_loss": 1.5227836546261637,
+            "brier_score": 0.6897619999654706,
+            "single_option_rate": 0.0,
+            "multi_option_exact_accuracy": 0.5650667986145472
+          }
+        },
+        "transformer_linear": {
+          "overall": {
+            "n": 10000.0,
+            "exact_accuracy": 0.7192,
+            "tie_expected_accuracy": 0.7192,
+            "action_type_macro_f1": 0.5950209250224006,
+            "log_loss": 0.6077869381413451,
+            "brier_score": 0.3695583631660921,
+            "single_option_rate": 0.0464,
+            "multi_option_exact_accuracy": 0.7055369127516778
+          },
+          "flop": {
+            "n": 310.0,
+            "exact_accuracy": 0.6161290322580645,
+            "tie_expected_accuracy": 0.6161290322580645,
+            "action_type_macro_f1": 0.40088772808235795,
+            "log_loss": 0.887212140930726,
+            "brier_score": 0.5221427938953681,
+            "single_option_rate": 0.0,
+            "multi_option_exact_accuracy": 0.6161290322580645
+          },
+          "preflop": {
+            "n": 5000.0,
+            "exact_accuracy": 0.8456,
+            "tie_expected_accuracy": 0.8456,
+            "action_type_macro_f1": 0.6219102242662173,
+            "log_loss": 0.3649253404263085,
+            "brier_score": 0.21984654192175804,
+            "single_option_rate": 0.0928,
+            "multi_option_exact_accuracy": 0.8298059964726632
+          },
+          "river": {
+            "n": 2669.0,
+            "exact_accuracy": 0.5829898838516299,
+            "tie_expected_accuracy": 0.5829898838516299,
+            "action_type_macro_f1": 0.41784664568757757,
+            "log_loss": 0.8363987873095525,
+            "brier_score": 0.5266341901169398,
+            "single_option_rate": 0.0,
+            "multi_option_exact_accuracy": 0.5829898838516299
+          },
+          "turn": {
+            "n": 2021.0,
+            "exact_accuracy": 0.6021771400296883,
+            "tie_expected_accuracy": 0.6021771400296883,
+            "action_type_macro_f1": 0.510720158294801,
+            "log_loss": 0.8638587591609048,
+            "brier_score": 0.5091044050086364,
+            "single_option_rate": 0.0,
+            "multi_option_exact_accuracy": 0.6021771400296883
+          }
+        },
+        "transformer_mlp": {
+          "overall": {
+            "n": 10000.0,
+            "exact_accuracy": 0.7138,
+            "tie_expected_accuracy": 0.7138,
+            "action_type_macro_f1": 0.5891023860066904,
+            "log_loss": 0.6157507359539602,
+            "brier_score": 0.37378861795450313,
+            "single_option_rate": 0.0464,
+            "multi_option_exact_accuracy": 0.6998741610738255
+          },
+          "flop": {
+            "n": 310.0,
+            "exact_accuracy": 0.5774193548387097,
+            "tie_expected_accuracy": 0.5774193548387097,
+            "action_type_macro_f1": 0.3957414038130066,
+            "log_loss": 0.9237598653297938,
+            "brier_score": 0.5558174373468603,
+            "single_option_rate": 0.0,
+            "multi_option_exact_accuracy": 0.5774193548387097
+          },
+          "preflop": {
+            "n": 5000.0,
+            "exact_accuracy": 0.8414,
+            "tie_expected_accuracy": 0.8414,
+            "action_type_macro_f1": 0.8257527842142565,
+            "log_loss": 0.3744032031678465,
+            "brier_score": 0.22245771950079402,
+            "single_option_rate": 0.0928,
+            "multi_option_exact_accuracy": 0.8251763668430335
+          },
+          "river": {
+            "n": 2669.0,
+            "exact_accuracy": 0.5856125889846384,
+            "tie_expected_accuracy": 0.5856125889846384,
+            "action_type_macro_f1": 0.43036101801761245,
+            "log_loss": 0.8268443991182031,
+            "brier_score": 0.5217932292161949,
+            "single_option_rate": 0.0,
+            "multi_option_exact_accuracy": 0.5856125889846384
+          },
+          "turn": {
+            "n": 2021.0,
+            "exact_accuracy": 0.5883226125680356,
+            "tie_expected_accuracy": 0.5883226125680356,
+            "action_type_macro_f1": 0.48994107295395717,
+            "log_loss": 0.8868273548746411,
+            "brier_score": 0.5248035861877834,
+            "single_option_rate": 0.0,
+            "multi_option_exact_accuracy": 0.5883226125680356
+          }
+        }
+      },
+      "paired_vs_linear": {
+        "transformer_linear": {
+          "accuracy_difference": {
+            "mean": 0.0223,
+            "low95": 0.010052001504750382,
+            "high95": 0.03333325193450793
+          },
+          "log_loss_difference": {
+            "mean": -0.3947497171277929,
+            "low95": -0.4701905291232654,
+            "high95": -0.3021673771299689
+          },
+          "groups": 1521,
+          "scope": "Conditional on these fitted models and chosen clusters; excludes training uncertainty."
+        },
+        "transformer_mlp": {
+          "accuracy_difference": {
+            "mean": 0.0169,
+            "low95": 0.0053615577787609996,
+            "high95": 0.028369874135890736
+          },
+          "log_loss_difference": {
+            "mean": -0.3867859193151778,
+            "low95": -0.46367798977689234,
+            "high95": -0.2971376611131722
           },
           "groups": 1521,
           "scope": "Conditional on these fitted models and chosen clusters; excludes training uncertainty."
