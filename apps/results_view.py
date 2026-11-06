@@ -48,16 +48,35 @@ def draw_results(model_id: str, models: dict[str, ModelSpec]) -> None:
         ),
         axis=1,
     )
+    # A new table key clears old click state after either selector changes.
+    table_key = f"results_matrix_{model_id}"
+
+    def select_configuration() -> None:
+        selection = st.session_state[table_key]["selection"]
+        selected = selection["rows"] or [cell[0] for cell in selection["cells"]]
+        if selected:
+            spec = models[rows[selected[0]].model_id]
+            st.session_state.encoder_selection = spec.encoder
+            st.session_state.head_selection = spec.head
+
     st.dataframe(
         styled,
         hide_index=True,
-        width="stretch",
+        width="content",
+        row_height=30,
+        key=table_key,
+        on_select=select_configuration,
+        selection_mode="single-cell",
         column_config={
-            "Accuracy (%)": st.column_config.NumberColumn(format="%.2f%%"),
-            "Log loss": st.column_config.NumberColumn(format="%.4f"),
-            "Avg latency (ms)": st.column_config.NumberColumn(format="%.1f"),
+            "Selection": st.column_config.TextColumn(width=100),
+            "Encoder": st.column_config.TextColumn(width=130),
+            "Head": st.column_config.TextColumn(width=75),
+            "Accuracy (%)": st.column_config.NumberColumn(format="%.2f%%", width=115),
+            "Log loss": st.column_config.NumberColumn(format="%.4f", width=90),
+            "Avg latency (ms)": st.column_config.NumberColumn(format="%.1f", width=150),
         },
     )
+    st.caption("Click a row to select the configuration to test.")
     st.caption(
         "Accuracy ↑ and log loss ↓: five-fold development evaluation, "
         f"{rows[0].n:,} held-out predictions per combination. "
