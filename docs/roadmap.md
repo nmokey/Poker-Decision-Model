@@ -1,39 +1,41 @@
 # Roadmap and current status
 
-## Completed by November 2, 2026
+Updated November 6, 2026. The work is organized by capability; the
+[original proposal](archive/original-proposal.md) retains the initial calendar.
 
-- Audited 63,200 preflop and 500,000 postflop source rows without parsing failures.
-- Prepared the pinned 10,000-example working pool and verified five scenario folds.
-- Trained all four encoders with linear and MLP heads: 40 fresh fits, three epochs
-  each, with saved checkpoints and one held-out prediction per row/model.
-- Published [accuracy, log loss, and provenance](week2-results.md) for all eight
-  combinations. ModernBERT + linear leads the observed scores at 71.92% / 0.6078;
-  its 0.14-point accuracy lead over DistilBERT is small and based on one seed.
-- Integrated PocketSolver with all eight trained encoder/head choices, a
-  ModernBERT linear default and a live Groq baseline;
-  see [deployment](deployment.md). Demo results use a selected fold checkpoint.
+## Implemented
 
-## Next empirical work
+| Capability | Current evidence |
+| --- | --- |
+| PokerBench data and decision contract | Pinned source audit, separate inputs/targets, exact action amounts, saved splits |
+| Neural decision scoring | Four encoders with linear/MLP heads, portable checkpoints, tiny learning checks |
+| Grouped development comparison | 40 fits on five fixed scenario folds; all eight models reported on 10,000 examples |
+| Interactive inference | Live PocketSolver with all trained model choices, Groq comparison and saved CPU results table |
+| Opponent forecasting | Chronological Leduc sessions, repeated-identity splits, five policy families, causal summaries and Bayesian updates |
+| Forecast evaluation | Matched baselines, history-window ablations, validation/grouped-training selection, replay and paired opponent-cluster reporting |
 
-Repeat training across seeds, measure serving latency/memory on the intended host,
-and define an independent evaluation or nested grouped selection before claiming a
-winning model. Candidate-order augmentation, validation-only calibration, and
-opponent-history ablations remain separate experiments. Opponent-conditioned
-labels and histories are not implemented by adding descriptions to existing labels.
+See [decision-model results](week2-results.md), [forecast results](meeting4-results.md)
+and [deployment](deployment.md). Each result has its own population and target;
+their scores are not directly comparable.
 
-## Original eight-week plan
+## Next research milestones
 
-| Week | Work | Reviewable milestone |
-| --- | --- | --- |
-| 1 | Choose game variant and legal decisions; run scaffold | Examples and data contract |
-| 2 | Data, opponent summaries, group splits | Versioned split manifests |
-| 3 | Uniform, heuristic, LLM baselines | Shared metrics and saved outputs |
-| 4 | Tokenizer, training, checkpoints | Tiny overfit test and trained scorer |
-| 5 | Opponent conditioning, multiple questions | History ablation and unseen options |
-| 6 | Calibration and benchmarking | Reliability plots, held-out metrics, p50/p95 |
-| 7 | Connect model and comparison to demo | Editable opponent profile and probabilities |
-| 8 | Freeze versions and rehearse | Reproducible report and presentation |
+1. **Test adaptation to changing behavior.** Compare memory/decay or a learned
+   sequence encoder on a fixed protocol and newly reserved opponent instances.
+   Done when the comparison reports predictive quality, post-switch behavior and
+   uncertainty for the same held-out decisions, including negative findings.
+2. **Connect forecasts to Hero decisions.** Define response targets or a controlled
+   repeated-play payoff experiment. Done when a policy using inferred opponent
+   behavior is compared with a fixed baseline over many hands, without access to
+   simulator-only identities or hidden state.
+3. **Strengthen external evidence.** Repeat training across seeds and evaluate on
+   new policies or suitable chronological real histories. Done when results state
+   which generalization is tested and preserve data visibility and grouping rules.
+4. **Complete independent quality and performance measurements.** Freeze choices,
+   fit any calibration on separate validation data, and measure representative
+   hosted latency, coverage and provider usage. Done when saved protocols and
+   predictions support the reported claims.
 
-Suggested ownership: data/environment, model/training, baselines/evaluation, and
-demo/integration. Every group owns its tests. Agree on record and prediction
-contracts before dividing work.
+The current demo and notebook results are reviewable artifacts. Human tilt
+inference, GTO mixing, unexploitable strategy and profitable play are not yet
+established outcomes.

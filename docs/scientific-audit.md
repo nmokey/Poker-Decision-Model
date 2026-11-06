@@ -1,6 +1,7 @@
 # Scientific integrity audit
 
-Initial review: October 28, 2026. Experiment-completion update: November 2, 2026.
+Initial review: October 28, 2026. Transformer completion: November 2, 2026.
+Opponent-forecasting update: November 6, 2026.
 
 ## Scope and conclusion
 
@@ -193,3 +194,33 @@ The optional notebook 03 grid validates settings, prints fit count, preserves fo
 membership/seed, and saves every trial through the existing protocol runner.
 It explicitly produces development comparisons, not nested model selection.
 Winning sweep scores cannot be reported as independent final test performance.
+
+
+## Opponent forecasting safeguards and evidence
+
+Notebook 05 and `poker_decision.opponents` add a separate controlled Leduc
+next-observed-action task. All repeated sessions for an opponent stay in one
+split and optional training CV group; intervals resample whole opponents. Labels,
+true profiles, switch times, hidden opponent cards, outcomes and future actions
+are excluded from predictive features. Causal summaries are recorded before
+feedback and default to completed earlier hands. Bayesian updates use the same
+feedback timing; an `all_prior` mode permits earlier actions of the current hand.
+
+The canonical run replayed all 6,000 hands and 12,711 decisions. Tests exercise
+current/future-target mutation, session isolation, hidden-card invariance,
+hand-worked opportunity denominators, empty history, exact equity against engine
+returns, legal normalization, numeric reloads, grouped selection and corrupt-cache
+rejection. Validation or grouped training selects regularization as declared;
+validation selects the primary history window and Bayesian settings. Explicit
+final scoring preserves all predeclared windows, counts, examples and switch slices.
+
+[Forecast results](meeting4-results.md) concern one simulated population: history
+improves overall prediction but can hurt immediately after a switch. Small slices
+are descriptive. The [submission reconciliation](meeting4-integration.md) separates
+independently reproduced results from missing-source claims and records an
+unresolved byte-regeneration mismatch in one submitted archive. It does not
+combine incomparable source scores into a leaderboard.
+
+No learned sequence encoder, human tilt detector, fusion with the existing Hero
+policy or improvement in poker payoff was established by this forecasting result.
+Any subsequent tuning on these exposed test results needs a new evaluation design.

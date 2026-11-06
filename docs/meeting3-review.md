@@ -26,7 +26,9 @@ held-out hands, one resident model and Groq-result reuse during selection change
 The completed [eight-combination experiment](week2-results.md) now places
 ModernBERT + linear at 71.92% accuracy / 0.6078 log loss, close to DistilBERT +
 linear at 71.78% / 0.6164. The review-time observations and recommendations below
-are preserved as a snapshot; they are not the current completion status.
+are preserved as a snapshot; they are not the current completion status. The
+[opponent forecasting integration](meeting4-integration.md) is subsequent separate
+work and does not change the target of the hosted PokerBench scorer.
 
 ## Decisions confirmed with the user
 
@@ -36,12 +38,13 @@ are preserved as a snapshot; they are not the current completion status.
    Both standalone LLM submissions already target Groq. Their configured default
    is `openai/gpt-oss-20b`; live availability and output behavior have not been checked.
 
-The component choices below are recommendations from the review, not an implemented
-merge. In particular, a serving checkpoint has not yet been selected or benchmarked.
+The component choices below are historical review recommendations. At review time,
+a serving checkpoint had not been selected or benchmarked; current serving details
+and measurements are in the deployment and results guides above.
 
 ## What each attachment contains
 
-| Attachment | Actual contribution | Current integration status |
+| Attachment | Actual contribution | Original submission findings |
 | --- | --- | --- |
 | `pocketsolver-demo.zip` | Modular single-hand comparison, aggregate benchmark, context parser/card tiles, failure demonstrations | Most complete comparison workflow; currently wired to five canned spots and fake engines |
 | `UI.zip` | Felt-table layout, card/chip visuals, independent result-panel refresh, request IDs, cached session results, alternate contracts and adapters | Strong presentation contribution; active app uses three handmade spots and fake engines; real model adapter exists but is unwired |

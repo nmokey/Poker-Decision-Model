@@ -21,8 +21,8 @@ inputs. Pluribus hand/context connected components cannot cross splits, replay
 failures are recorded, and Leduc keeps teacher distributions, argmax labels and
 sampled actions distinct. Its tiny API test does not train a neural model.
 
-Notebooks are checked for syntax, schema and cleared outputs; new training sections
-require a CUDA GPU when enabled. Disabled default paths were also verified in
+Notebooks are checked for syntax, schema and cleared outputs; pretrained neural training sections
+require a CUDA GPU when enabled; statistical opponent forecasting runs on CPU. Disabled default paths were also verified in
 fresh kernels during the original notebook audit. These are implementation checks,
 not proof of GTO play or absence of all possible dataset biases. See [scientific audit](../docs/scientific-audit.md).
 
@@ -39,3 +39,12 @@ offline suite: 40 pretrained encoder fits with saved checkpoints and held-out
 predictions. Completion verification checked checkpoint/prediction hashes,
 recomputed fold and pooled metrics/diagnostics, and confirmed 10,000 held-out
 predictions per model. Unit-test or coverage counts do not establish model quality.
+
+## Opponent forecasts
+
+`test_opponents.py` checks identity/session splits, legal distributions, hand-worked
+opportunity counts, history timing, current/future-label exclusion, hidden-card
+invariance, exact equity against engine returns, deterministic simulation/replay,
+Bayesian feedback order, numeric-model reloads, grouped selection, checksum
+failures and final-result reuse. Optional simulator/model tests skip when their
+extras are absent. Run with `analysis` and `experiments` for the full suite.

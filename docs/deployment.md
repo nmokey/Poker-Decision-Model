@@ -150,3 +150,13 @@ eviction before loading, failed loads and concurrent session isolation.
 References: [dependency discovery](https://docs.streamlit.io/deploy/streamlit-community-cloud/deploy-your-app/app-dependencies),
 [public embedding](https://docs.streamlit.io/deploy/streamlit-community-cloud/share-your-app/embed-your-app),
 [hosting resource limits](https://docs.streamlit.io/deploy/streamlit-community-cloud/manage-your-app).
+
+
+## Relationship to opponent forecasting
+
+The serving catalogue and live comparison use PokerBench Hero reference-action
+checkpoints. The separate Leduc opponent-forecasting package/notebook is an
+experiment and is not connected to the hosted action scorer. Adding it to the
+product requires a decision-training or payoff experiment, not an editable
+opponent description alone. See [current project context](project-context.md)
+and [forecasting workflow](opponent-experiments.md).
