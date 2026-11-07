@@ -118,7 +118,10 @@ decay, generators or neural representations on newly reserved sessions.
 The canonical notebook was executed end to end locally, including explicit test
 scoring and diagnostic plots; committed outputs/execution counts were then cleared.
 The [new development result](meeting4-results.md) records all methods on the same
-2,506 held-out decisions. Its saved implementation hash matches the final package.
+2,506 held-out decisions. Its saved implementation hash identifies the numerical implementation at commit
+`130cb81367a8d053f417a4871160644ad605193e`. A subsequent CI fix declares optional
+`threadpoolctl` imports in the typing configuration; it does not change runtime behavior or
+the recorded experiment.
 
 The original-checkout suite passed **124 tests**. Publishing validation against
 current main passed **135 tests**, including **25 opponent tests**;

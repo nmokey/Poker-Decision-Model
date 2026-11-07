@@ -44,5 +44,5 @@ strict = true
 files = ["src/poker_decision"]
 
 [[tool.mypy.overrides]]
-module = ["sklearn.*", "pyspiel", "pokerkit.*"]
+module = ["sklearn.*", "pyspiel", "pokerkit.*", "threadpoolctl"]
 ignore_missing_imports = true

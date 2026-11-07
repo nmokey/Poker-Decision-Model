@@ -7,6 +7,9 @@ scoring. These are a **new one-seed controlled experiment**, separate from the
 the same test decisions; no test score selected settings or the reported history
 window. Future tuning based on this inspected run requires new evaluation data.
 
+Recorded numerical implementation: commit `130cb81367a8d053f417a4871160644ad605193e`.
+Later optional-import typing annotations do not change its runtime behavior.
+
 ## Protocol
 
 - Seed 20261106, weighted card-dependent opponent family; tight, passive,

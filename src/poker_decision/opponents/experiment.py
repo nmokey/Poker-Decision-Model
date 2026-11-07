@@ -170,7 +170,7 @@ def select(
             ),
         )
     models, scores, val_predictions = {}, [], {}
-    from threadpoolctl import threadpool_limits  # type: ignore[import-untyped]
+    from threadpoolctl import threadpool_limits
 
     with threadpool_limits(limits=1):
         for name, (kind, spec) in specs.items():
