@@ -1,32 +1,41 @@
-"""Training helpers shared by the Meeting 2 walkthrough and offline tests."""
+"""Shared decision-model training, inference, and checkpoint workflows."""
 
+from __future__ import annotations
+
+import gc
 import hashlib
 import json
+import math
+import platform
 import random
 from collections.abc import Sequence
+from importlib.metadata import version
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import torch
 from torch import Tensor
 from torch.nn import functional as F
 
 from poker_decision.data import (
-    DATA_REVISION,
-    SHA256,
-    TRAIN_FILES,
     DecisionExample,
     DecisionInputs,
-    build_examples,
-    read_rows,
 )
 from poker_decision.evaluation import evaluate_by_street
 from poker_decision.models.encoder import (
+    BACKBONES,
+    QUESTION,
     EncodedDecision,
     PokerDecisionModel,
     collate_decisions,
     encode_inputs,
+    load_pretrained,
 )
+from poker_decision.pipeline import write_json, write_jsonl
+from poker_decision.prepared import load_prepared as load_prepared
+
+if TYPE_CHECKING:
+    from poker_decision.cross_validation import CVConfig
 
 
 def seed_everything(seed: int) -> None:
@@ -36,82 +45,19 @@ def seed_everything(seed: int) -> None:
         torch.cuda.manual_seed_all(seed)
 
 
-def load_prepared(
-    root: Path,
-) -> tuple[list[DecisionExample], list[DecisionExample], dict[str, Any]]:
-    """Reuse Meeting 1 membership, checking provenance and context separation."""
-    directory = root / "data/processed/pokerbench_meeting1"
-    manifest = json.loads((directory / "manifest.json").read_text())
-    if manifest["dataset_revision"] != DATA_REVISION or manifest["official_test_used"]:
-        raise ValueError("Expected the audited training-only PokerBench preparation")
-    current_hash = hashlib.sha256(Path(__file__).with_name("data.py").read_bytes()).hexdigest()
-    if manifest["package_code_sha256"]["data.py"] != current_hash:
-        raise ValueError("Preprocessing code changed; rerun Meeting 1 preparation")
-    for kind, source in manifest["sources"].items():
-        if kind not in SHA256 or source["sha256"] != SHA256[kind]:
-            raise ValueError("Source provenance does not match pinned training files")
-    splits = []
-    for split in ("train", "validation"):
-        if "split_sha256" in manifest and hashlib.sha256(
-            (directory / f"{split}.jsonl").read_bytes()
-        ).hexdigest() != manifest["split_sha256"].get(split):
-            raise ValueError(f"{split} file content/membership checksum mismatch")
-        rows = [
-            json.loads(line) for line in (directory / f"{split}.jsonl").read_text().splitlines()
-        ]
-        examples = [
-            DecisionExample(
-                r["source_id"],
-                r["street"],
-                DecisionInputs(r["context"], tuple(r["candidates"])),
-                r["target_index"],
-            )
-            for r in rows
-        ]
-        if not examples or [e.source_id for e in examples] != manifest[f"{split}_source_ids"]:
-            raise ValueError(f"{split} examples do not match saved membership")
-        splits.append(examples)
-    train, validation = splits
-    if not {e.inputs.context for e in train}.isdisjoint(e.inputs.context for e in validation):
-        raise ValueError("Training and validation contexts overlap")
-    ids = [e.source_id for e in train + validation]
-    if len(ids) != len(set(ids)):
-        raise ValueError("Repeated source IDs")
-    if "split_sha256" not in manifest:
-        # Older manifests have no content hashes. Check against pinned cached raw
-        # rows before trusting targets, contexts, or menus; never silently resplit.
-        actual = {e.source_id: e.to_record() for e in train + validation}
-        verified: dict[str, dict[str, object]] = {}
-        for kind, filename in TRAIN_FILES.items():
-            if kind not in manifest["sources"]:
-                continue
-            raw = root / "data/raw/pokerbench" / filename
-            if not raw.exists() or hashlib.sha256(raw.read_bytes()).hexdigest() != SHA256[kind]:
-                raise ValueError("Legacy split requires pinned raw files; rerun preparation")
-            selected_rows = []
-            selected_ids = []
-            for i, row in enumerate(read_rows(raw)):
-                source_id = f"{kind}-train-{i}"
-                if source_id in actual:
-                    selected_rows.append(row)
-                    selected_ids.append(source_id)
-            parsed, failures = build_examples(selected_rows, kind)
-            if failures:
-                raise ValueError("Legacy source rows fail validation")
-            for source_id, example in zip(selected_ids, parsed, strict=True):
-                verified[source_id] = {**example.to_record(), "source_id": source_id}
-        if verified != actual:
-            raise ValueError("Legacy split contents differ from pinned source rows")
-    return train, validation, manifest
-
-
 def encode_examples(
-    examples: Sequence[DecisionExample], tokenizer: Any, *, max_length: int
+    examples: Sequence[DecisionExample],
+    tokenizer: Any,
+    *,
+    max_length: int,
+    question: str = QUESTION,
 ) -> list[EncodedDecision]:
     rows, failures = [], []
     for e in examples:
         try:
-            rows.append(encode_inputs(e.inputs, tokenizer, max_length=max_length))
+            rows.append(
+                encode_inputs(e.inputs, tokenizer, max_length=max_length, question=question)
+            )
         except ValueError as error:
             failures.append(f"{e.source_id}: {error}")
     if failures:
@@ -235,3 +181,252 @@ def load_checkpoint(path: Path) -> tuple[Any, PokerDecisionModel, dict[str, Any]
     model.head.load_state_dict(torch.load(path / "head.pt", map_location="cpu", weights_only=True))
     model.eval()
     return tokenizer, model, metadata
+
+
+def decision_optimizer(
+    model: PokerDecisionModel, *, encoder_lr: float, head_lr: float, weight_decay: float
+) -> torch.optim.AdamW:
+    """Use the same visible optimizer settings for holdout and scenario fits."""
+    if not all(math.isfinite(v) and v > 0 for v in (encoder_lr, head_lr)):
+        raise ValueError("Learning rates must be finite and positive")
+    if not math.isfinite(weight_decay) or weight_decay < 0:
+        raise ValueError("Invalid weight decay")
+    return torch.optim.AdamW(
+        [
+            {"params": model.encoder.parameters(), "lr": encoder_lr},
+            {"params": model.head.parameters(), "lr": head_lr},
+        ],
+        weight_decay=weight_decay,
+    )
+
+
+def learning_check(
+    examples: Sequence[DecisionExample],
+    output: Path,
+    *,
+    config: CVConfig,
+    head: str,
+    n: int = 32,
+    epochs: int = 100,
+    lr: float = 1e-4,
+    batch_size: int = 8,
+) -> dict[str, Any]:
+    """Train a disposable model on distinct training contexts; never reuse its weights.
+
+    Callers supply only their training partition (first-fold training for CV).
+    The check does not choose settings or inspect held-out labels.
+    """
+    if not torch.cuda.is_available():
+        raise RuntimeError("Pretrained-model training requires a CUDA GPU runtime.")
+    if min(n, epochs, batch_size) < 1 or not math.isfinite(lr) or lr <= 0:
+        raise ValueError("Tiny-check counts and learning rate must be positive")
+    seen: set[str] = set()
+    tiny = []
+    for row in random.Random(config.seed).sample(list(examples), len(examples)):
+        if len(row.inputs.candidates) > 1 and row.inputs.context not in seen:
+            tiny.append(row)
+            seen.add(row.inputs.context)
+        if len(tiny) == n:
+            break
+    if len(tiny) != n:
+        raise ValueError(f"Need {n} distinct multi-option training contexts")
+    seed_everything(config.seed)
+    tokenizer, model = load_pretrained(
+        *BACKBONES[config.backbone], head_type=head, head_width=config.head_width
+    )
+    model = model.to("cuda")
+    budget = min(config.max_length, int(model.encoder.config.max_position_embeddings))
+    encoded = encode_examples(tiny, tokenizer, max_length=budget)
+    optimizer = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=0)
+    history = []
+    try:
+        for epoch in range(epochs):
+            loss = train_epoch(
+                model,
+                encoded,
+                [e.target_index for e in tiny],
+                pad_token_id=tokenizer.pad_token_id,
+                optimizer=optimizer,
+                batch_size=batch_size,
+                seed=config.seed + epoch,
+            )
+            metrics = score_model(model, tiny, encoded, pad_token_id=tokenizer.pad_token_id)[
+                "overall"
+            ]
+            history.append({"epoch": epoch + 1, "training_loss": loss, **metrics})
+            if metrics["exact_accuracy"] == 1:
+                break
+        result = {
+            "source_ids": [e.source_id for e in tiny],
+            "history": history,
+            "settings": {
+                "backbone": config.backbone,
+                "head": head,
+                "head_width": config.head_width,
+                "max_length": budget,
+                "seed": config.seed,
+                "n": n,
+                "epochs": epochs,
+                "lr": lr,
+                "batch_size": batch_size,
+                "required_accuracy": 0.95,
+            },
+        }
+        write_json(output, result)
+        if history[-1]["exact_accuracy"] < 0.95:
+            raise RuntimeError(f"{config.backbone}/{head} failed training-only learning check")
+        return result
+    finally:
+        del model, optimizer
+        gc.collect()
+        torch.cuda.empty_cache()
+
+
+def fit_holdout(
+    root: Path,
+    output: Path,
+    train: list[DecisionExample],
+    validation: list[DecisionExample],
+    manifest: dict[str, Any],
+    *,
+    config: CVConfig,
+) -> dict[str, Any]:
+    """Fit a fresh decision model and select its checkpoint on validation loss.
+
+    This introductory protocol is development selection, separate from fixed-epoch
+    scenario CV. A new output directory is required to avoid overwriting evidence.
+    """
+    if not torch.cuda.is_available():
+        raise RuntimeError("Pretrained-model training requires a CUDA GPU runtime.")
+    if manifest.get("official_test_used") is not False:
+        raise ValueError("Expected a training-only PokerBench manifest")
+    if len(config.heads) != 1:
+        raise ValueError("Holdout fitting needs exactly one head")
+    if (
+        not train
+        or not validation
+        or not {e.inputs.context for e in train}.isdisjoint(e.inputs.context for e in validation)
+    ):
+        raise ValueError("Need nonempty context-disjoint training and validation sets")
+    if len({e.source_id for e in train + validation}) != len(train) + len(validation):
+        raise ValueError("Repeated source IDs")
+    output.mkdir(parents=True, exist_ok=False)
+    write_json(output / "data_manifest.json", manifest)
+    for name, rows in (("train", train), ("validation", validation)):
+        write_jsonl(output / f"{name}.jsonl", [e.to_record() for e in rows])
+    seed_everything(config.seed)
+    tokenizer, model = load_pretrained(
+        *BACKBONES[config.backbone], head_type=config.heads[0], head_width=config.head_width
+    )
+    model = model.to("cuda")
+    budget = min(config.max_length, int(model.encoder.config.max_position_embeddings))
+    encoded_train = encode_examples(train, tokenizer, max_length=budget)
+    encoded_validation = encode_examples(validation, tokenizer, max_length=budget)
+    optimizer = decision_optimizer(
+        model,
+        encoder_lr=config.encoder_lr,
+        head_lr=config.head_lr,
+        weight_decay=config.weight_decay,
+    )
+    name, revision = BACKBONES[config.backbone]
+    metadata = {
+        "backbone": name,
+        "revision": revision,
+        "question": QUESTION,
+        "max_length": budget,
+        "seed": config.seed,
+        "batch_size": config.batch_size,
+        "epochs": config.epochs,
+        "encoder_lr": config.encoder_lr,
+        "head_lr": config.head_lr,
+        "weight_decay": config.weight_decay,
+        "selection": "validation log loss",
+        "serialization": "joint state/question/options; candidate-token mean pooling",
+        "device": "cuda",
+        "hardware": torch.cuda.get_device_name(0),
+        "python": platform.python_version(),
+        "versions": {p: version(p) for p in ("torch", "transformers", "numpy", "scikit-learn")},
+        "dataset_revision": manifest["dataset_revision"],
+        "official_test_used": False,
+        "split_sha256": {
+            split: hashlib.sha256((output / f"{split}.jsonl").read_bytes()).hexdigest()
+            for split in ("train", "validation")
+        },
+        "code_sha256": {
+            str(p.relative_to(root)): hashlib.sha256(p.read_bytes()).hexdigest()
+            for p in sorted((root / "src/poker_decision").rglob("*.py"))
+        },
+    }
+    history = []
+    best_loss = float("inf")
+    try:
+        for epoch in range(config.epochs):
+            loss = train_epoch(
+                model,
+                encoded_train,
+                [e.target_index for e in train],
+                pad_token_id=tokenizer.pad_token_id,
+                optimizer=optimizer,
+                batch_size=config.batch_size,
+                seed=config.seed + epoch,
+            )
+            metrics = score_model(
+                model, validation, encoded_validation, pad_token_id=tokenizer.pad_token_id
+            )["overall"]
+            history.append({"epoch": epoch + 1, "train_loss": loss, **metrics})
+            write_json(output / "training_history.json", history)
+            if metrics["log_loss"] < best_loss:
+                best_loss = metrics["log_loss"]
+                save_checkpoint(
+                    output / "best",
+                    model,
+                    tokenizer,
+                    {
+                        **metadata,
+                        "best_epoch": epoch + 1,
+                        "validation_log_loss": best_loss,
+                    },
+                )
+        return {"output_directory": str(output), "history": history}
+    finally:
+        del model, optimizer
+        gc.collect()
+        torch.cuda.empty_cache()
+
+
+def main() -> None:
+    import argparse
+    from datetime import UTC, datetime
+
+    from poker_decision.cross_validation import CVConfig
+    from poker_decision.paths import prepared_directory
+    from poker_decision.pipeline import prepare
+
+    parser = argparse.ArgumentParser(description="Fit a fresh PokerBench decision scorer")
+    parser.add_argument("--root", type=Path, default=Path.cwd())
+    parser.add_argument("--backbone", choices=list(BACKBONES), default="bert_mini")
+    parser.add_argument("--head", choices=("linear", "mlp"), default="linear")
+    parser.add_argument("--epochs", type=int, default=3)
+    parser.add_argument("--output", type=Path)
+    args = parser.parse_args()
+    if not torch.cuda.is_available():
+        raise RuntimeError("Pretrained-model training requires a CUDA GPU runtime.")
+    root = args.root.resolve()
+    config = CVConfig(backbone=args.backbone, heads=(args.head,), epochs=args.epochs)
+    if not (prepared_directory(root) / "manifest.json").exists():
+        prepare(root)
+    train, validation, manifest = load_prepared(root)
+    output = args.output or root / "artifacts/decision_model" / datetime.now(UTC).strftime(
+        "%Y%m%dT%H%M%S%fZ"
+    )
+    # Check before spending compute; the fit also refuses an existing run directory.
+    if output.exists():
+        raise FileExistsError(output)
+    learning_check(
+        train, output.with_name(output.name + "-preflight.json"), config=config, head=args.head
+    )
+    print(json.dumps(fit_holdout(root, output, train, validation, manifest, config=config)))
+
+
+if __name__ == "__main__":
+    main()

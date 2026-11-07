@@ -67,7 +67,7 @@ not intentional coordinated changes to both data and provenance.
 
 ### Cross-validation fits are isolated and fixed-budget
 
-`03_scenario_evaluation.ipynb` saves protocol and memberships before fitting. Each
+`evaluation.ipynb` saves protocol and memberships before fitting. Each
 fold refits the option prior and linear baseline, then initializes a fresh pinned
 encoder, head, and optimizer for each selected head architecture. Only fold-training
 inputs and labels reach fitting. Tokenization is stateless and label-free.
@@ -120,7 +120,7 @@ association is not, by itself, evidence of leakage or dataset construction error
 
 ### Alternative sources remain separate tasks
 
-`04_alternative_data_sources.ipynb` has opt-in source experiments:
+`data_sources.ipynb` has opt-in source experiments:
 
 - Pluribus: strict PokerKit replay, acting-player cards and prior public information
   only; menus are built before the observed label is read. Exact sizing is
@@ -190,7 +190,7 @@ APIs for both head types, verify matching tokenizer/encoder revisions, and check
 that the displayed learning rates and decay reach AdamW. Full pretrained results
 are reported separately in the [completed experiment report](week2-results.md).
 
-The optional notebook 03 grid validates settings, prints fit count, preserves fold
+The optional the evaluation notebook grid validates settings, prints fit count, preserves fold
 membership/seed, and saves every trial through the existing protocol runner.
 It explicitly produces development comparisons, not nested model selection.
 Winning sweep scores cannot be reported as independent final test performance.
@@ -198,7 +198,7 @@ Winning sweep scores cannot be reported as independent final test performance.
 
 ## Opponent forecasting safeguards and evidence
 
-Notebook 05 and `poker_decision.opponents` add a separate controlled Leduc
+The opponent-modeling notebook and `poker_decision.opponents` add a separate controlled Leduc
 next-observed-action task. All repeated sessions for an opponent stay in one
 split and optional training CV group; intervals resample whole opponents. Labels,
 true profiles, switch times, hidden opponent cards, outcomes and future actions

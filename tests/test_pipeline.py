@@ -38,7 +38,7 @@ def test_prepare_saves_reproducible_membership(tmp_path, monkeypatch):
     train, validation, manifest = prepare(tmp_path, kinds=("preflop",), sample_per_kind=None)
     assert len(train) + len(validation) == 6
     assert manifest["official_test_used"] is False
-    saved = json.loads((tmp_path / "data/processed/pokerbench_meeting1/manifest.json").read_text())
+    saved = json.loads((tmp_path / "data/processed/pokerbench/manifest.json").read_text())
     assert saved == manifest
     assert saved["train_source_ids"] == [e.source_id for e in train]
     assert prepare(tmp_path, kinds=("preflop",), sample_per_kind=None)[:2] == (train, validation)
@@ -49,7 +49,7 @@ def test_prepare_stops_and_saves_all_failures(tmp_path, monkeypatch):
     source(tmp_path, monkeypatch, broken=True)
     with pytest.raises(ValueError, match="Resolve 1 parsing failures"):
         prepare(tmp_path, kinds=("preflop",))
-    output = tmp_path / "data/processed/pokerbench_meeting1"
+    output = tmp_path / "data/processed/pokerbench"
     failures = [
         json.loads(line)
         for line in (output / "preflop_parse_failures.jsonl").read_text().splitlines()

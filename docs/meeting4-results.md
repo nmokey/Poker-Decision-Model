@@ -1,7 +1,7 @@
 # Meeting 4 canonical development result
 
 Executed November 6, 2026 with the maintained
-[notebook 05](../notebooks/05_opponent_history.ipynb), including explicit final
+[opponent-modeling notebook](../notebooks/opponent_modeling.ipynb), including explicit final
 scoring. These are a **new one-seed controlled experiment**, separate from the
 [original submitted results](meeting4-integration.md). All models below receive
 the same test decisions; no test score selected settings or the reported history

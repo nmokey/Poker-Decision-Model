@@ -1,13 +1,13 @@
-# Week 2 GPU matrix
+# Decision-model GPU comparison
 
 The local runner executes the same scenario-grouped development evaluation as
-notebook 03. Four pinned pretrained encoders (`bert_mini`, `minilm`, `distilbert`,
+[evaluation notebook](../notebooks/evaluation.ipynb). Four pinned pretrained encoders (`bert_mini`, `minilm`, `distilbert`,
 `modernbert`) each get independent `linear` and `mlp` heads across five fixed folds:
 40 full fits. All eight combinations completed successfully; see the
 [complete accuracy/log-loss report](week2-results.md),
 [CSV](results/week2-development.csv), and [provenance JSON](results/week2-development.json).
 Three epochs per fit were fixed before seeing results, matching the
-Week 2 main training budget; notebook 03's preview defaults to one epoch.
+Week 2 main training budget; [evaluation notebook](../notebooks/evaluation.ipynb)'s preview defaults to one epoch.
 Batch size 16, encoder LR 2e-5, head LR 1e-3, weight decay 0.01, seed 42 and
 MLP width 64 stay identical. Compute and parameter counts differ across encoders.
 
@@ -16,12 +16,12 @@ only if the saved manifest is absent, then run each backbone:
 
 ```sh
 uv sync --locked --extra analysis --extra ml
-test -f data/processed/pokerbench_meeting1/manifest.json || \
-  uv run --locked --extra analysis --extra ml python -m poker_decision.pipeline --skip-baseline
-CUDA_VISIBLE_DEVICES=0 .venv/bin/python -u -m poker_decision.experiments --backbone bert_mini
-CUDA_VISIBLE_DEVICES=0 .venv/bin/python -u -m poker_decision.experiments --backbone minilm
-CUDA_VISIBLE_DEVICES=1 .venv/bin/python -u -m poker_decision.experiments --backbone distilbert
-CUDA_VISIBLE_DEVICES=2 .venv/bin/python -u -m poker_decision.experiments --backbone modernbert
+# Optional, only if no prepared split exists:
+uv run --locked --extra analysis python -m poker_decision prepare --skip-baseline
+CUDA_VISIBLE_DEVICES=0 .venv/bin/python -u -m poker_decision.experiments --backbone bert_mini --output artifacts/week2_matrix
+CUDA_VISIBLE_DEVICES=0 .venv/bin/python -u -m poker_decision.experiments --backbone minilm --output artifacts/week2_matrix
+CUDA_VISIBLE_DEVICES=1 .venv/bin/python -u -m poker_decision.experiments --backbone distilbert --output artifacts/week2_matrix
+CUDA_VISIBLE_DEVICES=2 .venv/bin/python -u -m poker_decision.experiments --backbone modernbert --output artifacts/week2_matrix
 ```
 
 On three GPUs, queue MiniLM after BERT Mini on GPU 0; the other two may run
@@ -54,7 +54,7 @@ requires nested selection or a new held-out evaluation for a final estimate.
 To run the three queues and collect `all_metrics.csv` automatically:
 
 ```sh
-.venv/bin/python -u scripts/run_week2_matrix.py
+.venv/bin/python -u scripts/run_decision_matrix.py --output artifacts/week2_matrix
 ```
 
 Per-backbone `.log` and `-status.json` files record progress and exit codes. A final
@@ -106,3 +106,10 @@ Aggregate metrics/provenance are versioned in `docs/results/`; raw datasets,
 example-level predictions, and model weights remain outside Git history. These
 results cover PokerBench reference-action agreement only. Pluribus replay and
 Leduc teacher-policy generation remain separate optional experiments.
+
+Current code also provides `python -m poker_decision evaluate --backbone NAME`.
+Its task-based default output is `artifacts/decision_matrix`; specify `--output`
+to choose a run location. The commands above retain the historical matrix path
+for comparison. Code changes create new protocol hashes; reproduce or resume the
+recorded experiment at its recorded source revision. See
+[artifact compatibility](architecture.md#existing-artifacts-and-reproducibility).

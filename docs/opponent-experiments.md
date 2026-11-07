@@ -1,6 +1,6 @@
 # Meeting 4: canonical opponent forecasting
 
-Use [notebook 05](../notebooks/05_opponent_history.ipynb) for the walkthrough. The
+Use [opponent-modeling notebook](../notebooks/opponent_modeling.ipynb) for the walkthrough. The
 same code runs from `poker_decision.opponents`. This is a separate Leduc
 **next observed opponent action** task. PokerBench remains the source for Hero's
 reference-action imitation task; the deployed transformer is not retrained or
@@ -12,7 +12,7 @@ Install the existing optional simulator and analysis environment:
 
 ```sh
 uv sync --locked --extra analysis --extra experiments
-uv run --locked --extra analysis --extra experiments jupyter lab notebooks/05_opponent_history.ipynb
+uv run --locked --extra analysis --extra experiments jupyter lab notebooks/opponent_modeling.ipynb
 ```
 
 Generation and training use CPU. No API key, GPU, PokerBench download, pretrained

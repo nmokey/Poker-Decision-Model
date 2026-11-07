@@ -1,4 +1,4 @@
-"""Reproducible Meeting 1 workflow, also callable without Jupyter."""
+"""Audited PokerBench preparation and CPU baseline workflow, also callable without Jupyter."""
 
 import argparse
 import hashlib
@@ -24,6 +24,7 @@ from poker_decision.data import (
     split_examples,
 )
 from poker_decision.evaluation import evaluate_by_street, inspect_mistakes
+from poker_decision.paths import prepared_directory
 
 
 def write_json(path: Path, value: object) -> None:
@@ -104,7 +105,7 @@ def prepare(
         raise ValueError("validation_fraction must be between zero and one")
     selected = []
     sources = {}
-    processed = root / "data/processed/pokerbench_meeting1"
+    processed = prepared_directory(root)
     for kind in kinds:
         path = download_training(kind, root / "data/raw/pokerbench")
         rows = read_rows(path)
@@ -163,7 +164,12 @@ def prepare(
 
 
 def run_baselines(
-    root: Path, train: list[DecisionExample], validation: list[DecisionExample], *, seed: int = 42
+    root: Path,
+    train: list[DecisionExample],
+    validation: list[DecisionExample],
+    *,
+    seed: int = 42,
+    output: Path | None = None,
 ) -> dict[str, Any]:
     prior = OptionPrior().fit(train)
     linear = LinearCandidateScorer(seed=seed).fit(train)
@@ -191,7 +197,7 @@ def run_baselines(
             "seed": seed,
         },
     }
-    output = root / "artifacts/pokerbench_meeting1"
+    output = output if output is not None else root / "artifacts/baselines"
     write_json(output / "validation_report.json", report)
     write_jsonl(output / "five_errors.jsonl", mistakes)
     print(json.dumps({name: groups["overall"] for name, groups in metrics.items()}, indent=2))

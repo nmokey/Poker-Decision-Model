@@ -5,7 +5,7 @@ including the separate opponent-forecasting workflow, see
 [project context](project-context.md) and the [documentation index](README.md).
 
 The maintained walkthrough is
-[`02_pokerbench_decision_model.ipynb`](../notebooks/02_pokerbench_decision_model.ipynb).
+[`decision_model.ipynb`](../notebooks/decision_model.ipynb).
 The initial integration synthesized three shared Colab notebooks and the supplied
 local `week2.ipynb`; two later submissions bring the maintained synthesis to six.
 The originals were inspected as source material and left unchanged. Notebook code,
@@ -189,7 +189,7 @@ Two additional notebooks were incorporated after the initial four-source synthes
 
 | Source | Added contribution | Canonical treatment |
 | --- | --- | --- |
-| [ACM AI – Poker](https://colab.research.google.com/drive/1GHX6o-6mzOQirpwDJlrc1yZ5bD1CBCCC) | Scenario-grouped five-fold CV, reliability and uncertainty diagnostics, menu association, Pluribus replay and Leduc distribution targets | Add `03_scenario_evaluation.ipynb` and a separate opt-in `04_alternative_data_sources.ipynb`. Preserve the joint all-options encoder rather than silently substituting its context/candidate pair architecture. Source results are not copied as results of our implementation. |
+| [ACM AI – Poker](https://colab.research.google.com/drive/1GHX6o-6mzOQirpwDJlrc1yZ5bD1CBCCC) | Scenario-grouped five-fold CV, reliability and uncertainty diagnostics, menu association, Pluribus replay and Leduc distribution targets | Add `evaluation.ipynb` and a separate opt-in `data_sources.ipynb`. Preserve the joint all-options encoder rather than silently substituting its context/candidate pair architecture. Source results are not copied as results of our implementation. |
 | [day2_colab.ipynb](https://colab.research.google.com/drive/1M-aPyxDIUkv9k3zTd2PkASfhA2cSn8pG) | Nonlinear shared head; clearer offset masks and training/evaluation explanations; external Colab training script | Add a controlled `linear`/`mlp` head choice with saved architecture metadata and tests. Keep our audited parser and self-contained package training; the source's external `train_day2.py` was not supplied. |
 
 The current walkthrough accounts for six sources. Optional libraries are confined

@@ -10,7 +10,7 @@ The project studies two connected questions:
 2. Does an opponent's observed history help predict their next action, especially
    when their behavior changes?
 
-The first pipeline uses PokerBench and a pretrained encoder with a shared action
+One shared Python package supports both tasks. The first workflow uses PokerBench and a pretrained encoder with a shared action
 scorer. The second uses chronological Leduc sessions and statistical forecasting
 models. Connecting those forecasts to better Hero decisions is the next research
 step; it requires opponent-dependent response targets or repeated-play evaluation.
@@ -64,11 +64,29 @@ Select the project kernel and choose a walkthrough:
 
 | Notebook | Purpose |
 | --- | --- |
-| [PokerBench pipeline](notebooks/01_pokerbench_pipeline.ipynb) | Audit pinned source data, create input/target records and compare CPU baselines |
-| [Transformer decision scorer](notebooks/02_pokerbench_decision_model.ipynb) | Tokenize state/question/options, train a shared head, save and reload checkpoints |
-| [Scenario evaluation](notebooks/03_scenario_evaluation.ipynb) | Fixed scenario folds, controlled head comparisons and reliability/error diagnostics |
-| [Alternative data sources](notebooks/04_alternative_data_sources.ipynb) | Separate Pluribus replay and Leduc teacher-policy experiments |
-| [Opponent forecasting](notebooks/05_opponent_history.ipynb) | Generate chronological sessions, compare history representations and inspect behavior changes |
+| [PokerBench pipeline](notebooks/data_pipeline.ipynb) | Audit pinned source data, create input/target records and compare CPU baselines |
+| [Transformer decision scorer](notebooks/decision_model.ipynb) | Tokenize state/question/options, train a shared head, save and reload checkpoints |
+| [Scenario evaluation](notebooks/evaluation.ipynb) | Fixed scenario folds, controlled head comparisons and reliability/error diagnostics |
+| [Alternative data sources](notebooks/data_sources.ipynb) | Separate Pluribus replay and Leduc teacher-policy experiments |
+| [Opponent forecasting](notebooks/opponent_modeling.ipynb) | Generate chronological sessions, compare history representations and inspect behavior changes |
+
+The notebooks are task-based views of the package. Preparation feeds both decision
+training and grouped evaluation; source and opponent adapters reuse the same input
+interface with explicit task questions. [Architecture and artifact flow](docs/architecture.md)
+explain these connections and how existing saved runs remain usable.
+
+The same workflows are available without Jupyter (add the appropriate extras):
+
+```sh
+uv run --locked --extra analysis python -m poker_decision prepare
+uv run --locked --extra analysis --extra ml python -m poker_decision train --backbone bert_mini
+uv run --locked --extra analysis --extra ml python -m poker_decision evaluate --backbone bert_mini
+uv run --locked --extra analysis --extra experiments python -m poker_decision opponents --help
+```
+
+Training/evaluation commands require CUDA. `evaluate` runs the fixed scenario
+comparison; `train` uses validation loss to select an introductory holdout checkpoint.
+Use `python -m poker_decision TASK --help` for that workflow's options.
 
 Pretrained transformer training also needs `--extra ml` and a local CUDA GPU or
 Colab GPU. Opponent forecasting runs on CPU. No API key is needed for either

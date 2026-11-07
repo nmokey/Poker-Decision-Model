@@ -11,7 +11,7 @@ pytest.importorskip("sklearn")
 
 from test_scientific_integrity import scenario_rows  # noqa: E402
 
-from poker_decision import experiments  # noqa: E402
+from poker_decision import experiments, training  # noqa: E402
 
 
 @pytest.mark.parametrize("accuracy", [1.0, 0.0])
@@ -22,7 +22,7 @@ def test_runner_checks_training_only_and_starts_cv_after_both_heads(
     pool, folds, _ = experiments.make_folds(rows, n_splits=5, seed=42)
     permitted = {pool[i].source_id for i in folds[0][0]}
     forbidden = {pool[i].source_id for i in folds[0][1]}
-    manifest = tmp_path / "data/processed/pokerbench_meeting1/manifest.json"
+    manifest = tmp_path / "data/processed/pokerbench/manifest.json"
     manifest.parent.mkdir(parents=True)
     manifest.write_text("{}")
     monkeypatch.setattr(
@@ -41,16 +41,20 @@ def test_runner_checks_training_only_and_starts_cv_after_both_heads(
     monkeypatch.setattr(experiments.torch.cuda, "is_available", lambda: True)
     monkeypatch.setattr(experiments.torch.cuda, "get_device_name", lambda _: "test GPU")
     monkeypatch.setattr(experiments.torch.cuda, "empty_cache", lambda: None)
-    monkeypatch.setattr(experiments, "seed_everything", lambda _: None)
+    monkeypatch.setattr(training, "seed_everything", lambda _: None)
     monkeypatch.setattr(experiments, "load_prepared", lambda _: (rows[:80], rows[80:], {}))
     heads = []
-    model = SimpleNamespace(to=lambda _: model, parameters=lambda: [])
+    model = SimpleNamespace(
+        to=lambda _: model,
+        parameters=lambda: [],
+        encoder=SimpleNamespace(config=SimpleNamespace(max_position_embeddings=512)),
+    )
 
     def load(*args, head_type, **kwargs):
         heads.append(head_type)
         return SimpleNamespace(pad_token_id=0), model
 
-    monkeypatch.setattr(experiments, "load_pretrained", load)
+    monkeypatch.setattr(training, "load_pretrained", load)
     monkeypatch.setattr(experiments.torch.optim, "AdamW", lambda *a, **k: object())
 
     def encode(examples, *args, **kwargs):
@@ -59,10 +63,10 @@ def test_runner_checks_training_only_and_starts_cv_after_both_heads(
         assert ids <= permitted and ids.isdisjoint(forbidden)
         return examples
 
-    monkeypatch.setattr(experiments, "encode_examples", encode)
-    monkeypatch.setattr(experiments, "train_epoch", lambda *a, **k: 0.5)
+    monkeypatch.setattr(training, "encode_examples", encode)
+    monkeypatch.setattr(training, "train_epoch", lambda *a, **k: 0.5)
     monkeypatch.setattr(
-        experiments, "score_model", lambda *a, **k: {"overall": {"exact_accuracy": accuracy}}
+        training, "score_model", lambda *a, **k: {"overall": {"exact_accuracy": accuracy}}
     )
     calls = []
 

@@ -9,6 +9,7 @@ from pathlib import Path
 
 from poker_decision.data import DecisionExample, DecisionInputs
 from poker_decision.demo_assets import sha256, verify_assets
+from poker_decision.paths import prepared_directory
 
 
 def main() -> None:
@@ -26,7 +27,7 @@ def main() -> None:
         raise ValueError("Checkpoint training and held-out memberships overlap")
     records = []
     for split in ("train", "validation"):
-        path = args.root / "data/processed/pokerbench_meeting1" / f"{split}.jsonl"
+        path = prepared_directory(args.root) / f"{split}.jsonl"
         for line in path.read_text().splitlines():
             row = json.loads(line)
             if row["source_id"] in test_ids and len(row["candidates"]) > 1:

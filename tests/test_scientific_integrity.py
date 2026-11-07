@@ -142,15 +142,14 @@ def test_menu_information_is_seeded_and_uses_only_passed_training_rows():
     [("target_index", 1), ("context", "poison"), ("candidates", ["fold", "raise 999bb"])],
 )
 def test_saved_split_content_tampering_is_rejected(tmp_path, monkeypatch, field, value):
-    pytest.importorskip("torch")
     from test_pipeline import source
 
     from poker_decision.pipeline import prepare
-    from poker_decision.training import load_prepared
+    from poker_decision.prepared import load_prepared
 
     source(tmp_path, monkeypatch)
     prepare(tmp_path, kinds=("preflop",), sample_per_kind=None)
-    path = tmp_path / "data/processed/pokerbench_meeting1/train.jsonl"
+    path = tmp_path / "data/processed/pokerbench/train.jsonl"
     records = [json.loads(s) for s in path.read_text().splitlines()]
     records[0][field] = value
     path.write_text("\n".join(json.dumps(r) for r in records) + "\n")
@@ -159,37 +158,36 @@ def test_saved_split_content_tampering_is_rejected(tmp_path, monkeypatch, field,
 
 
 def test_legacy_split_must_match_checksum_verified_source_rows(tmp_path, monkeypatch):
-    pytest.importorskip("torch")
     import hashlib
     import shutil
 
     from test_pipeline import source
 
-    from poker_decision import training
+    from poker_decision import prepared
     from poker_decision.data import TRAIN_FILES
     from poker_decision.pipeline import prepare
 
     source(tmp_path, monkeypatch)
     expected = prepare(tmp_path, kinds=("preflop",), sample_per_kind=None)
-    directory = tmp_path / "data/processed/pokerbench_meeting1"
+    directory = tmp_path / "data/processed/pokerbench"
     path = directory / "manifest.json"
     manifest = json.loads(path.read_text())
     del manifest["split_sha256"]
     path.write_text(json.dumps(manifest))
     with pytest.raises(ValueError, match="Legacy split requires pinned raw"):
-        training.load_prepared(tmp_path)
+        prepared.load_prepared(tmp_path)
     # Substitute a controlled pinned source fixture; no download occurs.
     raw = tmp_path / "data/raw/pokerbench" / TRAIN_FILES["preflop"]
     raw.parent.mkdir(parents=True)
     shutil.copyfile(tmp_path / "fixture.csv", raw)
     fixture_hash = hashlib.sha256(raw.read_bytes()).hexdigest()
-    monkeypatch.setattr(training, "SHA256", {"preflop": fixture_hash})
+    monkeypatch.setattr(prepared, "SHA256", {"preflop": fixture_hash})
     manifest["sources"]["preflop"]["sha256"] = fixture_hash
     path.write_text(json.dumps(manifest))
-    assert training.load_prepared(tmp_path)[:2] == expected[:2]
+    assert prepared.load_prepared(tmp_path)[:2] == expected[:2]
     split_path = directory / "train.jsonl"
     records = [json.loads(line) for line in split_path.read_text().splitlines()]
     records[0]["target_index"] = 1
     split_path.write_text("\n".join(json.dumps(r) for r in records) + "\n")
     with pytest.raises(ValueError, match="contents differ from pinned source"):
-        training.load_prepared(tmp_path)
+        prepared.load_prepared(tmp_path)

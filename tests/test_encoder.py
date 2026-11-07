@@ -16,7 +16,10 @@ from poker_decision.models.encoder import (  # noqa: E402
     model_input,
 )
 from poker_decision.training import (  # noqa: E402
+    decision_optimizer,
     encode_examples,
+    fit_holdout,
+    learning_check,
     load_checkpoint,
     load_prepared,
     predict_encoded,
@@ -170,7 +173,7 @@ def test_saved_membership_and_provenance(tmp_path, monkeypatch):
     source(tmp_path, monkeypatch)
     expected = prepare(tmp_path, kinds=("preflop",), sample_per_kind=None)
     assert load_prepared(tmp_path) == expected
-    path = tmp_path / "data/processed/pokerbench_meeting1/train.jsonl"
+    path = tmp_path / "data/processed/pokerbench/train.jsonl"
     data = path.read_text().splitlines()
     data.reverse()
     path.write_text("\n".join(data) + "\n")
@@ -186,7 +189,7 @@ def test_saved_membership_and_provenance(tmp_path, monkeypatch):
 
 
 def test_notebook_is_cleared_and_valid():
-    path = Path(__file__).parents[1] / "notebooks/02_pokerbench_decision_model.ipynb"
+    path = Path(__file__).parents[1] / "notebooks/decision_model.ipynb"
     nb = json.loads(path.read_text())
     for cell in nb["cells"]:
         if cell["cell_type"] == "code":
@@ -218,9 +221,9 @@ def test_evaluation_does_not_update_weights_or_accumulate_gradients(tokenizer):
 @pytest.mark.parametrize(
     "name",
     [
-        "02_pokerbench_decision_model.ipynb",
-        "03_scenario_evaluation.ipynb",
-        "04_alternative_data_sources.ipynb",
+        "decision_model.ipynb",
+        "evaluation.ipynb",
+        "data_sources.ipynb",
     ],
 )
 def test_notebook_syntax_schema_outputs_and_gpu_training_guard(name):
@@ -237,11 +240,11 @@ def test_notebook_syntax_schema_outputs_and_gpu_training_guard(name):
             assert cell.execution_count is None and cell.outputs == []
             ast.parse(cell.source)
             sources.append(cell.source)
-    if name.startswith("02"):
-        training_cells = [s for s in sources if "train_epoch(" in s]
-        assert len(training_cells) == 2
-        assert all("if not torch.cuda.is_available():" in s for s in training_cells)
-    elif name.startswith("03"):
+    if name == "decision_model.ipynb":
+        assert any("learning_check(" in source for source in sources)
+        assert any("fit_holdout(" in source for source in sources)
+        assert not any("train_epoch(" in source for source in sources)
+    elif name == "evaluation.ipynb":
         assert any("RUN_CV = False" in s for s in sources)
         assert any("if not torch.cuda.is_available():" in s for s in sources)
     else:
@@ -335,36 +338,106 @@ def test_backbone_loader_pairs_pinned_tokenizer_and_encoder(monkeypatch):
         assert model.head_width == 8
 
 
-def test_notebook_optimizer_uses_visible_knobs():
-    import ast
-
-    path = Path(__file__).parents[1] / "notebooks/02_pokerbench_decision_model.ipynb"
-    notebook = json.loads(path.read_text())
-    source = next(
-        "".join(c["source"])
-        for c in notebook["cells"]
-        if "optimizer = torch.optim.AdamW(" in "".join(c["source"])
-        and "metadata =" in "".join(c["source"])
-    )
-    tree = ast.parse(source)
-    assignment = next(
-        node
-        for node in tree.body
-        if isinstance(node, ast.Assign)
-        and any(isinstance(t, ast.Name) and t.id == "optimizer" for t in node.targets)
-    )
-    model = PokerDecisionModel(
-        transformers.BertModel(
-            transformers.BertConfig(
-                hidden_size=16,
-                num_hidden_layers=1,
-                num_attention_heads=2,
-                intermediate_size=32,
-            )
-        )
-    )
-    scope = dict(torch=torch, model=model, ENCODER_LR=3e-5, HEAD_LR=4e-4, WEIGHT_DECAY=0.12)
-    exec(compile(ast.Module(body=[assignment], type_ignores=[]), str(path), "exec"), scope)
-    optimizer = scope["optimizer"]
+def test_shared_optimizer_uses_visible_knobs(tokenizer):
+    model = make_model(tokenizer)
+    optimizer = decision_optimizer(model, encoder_lr=3e-5, head_lr=4e-4, weight_decay=0.12)
     assert [group["lr"] for group in optimizer.param_groups] == [3e-5, 4e-4]
     assert all(group["weight_decay"] == 0.12 for group in optimizer.param_groups)
+    assert {id(p) for group in optimizer.param_groups for p in group["params"]} == {
+        id(p) for p in model.parameters()
+    }
+    with pytest.raises(ValueError, match="Learning rates"):
+        decision_optimizer(model, encoder_lr=float("nan"), head_lr=1e-3, weight_decay=0)
+
+
+def test_pretrained_workflows_require_gpu_before_loading(tmp_path, monkeypatch):
+    from poker_decision.cross_validation import CVConfig
+
+    monkeypatch.setattr(torch.cuda, "is_available", lambda: False)
+    with pytest.raises(RuntimeError, match="CUDA"):
+        learning_check(rows(), tmp_path / "preflight.json", config=CVConfig(), head="linear")
+    with pytest.raises(RuntimeError, match="CUDA"):
+        fit_holdout(tmp_path, tmp_path / "run", [], [], {}, config=CVConfig())
+    assert not list(tmp_path.iterdir())
+
+
+def test_holdout_selects_validation_checkpoint_and_refuses_overwrite(
+    tokenizer, tmp_path, monkeypatch
+):
+    from poker_decision import training
+    from poker_decision.cross_validation import CVConfig
+
+    model = make_model(tokenizer)
+    monkeypatch.setattr(model, "to", lambda *_: model)  # Exercise the loop on an offline CPU model.
+    monkeypatch.setattr(training, "load_pretrained", lambda *a, **k: (tokenizer, model))
+    monkeypatch.setattr(torch.cuda, "is_available", lambda: True)
+    monkeypatch.setattr(torch.cuda, "get_device_name", lambda _: "offline fixture")
+    monkeypatch.setattr(torch.cuda, "empty_cache", lambda: None)
+    monkeypatch.setattr(training, "seed_everything", lambda _: None)
+    scores = iter([0.2, 0.8])
+    monkeypatch.setattr(
+        training,
+        "score_model",
+        lambda *a, **k: {"overall": {"log_loss": next(scores), "exact_accuracy": 1.0}},
+    )
+    config = CVConfig(epochs=2, max_length=128)
+    result = fit_holdout(
+        tmp_path,
+        tmp_path / "run",
+        rows()[:1],
+        rows()[1:2],
+        {"dataset_revision": "fixture", "official_test_used": False},
+        config=config,
+    )
+    assert len(result["history"]) == 2
+    _, _, metadata = load_checkpoint(tmp_path / "run/best")
+    assert metadata["best_epoch"] == 1 and metadata["validation_log_loss"] == 0.2
+    assert metadata["question"] == "What should Hero do?"
+    assert metadata["official_test_used"] is False
+    assert metadata["split_sha256"].keys() == {"train", "validation"}
+    with pytest.raises(FileExistsError):
+        fit_holdout(
+            tmp_path,
+            tmp_path / "run",
+            rows()[:1],
+            rows()[1:2],
+            {"dataset_revision": "fixture", "official_test_used": False},
+            config=config,
+        )
+
+
+def test_explicit_question_reuses_encoder_without_relabeling(tokenizer):
+    examples = rows()[:1]
+    default = encode_examples(examples, tokenizer, max_length=128)
+    forecast = encode_examples(
+        examples, tokenizer, max_length=128, question="What will opponent do?"
+    )
+    assert default[0].input_ids != forecast[0].input_ids
+    assert examples[0].target_action == "call"
+
+
+def test_opponent_records_flow_through_existing_encoder_and_training(tokenizer):
+    from test_opponents import row
+
+    from poker_decision.opponents.data import FeatureSpec
+    from poker_decision.tasks import opponent_task
+
+    task = opponent_task([row(1, hand=0), row(2, hand=1)], spec=FeatureSpec(window=16))
+    encoded = encode_examples(task.examples, tokenizer, max_length=512, question=task.question)
+    config = make_model(tokenizer).encoder.config
+    config.max_position_embeddings = 512
+    model = PokerDecisionModel(transformers.BertModel(config))
+    optimizer = torch.optim.AdamW(model.parameters(), lr=0.01)
+    loss = train_epoch(
+        model,
+        encoded,
+        [e.target_index for e in task.examples],
+        pad_token_id=tokenizer.pad_token_id,
+        optimizer=optimizer,
+    )
+    assert loss > 0
+    predictions = predict_encoded(model, encoded, pad_token_id=tokenizer.pad_token_id)
+    assert all(
+        len(p) == len(e.inputs.candidates) for p, e in zip(predictions, task.examples, strict=True)
+    )
+    assert all(sum(p) == pytest.approx(1) for p in predictions)

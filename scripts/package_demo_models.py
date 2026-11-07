@@ -10,6 +10,7 @@ from pathlib import Path
 from poker_decision.data import DecisionExample, DecisionInputs
 from poker_decision.demo_assets import sha256, verify_assets
 from poker_decision.demo_models import ENCODERS, HEADS, ModelSpec, checkpoint_examples
+from poker_decision.paths import matrix_directory, prepared_directory
 
 
 def main() -> None:
@@ -18,13 +19,15 @@ def main() -> None:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--release", required=True)
     parser.add_argument("--config", type=Path, required=True)
+    parser.add_argument("--matrix", type=Path, help="Explicit matrix output directory")
     args = parser.parse_args()
+    matrix = args.matrix if args.matrix is not None else matrix_directory(args.root)
     checkpoints = {}
     shared_ids: set[str] | None = None
     for encoder, (_, backbone) in ENCODERS.items():
         for head in HEADS:
             matches = []
-            for path in (args.root / "artifacts/week2_matrix").glob(f"*/fold-1/checkpoint-{head}"):
+            for path in matrix.glob(f"*/fold-1/checkpoint-{head}"):
                 metadata = json.loads((path / "metadata.json").read_text())
                 if metadata["backbone"] == backbone and metadata["head_type"] == head:
                     matches.append((path, metadata))
@@ -38,11 +41,7 @@ def main() -> None:
             checkpoints[f"{encoder}-{head}"] = (encoder, head, path, metadata)
     rows = []
     for split in ("train", "validation"):
-        for line in (
-            (args.root / f"data/processed/pokerbench_meeting1/{split}.jsonl")
-            .read_text()
-            .splitlines()
-        ):
+        for line in (prepared_directory(args.root) / f"{split}.jsonl").read_text().splitlines():
             row = json.loads(line)
             if row["source_id"] in (shared_ids or set()) and len(row["candidates"]) > 1:
                 rows.append(

@@ -21,6 +21,7 @@ from poker_decision.evaluation import evaluate_by_street, inspect_mistakes, prob
 from poker_decision.models.encoder import BACKBONES, load_pretrained
 from poker_decision.scenarios import digest, make_folds, scenario_group
 from poker_decision.training import (
+    decision_optimizer,
     encode_examples,
     load_checkpoint,
     predict_encoded,
@@ -226,11 +227,10 @@ def run_cross_validation(
                 budget = min(config.max_length, int(model.encoder.config.max_position_embeddings))
                 encoded_fit = encode_examples(fit, tokenizer, max_length=budget)
                 encoded_test = encode_examples(test, tokenizer, max_length=budget)
-                optimizer = torch.optim.AdamW(
-                    [
-                        {"params": model.encoder.parameters(), "lr": config.encoder_lr},
-                        {"params": model.head.parameters(), "lr": config.head_lr},
-                    ],
+                optimizer = decision_optimizer(
+                    model,
+                    encoder_lr=config.encoder_lr,
+                    head_lr=config.head_lr,
                     weight_decay=config.weight_decay,
                 )
                 history = []

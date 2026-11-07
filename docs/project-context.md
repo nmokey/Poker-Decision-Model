@@ -37,7 +37,7 @@ comparisons, not an independent final estimate. [Results](week2-results.md).
 
 ## Opponent forecasting
 
-`poker_decision.opponents` and notebook 05 predict the opponent's next observed
+`poker_decision.opponents` and the opponent-modeling notebook predict the opponent's next observed
 legal action in two-player Leduc. These labels differ from Hero's PokerBench
 reference decisions. The observer sees public state, current-hand actions and
 optionally its own card. Opponent hidden cards, policy parameters, identity,
