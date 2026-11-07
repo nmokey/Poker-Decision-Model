@@ -200,6 +200,12 @@ def decision_optimizer(
     )
 
 
+def require_cuda() -> None:
+    """Guard pretrained fits without changing accelerator state in offline tests."""
+    if not torch.cuda.is_available():
+        raise RuntimeError("Pretrained-model training requires a CUDA GPU runtime.")
+
+
 def learning_check(
     examples: Sequence[DecisionExample],
     output: Path,
@@ -216,8 +222,7 @@ def learning_check(
     Callers supply only their training partition (first-fold training for CV).
     The check does not choose settings or inspect held-out labels.
     """
-    if not torch.cuda.is_available():
-        raise RuntimeError("Pretrained-model training requires a CUDA GPU runtime.")
+    require_cuda()
     if min(n, epochs, batch_size) < 1 or not math.isfinite(lr) or lr <= 0:
         raise ValueError("Tiny-check counts and learning rate must be positive")
     seen: set[str] = set()
@@ -296,8 +301,7 @@ def fit_holdout(
     This introductory protocol is development selection, separate from fixed-epoch
     scenario CV. A new output directory is required to avoid overwriting evidence.
     """
-    if not torch.cuda.is_available():
-        raise RuntimeError("Pretrained-model training requires a CUDA GPU runtime.")
+    require_cuda()
     if manifest.get("official_test_used") is not False:
         raise ValueError("Expected a training-only PokerBench manifest")
     if len(config.heads) != 1:
@@ -409,8 +413,7 @@ def main() -> None:
     parser.add_argument("--epochs", type=int, default=3)
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
-    if not torch.cuda.is_available():
-        raise RuntimeError("Pretrained-model training requires a CUDA GPU runtime.")
+    require_cuda()
     root = args.root.resolve()
     config = CVConfig(backbone=args.backbone, heads=(args.head,), epochs=args.epochs)
     if not (prepared_directory(root) / "manifest.json").exists():

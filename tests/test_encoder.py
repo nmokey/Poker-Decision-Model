@@ -370,7 +370,7 @@ def test_holdout_selects_validation_checkpoint_and_refuses_overwrite(
     model = make_model(tokenizer)
     monkeypatch.setattr(model, "to", lambda *_: model)  # Exercise the loop on an offline CPU model.
     monkeypatch.setattr(training, "load_pretrained", lambda *a, **k: (tokenizer, model))
-    monkeypatch.setattr(torch.cuda, "is_available", lambda: True)
+    monkeypatch.setattr(training, "require_cuda", lambda: None)
     monkeypatch.setattr(torch.cuda, "get_device_name", lambda _: "offline fixture")
     monkeypatch.setattr(torch.cuda, "empty_cache", lambda: None)
     monkeypatch.setattr(training, "seed_everything", lambda _: None)
