@@ -10,3 +10,11 @@ histories, full processed datasets, or generated model predictions here. Reviewe
 aggregate experiment metrics and provenance live under
 [`docs/results/`](../../docs/results/); the complete accuracy/log-loss comparison
 is in the [Week 2 report](../../docs/week2-results.md).
+
+
+Opponent forecasting has a distinct Leduc contract: visible `inputs`, separate
+`target_index`, and outer identity/order/split metadata. Audit-only files hold
+hidden replay details and policy settings. Generated datasets and per-example
+forecasts belong in ignored run directories. See the
+[forecasting guide](../../docs/opponent-experiments.md); these labels are not
+interchangeable with PokerBench Hero reference actions.

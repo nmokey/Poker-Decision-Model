@@ -1,6 +1,6 @@
 # Experiment configuration locations
 
-The completed Week 2 settings are declared by `CVConfig` in
+The completed transformer-comparison settings are declared by `CVConfig` in
 [`cross_validation.py`](../src/poker_decision/cross_validation.py) and the fixed
 matrix runner [`experiments.py`](../src/poker_decision/experiments.py). Notebook 02
 exposes its holdout settings; notebook 03 exposes grouped-CV settings and grid
@@ -16,3 +16,12 @@ See [training instructions](../docs/week2-training.md) for reproduction and veri
 resume, and [all accuracy/log-loss results](../docs/week2-results.md) for the
 completed comparison. Raw run artifacts and model files remain ignored. Never
 store credentials in experiment settings.
+
+
+Opponent generation uses `Config` and history features use `FeatureSpec` in
+[`opponents/data.py`](../src/poker_decision/opponents/data.py). Selection/evaluation
+settings live in [`opponents/experiment.py`](../src/poker_decision/opponents/experiment.py)
+and notebook 05. Data generation and predictor settings are saved with source,
+software and input hashes; model selection never uses final-test scores.
+See the [forecasting guide](../docs/opponent-experiments.md) for policy families,
+visibility, history timing/windows and validation/grouped-training choices.

@@ -1,10 +1,9 @@
 # Development setup and conventions
 
-Meeting 1 implements the PokerBench data contract, preprocessing, grouped splits,
-CPU candidate baselines, and evaluation. Meeting 2 adds the joint transformer and
-training walkthrough. PocketSolver serves the saved model and Groq baseline;
-see [deployment notes](deployment.md). See the
-[Meeting 1](meeting1-integration.md) and [Meeting 2](meeting2-integration.md) integration notes.
+The package supports audited PokerBench preparation, shared-head transformer
+training, grouped evaluation, controlled opponent forecasting and PocketSolver
+serving. See the [documentation index](README.md), [current context](project-context.md)
+and [deployment guide](deployment.md) for task boundaries and entry points.
 
 ## Dependencies
 
@@ -12,13 +11,14 @@ Use a `src/` Python package and Python 3.12 as the team default. `pyproject.toml
 declares dependency ranges; `uv.lock` records exact versions. CI uses `--locked`
 to detect stale lockfiles. NumPy and Pydantic are the core dependencies.
 Optional extras separate model work (torch, transformers), analysis (pandas,
-sklearn, notebooks, plots), demo (Streamlit), and a live LLM client (Groq plus dotenv).
+sklearn, SciPy, threadpoolctl, notebooks and plots), simulation/source controls
+(OpenSpiel and PokerKit), demo (Streamlit), and live LLM calls (Groq plus dotenv).
 
 Use `uv add PACKAGE`, `uv add --optional ml PACKAGE`, or `uv add --dev PACKAGE`.
 Commit the manifest and lockfile together. Upgrade deliberately with
 `uv lock --upgrade-package PACKAGE`, then run checks. Avoid a second requirements
-file. Choose the poker variant and data source before adding simulator/solver
-packages. The completed GPU matrix used three RTX 3090s; see
+file. OpenSpiel/PokerKit are already declared in the `experiments` extra.
+The completed GPU matrix used three RTX 3090s; see
 [training instructions](week2-training.md) for the locked environment and settings.
 
 Reference: [uv dependencies](https://docs.astral.sh/uv/concepts/projects/dependencies/)
@@ -34,20 +34,24 @@ and [locking](https://docs.astral.sh/uv/concepts/projects/sync/).
 - `cross_validation.py`: fixed-budget scenario-grouped evaluation and verified resume.
 - `experiments.py`: training-only tiny checks and per-backbone matrix execution.
 - `scripts/run_week2_matrix.py`: three-GPU queues and combined metric export.
-- `evaluation.py`: quality, calibration, and performance measurements.
+- `evaluation.py`: reference-action probability metrics and deterministic tie handling.
+- `diagnostics.py`: reliability/error diagnostics and conditional grouped intervals.
+- `opponents/`: chronological Leduc data, causal features, forecasters and run artifacts.
+- `source_experiments.py`: separate observed-play and teacher-policy tasks.
+- `demo_models.py`, `demo_results.py`: serving catalogue and checked result-table data.
 - `apps/`: interactive presentation of package functionality.
 - `configs/`: pointers to canonical settings; reviewed results live in `docs/results/`.
 - `notebooks/`: exploration; reusable logic moves into the package.
 
 ## Notebooks in GitHub
 
-Keep one maintained walkthrough notebook per meeting. Meeting 1 is teaching material
-that shows raw rows, decision examples, validation, metrics, and mistakes. Put
+Keep one maintained walkthrough per workflow. The data notebook shows raw rows,
+decision examples, validation, metrics, and mistakes. Put
 reusable preprocessing, splitting, training, and evaluation in the Python package
 with tests; the notebook and command-line runner should call that same code.
 The training runner and demo import the package directly.
 
-Meeting 2 calls `models/encoder.py` for joint tokenization, candidate pooling and
+The decision-transformer notebook calls `models/encoder.py` for joint tokenization, candidate pooling and
 scoring, and `training.py` for training, saved-split loading, batched prediction,
 and self-contained checkpoints. Install both `analysis` and `ml` extras for this
 notebook and full mypy checks. Core-only mypy excludes the optional ML modules;
@@ -80,8 +84,10 @@ tiny training loss reduction, and checkpoint round trips. Keep routine tests
 CPU-only and offline; separate pretrained downloads and live API calls.
 
 The completed grouped experiment reports agreement, log loss, Brier score, and
-reliability diagnostics. Further work includes retraining across seeds, independent
-evaluation, calibration, serving latency/throughput, and opponent-history ablations.
+reliability diagnostics. Opponent-history ablations now run in the separate Leduc workflow, and saved local
+CPU latency measurements appear in the demo results table. Further work includes
+retraining across seeds, independent evaluation, fitted calibration, representative
+hosted latency/throughput, and connecting opponent forecasts to Hero decisions.
 Fit calibration on validation only and preserve an untouched test set. Record hardware and workload when
 benchmarking; compare identical candidate options across systems.
 
@@ -105,3 +111,12 @@ runs on a local CUDA GPU or Colab GPU; unit tests use tiny random encoders.
 The [completed results](week2-results.md) are a separate empirical artifact, not
 unit-test scores. Preserve the recorded training revision and package versions
 when resuming; current application changes can produce a new protocol hash.
+
+## Opponent forecasting extension
+
+`opponents/data.py`, `generate.py`, `models.py`, `evaluation.py` and `experiment.py`
+own the opponent observer contract, optional OpenSpiel simulation, causal history,
+CPU forecasters and reproducible selection/evaluation artifacts. Notebook 05 calls
+these functions. Keep this observed-action task separate from PokerBench decision
+labels. The analysis extra declares SciPy and threadpoolctl directly for the
+masked objective and bounded CPU fitting. See [the experiment guide](opponent-experiments.md).

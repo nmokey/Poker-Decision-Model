@@ -1,5 +1,9 @@
 # Meeting 2 integration
 
+This records the original data/model integration. For the current project,
+including the separate opponent-forecasting workflow, see
+[project context](project-context.md) and the [documentation index](README.md).
+
 The maintained walkthrough is
 [`02_pokerbench_decision_model.ipynb`](../notebooks/02_pokerbench_decision_model.ipynb).
 The initial integration synthesized three shared Colab notebooks and the supplied

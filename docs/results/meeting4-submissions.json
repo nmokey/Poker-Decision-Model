@@ -1,0 +1,553 @@
+{
+  "attachments": [
+    {
+      "name": "04_alternative_data_sources.ipynb",
+      "sha256": "99f5693b7c7b1396b1fb11adaef2ceba502fbf0f6b41b6580cfce34cd9a604c4",
+      "bytes": 30359
+    },
+    {
+      "name": "05_leduc_opponent_history_experiment.ipynb",
+      "sha256": "c435b6ae23d42877731a539276ee3db85d272946273d98c6a84efc5904add61c",
+      "bytes": 331222
+    },
+    {
+      "name": "05_opponent_forecast.ipynb",
+      "sha256": "3dc185b85e567aef245aa00fe67b2ef4288034a792d5782f4b617a9c28a0b8f1",
+      "bytes": 15875
+    },
+    {
+      "name": "06_opponent_unconditional_baseline.ipynb",
+      "sha256": "113fb87d56ab0e58ce86f2f20e65195ffc7318873df8c8def0be9560b27f1a97",
+      "bytes": 20107
+    },
+    {
+      "name": "07_opponent_logistic_regression.ipynb",
+      "sha256": "5ab9d64e427f85b973c773989e39a051c355f3903f86800d3883c68a2db9274a",
+      "bytes": 31400
+    },
+    {
+      "name": "Leduc Opponent Experiment",
+      "sha256": "12f9af05770ab01413866df1e066353cf67a64449ab1fff471ba6bcb26893357",
+      "bytes": 122165
+    },
+    {
+      "name": "Week6_Project.zip",
+      "sha256": "49e91410df6b5fcec15626040182b86d7ebc8d07f5f413f2250381bdee9a900b",
+      "bytes": 10705031
+    },
+    {
+      "name": "comparison_report.md",
+      "sha256": "de6d8c9ce06be5aea231f7cec5948ddd21e6f0df12511bd32e8977d344f090d7",
+      "bytes": 5769
+    },
+    {
+      "name": "metric.csv",
+      "sha256": "5e575a5ee11f97c616cb01c46e798a5fbce8c6a864fe0aca5444dee2c4141177",
+      "bytes": 139
+    },
+    {
+      "name": "opponent-leduc-experiment.zip",
+      "sha256": "d878b9cf5b970b7be6fa4546fb8054f13fa77a9fc93e68f21e681717c7b09e59",
+      "bytes": 271941
+    },
+    {
+      "name": "results.md",
+      "sha256": "00beec6baa2162785ee574b38079db8d34aeb17d594b8b28831f563bdf32a2c5",
+      "bytes": 4434
+    }
+  ],
+  "colab": {
+    "url": "https://colab.research.google.com/drive/15ETJliWKqkfARHxXAz0IQCiipWN_12Gx",
+    "sha256": "d28998ca2cab25887481e09c8318c2ae76afff513aed42ee3d45ea801cb8eeab",
+    "title": "Poker W6 Opponent Dataset"
+  },
+  "archive_result_recomputed": {
+    "decisions": 3671,
+    "sessions": 18,
+    "models": {
+      "a": {
+        "log_loss": 0.7760362206856636,
+        "accuracy": 0.5461727049850177
+      },
+      "b": {
+        "log_loss": 0.7166121173823816,
+        "accuracy": 0.6341596295287387
+      }
+    },
+    "status": "All submitted test probabilities and metrics independently recomputed; original fits checked separately."
+  },
+  "week6_sample_reproduced": {
+    "counts": {
+      "train": 74,
+      "validation": 37,
+      "test": 29
+    },
+    "scores": {
+      "no_history": {
+        "n_decisions": 29,
+        "n_sessions": 3,
+        "accuracy": 0.4827586206896552,
+        "log_loss": 1.0022549306454585,
+        "session_accuracy_mean": 0.5619047619047619,
+        "session_log_loss_mean": 0.8837919115970901
+      },
+      "history_summary": {
+        "n_decisions": 29,
+        "n_sessions": 3,
+        "accuracy": 0.4482758620689655,
+        "log_loss": 0.9894078758355225,
+        "session_accuracy_mean": 0.3904761904761905,
+        "session_log_loss_mean": 0.9962021159076574
+      }
+    },
+    "status": "Original Naive Bayes fits reproduced on provided local-engine sample; generator local engine absent."
+  },
+  "parsed_code_cells": 71,
+  "window_notebook_reproduction": {
+    "status": "Regenerated exact data checksum and refitted all original models; overall metric differences <1e-7",
+    "data_sha256": "4a679a18840f41d672722b4f75bcac1034585d14cd4f92c1711e789cc5ae75e4",
+    "decisions": 21213,
+    "sessions": 100,
+    "results": {
+      "0": {
+        "selected_C": 1.0,
+        "validation_log_loss": 0.757329741623086,
+        "test": {
+          "all": {
+            "n": 4252,
+            "log_loss": 0.7672071671060263,
+            "accuracy": 0.5947789275634995,
+            "brier": 0.5035355211615572
+          },
+          "stationary": {
+            "n": 3435,
+            "log_loss": 0.7632945533028223,
+            "accuracy": 0.6107714701601165,
+            "brier": 0.4991813492744755
+          },
+          "switch": {
+            "n": 817,
+            "log_loss": 0.7836573854830222,
+            "accuracy": 0.5275397796817626,
+            "brier": 0.5218422291568152
+          },
+          "post_switch_hands_0_4": {
+            "n": 42,
+            "log_loss": 0.7528573352778162,
+            "accuracy": 0.5714285714285714,
+            "brier": 0.4949415352221879
+          },
+          "post_switch_hands_5_19": {
+            "n": 117,
+            "log_loss": 0.7949853801292531,
+            "accuracy": 0.5042735042735043,
+            "brier": 0.5278585712403656
+          },
+          "post_switch_hands_20_plus": {
+            "n": 247,
+            "log_loss": 0.755415742334226,
+            "accuracy": 0.5465587044534413,
+            "brier": 0.5058397051544465
+          },
+          "history_0": {
+            "n": 53,
+            "log_loss": 0.7290653081624383,
+            "accuracy": 0.6415094339622641,
+            "brier": 0.4749486135170141
+          },
+          "history_1_3": {
+            "n": 35,
+            "log_loss": 0.7969733642962434,
+            "accuracy": 0.4857142857142857,
+            "brier": 0.5338495005459702
+          },
+          "history_4_15": {
+            "n": 244,
+            "log_loss": 0.801924937442251,
+            "accuracy": 0.6024590163934426,
+            "brier": 0.517298313816176
+          },
+          "history_16_63": {
+            "n": 965,
+            "log_loss": 0.7522206532524456,
+            "accuracy": 0.6103626943005181,
+            "brier": 0.4933102929110281
+          },
+          "history_64_plus": {
+            "n": 2955,
+            "log_loss": 0.7695660677926656,
+            "accuracy": 0.5895093062605753,
+            "brier": 0.5058919816288127
+          }
+        }
+      },
+      "4": {
+        "selected_C": 0.1,
+        "validation_log_loss": 0.6940431496281929,
+        "test": {
+          "all": {
+            "n": 4252,
+            "log_loss": 0.7071936584960713,
+            "accuracy": 0.6484007525870179,
+            "brier": 0.4541218931325429
+          },
+          "stationary": {
+            "n": 3435,
+            "log_loss": 0.7077102283643426,
+            "accuracy": 0.6518195050946143,
+            "brier": 0.4536384864036922
+          },
+          "switch": {
+            "n": 817,
+            "log_loss": 0.7050217888540742,
+            "accuracy": 0.6340269277845777,
+            "brier": 0.45615433146008555
+          },
+          "post_switch_hands_0_4": {
+            "n": 42,
+            "log_loss": 0.6335559015077669,
+            "accuracy": 0.7142857142857143,
+            "brier": 0.4039173580227197
+          },
+          "post_switch_hands_5_19": {
+            "n": 117,
+            "log_loss": 0.7215676426039686,
+            "accuracy": 0.6153846153846154,
+            "brier": 0.45772881044380703
+          },
+          "post_switch_hands_20_plus": {
+            "n": 247,
+            "log_loss": 0.6631328601350774,
+            "accuracy": 0.6680161943319838,
+            "brier": 0.42497838479346295
+          },
+          "history_0": {
+            "n": 53,
+            "log_loss": 0.7263113220536188,
+            "accuracy": 0.6226415094339622,
+            "brier": 0.4730839723024444
+          },
+          "history_1_3": {
+            "n": 35,
+            "log_loss": 0.7830759221992403,
+            "accuracy": 0.6571428571428571,
+            "brier": 0.5143075743009167
+          },
+          "history_4_15": {
+            "n": 244,
+            "log_loss": 0.7762057248103659,
+            "accuracy": 0.6229508196721312,
+            "brier": 0.4989627188881981
+          },
+          "history_16_63": {
+            "n": 965,
+            "log_loss": 0.6950219458017151,
+            "accuracy": 0.6590673575129534,
+            "brier": 0.44566353896704036
+          },
+          "history_64_plus": {
+            "n": 2955,
+            "log_loss": 0.7042283939177989,
+            "accuracy": 0.6473773265651438,
+            "brier": 0.4521285466853119
+          }
+        },
+        "test_history_coverage": {
+          "median_comparable_opportunities": 1.0,
+          "mean_comparable_opportunities": 0.908513640639699,
+          "fraction_without_comparable_history": 0.2883349012229539
+        },
+        "log_loss_gain_over_no_history": {
+          "estimate": 0.06001350860995495,
+          "opponent_bootstrap_95_ci": [
+            0.03106832029994906,
+            0.08548495593690826
+          ]
+        }
+      },
+      "16": {
+        "selected_C": 1.0,
+        "validation_log_loss": 0.6297545620259493,
+        "test": {
+          "all": {
+            "n": 4252,
+            "log_loss": 0.6501567404429965,
+            "accuracy": 0.7036688617121355,
+            "brier": 0.40889635446593287
+          },
+          "stationary": {
+            "n": 3435,
+            "log_loss": 0.6442609528324036,
+            "accuracy": 0.7048034934497817,
+            "brier": 0.4046366773562103
+          },
+          "switch": {
+            "n": 817,
+            "log_loss": 0.6749450273981823,
+            "accuracy": 0.6988984088127295,
+            "brier": 0.4268057680178262
+          },
+          "post_switch_hands_0_4": {
+            "n": 42,
+            "log_loss": 0.8802542274782119,
+            "accuracy": 0.5,
+            "brier": 0.5949863124664121
+          },
+          "post_switch_hands_5_19": {
+            "n": 117,
+            "log_loss": 0.6818212061906225,
+            "accuracy": 0.7094017094017094,
+            "brier": 0.41677340537178653
+          },
+          "post_switch_hands_20_plus": {
+            "n": 247,
+            "log_loss": 0.6141667912108029,
+            "accuracy": 0.7449392712550608,
+            "brier": 0.3840955596683783
+          },
+          "history_0": {
+            "n": 53,
+            "log_loss": 0.7352613685502966,
+            "accuracy": 0.6226415094339622,
+            "brier": 0.48363885215059516
+          },
+          "history_1_3": {
+            "n": 35,
+            "log_loss": 0.8064751142298141,
+            "accuracy": 0.6285714285714286,
+            "brier": 0.53006285873651
+          },
+          "history_4_15": {
+            "n": 244,
+            "log_loss": 0.7325317471608771,
+            "accuracy": 0.6598360655737705,
+            "brier": 0.46585535229216923
+          },
+          "history_16_63": {
+            "n": 965,
+            "log_loss": 0.6339301210976442,
+            "accuracy": 0.7015544041450777,
+            "brier": 0.39935782579691664
+          },
+          "history_64_plus": {
+            "n": 2955,
+            "log_loss": 0.645276028990163,
+            "accuracy": 0.710321489001692,
+            "brier": 0.40453239665518553
+          }
+        },
+        "test_history_coverage": {
+          "median_comparable_opportunities": 4.0,
+          "mean_comparable_opportunities": 3.694261523988711,
+          "fraction_without_comparable_history": 0.0590310442144873
+        },
+        "log_loss_gain_over_no_history": {
+          "estimate": 0.11705042666302976,
+          "opponent_bootstrap_95_ci": [
+            0.0626206321412965,
+            0.17742652033661585
+          ]
+        }
+      },
+      "64": {
+        "selected_C": 1.0,
+        "validation_log_loss": 0.6040663707808855,
+        "test": {
+          "all": {
+            "n": 4252,
+            "log_loss": 0.6239821831991184,
+            "accuracy": 0.7114299153339605,
+            "brier": 0.38994513074938864
+          },
+          "stationary": {
+            "n": 3435,
+            "log_loss": 0.6053480162940877,
+            "accuracy": 0.7228529839883552,
+            "brier": 0.3755100976224372
+          },
+          "switch": {
+            "n": 817,
+            "log_loss": 0.7023277931364259,
+            "accuracy": 0.6634026927784578,
+            "brier": 0.4506358759037071
+          },
+          "post_switch_hands_0_4": {
+            "n": 42,
+            "log_loss": 1.1947976312523805,
+            "accuracy": 0.2619047619047619,
+            "brier": 0.8488726450737032
+          },
+          "post_switch_hands_5_19": {
+            "n": 117,
+            "log_loss": 0.9669832151170193,
+            "accuracy": 0.4017094017094017,
+            "brier": 0.6594907216841434
+          },
+          "post_switch_hands_20_plus": {
+            "n": 247,
+            "log_loss": 0.5610515846436083,
+            "accuracy": 0.7692307692307693,
+            "brier": 0.34555692587279635
+          },
+          "history_0": {
+            "n": 53,
+            "log_loss": 0.7361816583129543,
+            "accuracy": 0.6226415094339622,
+            "brier": 0.48581035019581165
+          },
+          "history_1_3": {
+            "n": 35,
+            "log_loss": 0.8010877867115476,
+            "accuracy": 0.6,
+            "brier": 0.5264464493597559
+          },
+          "history_4_15": {
+            "n": 244,
+            "log_loss": 0.7360483314446745,
+            "accuracy": 0.6598360655737705,
+            "brier": 0.4680948193529886
+          },
+          "history_16_63": {
+            "n": 965,
+            "log_loss": 0.6038171022557608,
+            "accuracy": 0.7088082901554404,
+            "brier": 0.37686559497451283
+          },
+          "history_64_plus": {
+            "n": 2955,
+            "log_loss": 0.6172038057488496,
+            "accuracy": 0.7194585448392555,
+            "brier": 0.3844273051052104
+          }
+        },
+        "test_history_coverage": {
+          "median_comparable_opportunities": 14.0,
+          "mean_comparable_opportunities": 13.229539040451552,
+          "fraction_without_comparable_history": 0.030809031044214487
+        },
+        "log_loss_gain_over_no_history": {
+          "estimate": 0.14322498390690805,
+          "opponent_bootstrap_95_ci": [
+            0.08206338379590573,
+            0.20271265484045806
+          ]
+        }
+      }
+    }
+  },
+  "bayesian_notebook_reproduction": {
+    "scores": {
+      "public": {
+        "log_loss": 0.7867232923511301,
+        "accuracy": 0.5716001200840588,
+        "n": 3331
+      },
+      "history": {
+        "log_loss": 0.7355114896871199,
+        "accuracy": 0.6211347943560492,
+        "n": 3331
+      },
+      "bayesian": {
+        "log_loss": 0.7271488251057534,
+        "accuracy": 0.6370459321525067,
+        "n": 3331
+      }
+    },
+    "config": {
+      "seed": 20261106,
+      "train_sessions": 90,
+      "validation_sessions": 24,
+      "test_sessions": 24,
+      "hands_per_session": 70,
+      "simulator": "two-player Leduc-inspired fixed-limit poker (6 cards; 2 streets)"
+    },
+    "selected_temperature": 0.9,
+    "selected_hazard": 0.02,
+    "status": "Original generator and model fits reproduced reported metrics under current runtime."
+  },
+  "known_style_notebook_outputs": {
+    "status": "Submitted outputs only; missing helper modules and CSV datasets prevent reproduction. Two test sessions per known style.",
+    "styles": [
+      "cfr",
+      "tight",
+      "loose"
+    ],
+    "test_decisions_per_style": 400,
+    "legal_prior_log_loss": [
+      0.9167,
+      0.9074,
+      0.8239
+    ],
+    "strength_log_loss": [
+      0.8894,
+      0.8849,
+      0.8145
+    ],
+    "strength_history_log_loss": [
+      0.8522,
+      0.8617,
+      0.7686
+    ]
+  },
+  "additional_summary_only": {
+    "status": "Submitted aggregate; matching source/data missing. Not the table-archive test set.",
+    "decisions": 373,
+    "no_history": {
+      "accuracy": 0.6193029490616622,
+      "log_loss": 0.712137082371497
+    },
+    "history_summary": {
+      "accuracy": 0.7533512064343163,
+      "log_loss": 0.5852040010322008
+    }
+  },
+  "linked_colab_recorded_run": {
+    "status": "Source and notebook outputs inspected; original downloadable dataset bundle not attached; full run not locally reproduced.",
+    "seed": 20261105,
+    "opponents_and_sessions": 200,
+    "decisions": 24072,
+    "test_sessions": 40,
+    "test_decisions": 4885,
+    "no_history": {
+      "accuracy": 0.6223,
+      "log_loss": 0.754706
+    },
+    "history": {
+      "accuracy": 0.6399,
+      "log_loss": 0.737023
+    },
+    "recorded_teacher_exploitability": 0.000938635
+  },
+  "runtime_for_local_checks": {
+    "python": "3.12",
+    "numpy": "2.5.3",
+    "scikit-learn": "1.9.1",
+    "open-spiel": "2.0.2",
+    "scipy": "1.18.1"
+  },
+  "duplicates": [
+    {
+      "attachment": "results.md",
+      "archive_member": "opponent_leduc/results/results.md",
+      "equal_bytes": true
+    }
+  ],
+  "archive_verification": {
+    "solver_observer": "passed",
+    "row_contract": "passed",
+    "splits": "passed",
+    "hidden_card": "passed",
+    "future_identity": "passed",
+    "seats_cards": "passed",
+    "behavior_sanity": "passed",
+    "test_refit_a": {
+      "max_probability_difference": 1.7208456881689926e-15,
+      "passed_1e-8": true
+    },
+    "test_refit_b": {
+      "max_probability_difference": 6.106226635438361e-16,
+      "passed_1e-8": true
+    },
+    "byte_regeneration": "failed train.jsonl equality under current runtime; original runtime was not pinned"
+  }
+}

@@ -1,128 +1,104 @@
 # Poker Decision Model
 
-ACM AI Fall 2026. A context-conditioned poker decision model project, starting with
-an audited PokerBench pipeline and CPU baselines over variable candidate actions.
+A small transformer that scores supplied poker actions in one forward pass, plus
+experiments that learn an opponent's tendencies from earlier play. Built by ACM AI
+Fall 2026, with a live [PocketSolver demo](https://www.nmokey.com/poker/).
 
-## Completed Week 2 experiments
+The project studies two connected questions:
 
-All eight pretrained-transformer/head combinations completed five scenario-grouped
-folds: 40 full fits, three fixed epochs per fit, and 10,000 held-out predictions
-per model. The protocol used seed 42 and the same folds for every combination.
+1. Can a compact model imitate solver-derived decisions over changing action menus?
+2. Does an opponent's observed history help predict their next action, especially
+   when their behavior changes?
 
-| Transformer | Head | Accuracy | Log loss (lower is better) |
-| --- | --- | ---: | ---: |
-| BERT Mini | Linear | 68.96% | 0.6722 |
-| BERT Mini | MLP | 69.35% | 0.6656 |
-| MiniLM | Linear | 69.57% | 0.6849 |
-| MiniLM | MLP | 68.83% | 0.6764 |
-| DistilBERT | Linear | 71.78% | 0.6164 |
-| DistilBERT | MLP | 71.60% | 0.6213 |
-| ModernBERT | Linear | 71.92% | 0.6078 |
-| ModernBERT | MLP | 71.38% | 0.6158 |
-| Linear candidate baseline | — | 69.69% | 1.0025 |
+The first pipeline uses PokerBench and a pretrained encoder with a shared action
+scorer. The second uses chronological Leduc sessions and statistical forecasting
+models. Connecting those forecasts to better Hero decisions is the next research
+step; it requires opponent-dependent response targets or repeated-play evaluation.
 
-ModernBERT + linear has the highest observed accuracy and lowest log loss. Its
-accuracy lead over DistilBERT + linear is only 0.14 percentage points; this single
-seed does not establish a reliable advantage. These are development scores on an
-inspected pool, not an independent final test or evidence of profitable poker.
+## How it works
 
-See the [full results and interpretation](docs/week2-results.md),
-[CSV](docs/results/week2-development.csv), [provenance JSON](docs/results/week2-development.json),
-and [reproduction instructions](docs/week2-training.md). The
-[documentation index](docs/README.md) links the audit, notebooks, and demo notes.
+| Workflow | Input | Target | Current implementation |
+| --- | --- | --- | --- |
+| Hero decision scoring | Poker situation, question, candidate actions | PokerBench reference action | Joint transformer encoding with a shared linear or MLP head |
+| Opponent forecasting | Observer-visible situation and earlier opponent actions | Opponent's next observed legal action | Priors, Naive Bayes, logistic variants, equity controls, history windows and Bayesian style updates |
 
-## Run Meeting 1
+The decision scorer returns probabilities aligned to the supplied action menu,
+including exact bet/raise amounts. It does not generate answer tokens. Reference
+labels stay outside inference inputs. All candidate tokens share the same scoring
+head; unsupported padding choices receive zero probability.
 
-Install [uv](https://docs.astral.sh/uv/getting-started/installation/), then:
+The forecasting workflow makes predictions before revealing the current action.
+Opponent identities stay together across splits, histories reset by session, and
+engine traces support replay checks. Five simulated policy families and explicit
+visibility/history settings preserve different experimental approaches.
 
-```sh
-uv sync --locked --extra analysis
-uv run --extra analysis jupyter lab notebooks/01_pokerbench_pipeline.ipynb
-```
+## Results so far
 
-Select the project environment, restart the kernel, and run all cells. Or run the
-same workflow from the repository root without Jupyter:
+- **Decision scoring:** four pretrained encoders × two heads × five scenario
+  folds, totaling 40 fits on the same 10,000-example working pool. ModernBERT with
+  a linear head has the highest observed accuracy, **71.92%**, and log loss
+  **0.6078**; DistilBERT linear is close at **71.78% / 0.6164**.
+  [All model scores and provenance](docs/week2-results.md).
+- **Opponent forecasting:** in the recorded controlled Leduc experiment, accuracy
+  rose from **59.3% without history to 69.9% with a validation-selected history
+  window**; a Bayesian filter reached **73.3%**. All methods used the same 2,506
+  test decisions. History sometimes hurt immediately after a behavior switch.
+  [All methods, uncertainty and limitations](docs/meeting4-results.md).
 
-```sh
-uv run --extra analysis python -m poker_decision.pipeline
-```
+These are distinct, one-seed development experiments with different labels and
+populations. Action agreement does not establish a GTO mixed strategy, calibrated
+probabilities or profitable play. Simulated behavior changes do not establish
+human tilt detection. See the [scientific audit](docs/scientific-audit.md).
 
-This downloads only the pinned preflop and postflop **training** CSVs (about 90 MB),
-checks their hashes, inspects and validates every row, and selects 5,000 examples
-per source for a quick CPU run. It saves context-grouped train/validation subsets,
-provenance, exact-candidate metrics, and five mistakes. The official test set is
-never loaded. No GPU or API key is needed.
+## Get started
 
-Use `--kind preflop` for the smaller source, `--skip-baseline` for data preparation,
-or `--sample-per-kind 0` to use all validated rows. Outputs live in ignored
-`data/processed/pokerbench_meeting1/` and `artifacts/pokerbench_meeting1/`.
-
-Inputs are `DecisionInputs(context, candidates)`; labels are stored separately as
-`target_index`. Exact action amounts are preserved. Postflop contexts include only
-cards already dealt. See [integration notes](docs/meeting1-integration.md) for the
-source notebook comparison, data contract, baseline design, and limitations.
-
-## Run Meeting 2
-
-The canonical [Meeting 2 notebook](notebooks/02_pokerbench_decision_model.ipynb)
-combines six submissions into a joint state/question/options transformer, shared
-candidate head, required tiny-set learning check, training, checkpoint reload, and
-same-split comparison with all three CPU baselines.
+Use Python 3.12 (3.13 is supported) and [uv](https://docs.astral.sh/uv/).
+For the data, evaluation and opponent-forecasting notebooks:
 
 ```sh
-uv sync --locked --extra analysis --extra ml
-uv run --locked --extra analysis --extra ml jupyter lab notebooks/02_pokerbench_decision_model.ipynb
+uv sync --locked --extra analysis --extra experiments
+uv run --locked --extra analysis --extra experiments jupyter lab
 ```
 
-BERT Mini is the pinned default; MiniLM, DistilBERT cased, and ModernBERT-base are
-alternatives. Pretrained training requires a local CUDA GPU or a Colab GPU; CPU
-environments support data inspection, offline tests, and demo inference. The
-notebook reuses the saved Meeting 1 split or prepares it if absent. Nothing is silently truncated or removed. Outputs go to
-an individual ignored `artifacts/pokerbench_meeting2/` run folder. For a smaller
-end-to-end check, launch Jupyter with `POKER_SMOKE=1`; this uses 128 training and 64
-validation examples and recomputes the baselines. See the notebook for Colab setup
-and [integration notes](docs/meeting2-integration.md) for attribution and limits.
+Select the project kernel and choose a walkthrough:
 
-## Stronger evaluation and optional sources
+| Notebook | Purpose |
+| --- | --- |
+| [PokerBench pipeline](notebooks/01_pokerbench_pipeline.ipynb) | Audit pinned source data, create input/target records and compare CPU baselines |
+| [Transformer decision scorer](notebooks/02_pokerbench_decision_model.ipynb) | Tokenize state/question/options, train a shared head, save and reload checkpoints |
+| [Scenario evaluation](notebooks/03_scenario_evaluation.ipynb) | Fixed scenario folds, controlled head comparisons and reliability/error diagnostics |
+| [Alternative data sources](notebooks/04_alternative_data_sources.ipynb) | Separate Pluribus replay and Leduc teacher-policy experiments |
+| [Opponent forecasting](notebooks/05_opponent_history.ipynb) | Generate chronological sessions, compare history representations and inspect behavior changes |
 
-[Scenario evaluation](notebooks/03_scenario_evaluation.ipynb) adds five-fold scenario
-splits, a controlled linear/MLP head comparison, reliability/error diagnostics,
-paired grouped intervals, and verified resumable outputs. Review the protocol,
-then enable `RUN_CV` on a local CUDA GPU or Colab GPU. Every fold starts fresh;
-held-out folds never select epochs. This remains development evaluation on an inspected pool.
+Pretrained transformer training also needs `--extra ml` and a local CUDA GPU or
+Colab GPU. Opponent forecasting runs on CPU. No API key is needed for either
+training workflow. See [notebook setup](notebooks/README.md),
+[transformer reproduction](docs/week2-training.md), and
+[opponent experiment commands](docs/opponent-experiments.md).
 
-[Alternative sources](notebooks/04_alternative_data_sources.ipynb) keeps Pluribus
-observed-play replay and Leduc solver-policy generation separate from PokerBench.
-Install `--extra experiments` for those opt-in sections. Teacher exploitability
-is not evidence of a learned model's exploitability.
+The PokerBench pipeline downloads only checksum-pinned training CSVs, audits all
+63,200 preflop and 500,000 postflop rows, then uses 5,000 examples per source by
+default. The official test is not loaded. Scenario-grouped evaluation is stronger
+than the introductory context split; both remain development evidence. Raw data,
+checkpoints and example-level generated outputs stay in ignored directories.
 
-Pretrained-model training supports local CUDA GPUs and Colab. See the
-[Week 2 GPU matrix](docs/week2-training.md) for all four encoders and both heads.
-See [saved development results](docs/week2-results.md) for completed metrics and run status.
-Offline checks use data audits and small randomly initialized models. See the [scientific audit](docs/scientific-audit.md)
-for verified safeguards, current limitations, and the original split's scenario overlap.
+## PocketSolver
 
-## PocketSolver demo
+The [live demo](https://www.nmokey.com/poker/) serves all eight trained encoder/head
+combinations and defaults to ModernBERT + linear. It compares predictions with a
+live Groq model on the same 256 hands held out by every serving checkpoint. The
+results table shows saved development scores and separately measured CPU latency;
+click a row to select that model. One model stays resident in server memory.
 
-The full-window [demo](https://www.nmokey.com/poker/) defaults to **ModernBERT + linear**.
-Select BERT Mini, MiniLM, DistilBERT or ModernBERT and a **linear or MLP** head;
-each choice restores its own fine-tuned encoder and trained head. It compares
-predictions with live Groq on the same 256 hands held out by every serving checkpoint.
-Switching encoder/head keeps the hand and reuses its LLM result. The server keeps
-one model resident at a time, downloading selected weights on first use.
-Public request limits apply to Groq; local model predictions remain available.
-The **Results matrix** view shows all eight combinations with development accuracy,
-log loss and separately measured average CPU latency. The current encoder/head row
-is highlighted; changing the selectors updates the highlight without running inference.
-See [deployment and local setup](docs/deployment.md) for the CPU-only hosting
-environment, model asset bundle, secrets, and embedding on nmokey.com.
+Groq calls require a key and have public request limits. The current demo displays
+PokerBench decision predictions; the opponent-forecasting experiment runs in its
+own notebook and command-line workflow. [Deployment and local serving](docs/deployment.md)
+cover assets, setup, model selection and measurement boundaries.
 
 ## Development
 
-Python 3.12 is the team default; 3.13 is supported. Core parsing and evaluation
-need no optional ML dependencies. Install extras as needed: `analysis` (pandas,
-sklearn, JupyterLab, plots), `ml` (torch, transformers), `demo` (Streamlit), and
-`llm` (Groq client). Keep extra flags on `uv run` to retain those dependencies.
+Core parsing and metrics need only the base environment. Optional extras separate
+analysis, neural models, simulation, the demo and hosted LLM calls:
 
 ```sh
 uv sync --locked
@@ -130,31 +106,19 @@ uv run --locked pytest
 uv run --locked ruff check .
 uv run --locked ruff format --check .
 uv run --locked mypy --exclude 'src/poker_decision/(training|cross_validation|experiments|models/encoder)\.py$'
-# With ML dependencies installed, check all modules:
-uv run --locked --extra analysis --extra ml mypy
 ```
 
-The learned-baseline tests run when the analysis extra is installed; CI checks
-the core environment, learned baseline, and offline neural contracts. Raw data,
-example-level predictions, and checkpoints stay out of Git; reviewed aggregate
-metrics and provenance are versioned under `docs/results/`.
+For all offline model and simulator safeguards:
 
-## Layout
-
-```text
-src/poker_decision/   data contract, preprocessing, baselines, evaluation, workflow
-notebooks/           data, neural training, grouped evaluation, and source walkthroughs
-apps/                PocketSolver presentation and serving adapters
-tests/               offline parsing, leakage, splitting, metrics, model tests
-data/raw/            local source training CSVs (ignored)
-data/processed/      generated datasets, failure reports, manifest (ignored)
-artifacts/           generated metrics and mistakes (ignored)
-configs/             pointers to canonical experiment settings
-docs/                project context, development notes, integration decisions
+```sh
+uv sync --locked --extra analysis --extra ml --extra experiments
+uv run --locked --extra analysis --extra ml --extra experiments pytest
+uv run --locked --extra analysis --extra ml --extra experiments mypy
 ```
 
-See [project context](docs/project-context.md), [development guide](docs/development.md),
-and [roadmap](docs/roadmap.md). Neural training is introduced in Meeting 2;
-the eight-combination grouped experiment is complete and PocketSolver serves all
-eight trained combinations, defaulting to ModernBERT + linear. Opponent adaptation remains future work. Scores
-measure reference-action agreement.
+Tests use synthetic fixtures and tiny randomly initialized encoders, with no
+pretrained downloads or live API calls. Reviewed aggregate evidence is versioned
+under `docs/results/`. Start with the [documentation index](docs/README.md),
+[development guide](docs/development.md), [test guide](tests/README.md), or
+[current roadmap](docs/roadmap.md). Historical contribution reviews remain linked
+from the documentation index.

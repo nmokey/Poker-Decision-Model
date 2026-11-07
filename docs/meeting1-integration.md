@@ -1,5 +1,9 @@
 # Meeting 1 integration
 
+This records the original data/model integration. For the current project,
+including the separate opponent-forecasting workflow, see
+[project context](project-context.md) and the [documentation index](README.md).
+
 The consolidated notebook and package combine eight unique shared Colab notebooks.
 The PokerBench integration link was supplied twice. The last notebook contains a
 heading and an empty code cell. The originals were read without editing them.

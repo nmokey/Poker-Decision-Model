@@ -1,25 +1,34 @@
 # Documentation
 
-Updated November 2, 2026. The Week 2 matrix is complete: four pinned pretrained
-encoders × two heads × five scenario-grouped folds, with three fixed epochs per
-fit. Every model has 10,000 held-out predictions. PocketSolver offers all eight
-trained fold-1 checkpoints and defaults to ModernBERT + linear. Its shared
-256-hand demo sample is distinct from the aggregate comparison.
+Updated November 6, 2026. The project combines a trained PokerBench decision
+scorer, a controlled Leduc opponent-forecasting workflow and the live PocketSolver
+demo. Use the task-based guides below; meeting notes preserve contribution history.
 
 | Topic | Read this |
 | --- | --- |
-| All eight accuracy and log-loss scores | [Completed results](week2-results.md) |
-| Aggregate metrics and reproducibility evidence | [CSV](results/week2-development.csv), [JSON](results/week2-development.json) |
-| GPU setup, commands, and verified resume | [Training instructions](week2-training.md) |
-| Leakage safeguards and interpretation limits | [Scientific audit](scientific-audit.md) |
-| Environment and checks | [Development](development.md), [tests](../tests/README.md) |
-| Data and original baseline integration | [Meeting 1](meeting1-integration.md) |
-| Neural architecture and historical holdout | [Meeting 2](meeting2-integration.md) |
-| Current demo and model assets | [Deployment](deployment.md) |
-| Historical submission review | [Meeting 3 review](meeting3-review.md) |
-| Remaining work and original plan | [Roadmap](roadmap.md), [project context](project-context.md) |
-| Maintained walkthroughs | [Notebooks](../notebooks/README.md) |
+| Current architecture, data and boundaries | [Project context](project-context.md) |
+| Setup and executable walkthroughs | [Notebook guide](../notebooks/README.md) |
+| All eight transformer/head results | [Decision-model comparison](week2-results.md) |
+| Transformer reproduction and verified resume | [Training guide](week2-training.md) |
+| Opponent histories, models and commands | [Forecasting guide](opponent-experiments.md) |
+| Forecasting results and behavior changes | [Controlled Leduc results](meeting4-results.md) |
+| Data leakage, metrics and scientific limits | [Scientific audit](scientific-audit.md) |
+| Package development and checks | [Development](development.md), [tests](../tests/README.md) |
+| Demo, serving catalogue and hosting | [Deployment](deployment.md) |
+| Remaining research milestones | [Roadmap](roadmap.md) |
 
-ModernBERT + linear has the highest observed accuracy (71.92%) and lowest log loss
-(0.6078). DistilBERT + linear is close (71.78%, 0.6164). These are one-seed
-development comparisons, not an independent final estimate or a claim of GTO play.
+Reviewed aggregate metrics and protocols live under [results](results/). Raw
+source rows, generated sessions, example-level predictions and weights remain in
+ignored directories or checksum-pinned model release assets.
+
+## Contribution history
+
+- [Data pipeline reconciliation](meeting1-integration.md)
+- [Transformer architecture reconciliation](meeting2-integration.md)
+- [Demo submission review](meeting3-review.md)
+- [Opponent experiment reconciliation](meeting4-integration.md)
+- [Original proposal](archive/original-proposal.md)
+
+The decision-model and forecasting scores concern different targets and datasets.
+Both are one-seed development evidence. Neither establishes profitable play or
+human psychological-state inference.
