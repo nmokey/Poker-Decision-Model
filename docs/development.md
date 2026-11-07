@@ -30,10 +30,12 @@ and [locking](https://docs.astral.sh/uv/concepts/projects/sync/).
 - `pipeline.py`: reproducible preparation, inspection, output manifests, and CLI.
 - `models/`: encoder and shared candidate scorer; no generative vocabulary head.
 - `baselines.py`: uniform, option-prior, and learned linear candidate baselines.
-- `training.py`: fitting, inference, data provenance, and portable checkpoints.
+- `prepared.py`, `paths.py`: shared split loading, provenance checks and artifact compatibility.
+- `tasks.py`: source/opponent adapters to the shared input interface, with explicit task questions.
+- `training.py`: shared learning checks, holdout fitting, optimizers, inference and checkpoints.
 - `cross_validation.py`: fixed-budget scenario-grouped evaluation and verified resume.
 - `experiments.py`: training-only tiny checks and per-backbone matrix execution.
-- `scripts/run_week2_matrix.py`: three-GPU queues and combined metric export.
+- `scripts/run_decision_matrix.py`: three-GPU queues and combined metric export.
 - `evaluation.py`: reference-action probability metrics and deterministic tie handling.
 - `diagnostics.py`: reliability/error diagnostics and conditional grouped intervals.
 - `opponents/`: chronological Leduc data, causal features, forecasters and run artifacts.
@@ -116,7 +118,7 @@ when resuming; current application changes can produce a new protocol hash.
 
 `opponents/data.py`, `generate.py`, `models.py`, `evaluation.py` and `experiment.py`
 own the opponent observer contract, optional OpenSpiel simulation, causal history,
-CPU forecasters and reproducible selection/evaluation artifacts. Notebook 05 calls
+CPU forecasters and reproducible selection/evaluation artifacts. The opponent-modeling notebook calls
 these functions. Keep this observed-action task separate from PokerBench decision
 labels. The analysis extra declares SciPy and threadpoolctl directly for the
 masked objective and bounded CPU fitting. See [the experiment guide](opponent-experiments.md).

@@ -48,3 +48,9 @@ invariance, exact equity against engine returns, deterministic simulation/replay
 Bayesian feedback order, numeric-model reloads, grouped selection, checksum
 failures and final-result reuse. Optional simulator/model tests skip when their
 extras are absent. Run with `analysis` and `experiments` for the full suite.
+
+Project integration checks also cover task-based notebook entry points and their
+shared setup, canonical/legacy dataset loading, unified CLI dispatch, shared
+optimizer settings, training-only learning checks, holdout checkpoint selection,
+and source/opponent adapters. Adapter tests change current labels and hidden
+identity metadata to verify they do not enter the current model inputs.

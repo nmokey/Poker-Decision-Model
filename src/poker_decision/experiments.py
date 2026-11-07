@@ -1,26 +1,20 @@
-"""Run the Week 2 backbone/head matrix on a GPU, with training-only preflight checks."""
+"""Run the decision backbone/head matrix on a GPU, with training-only preflight checks."""
 
 import argparse
 import csv
-import gc
 import json
-import random
 from dataclasses import asdict
 from pathlib import Path
 
 import torch
 
 from poker_decision.cross_validation import CVConfig, run_cross_validation
-from poker_decision.models.encoder import BACKBONES, load_pretrained
+from poker_decision.models.encoder import BACKBONES
+from poker_decision.paths import prepared_directory
 from poker_decision.pipeline import prepare, write_json
+from poker_decision.prepared import load_prepared
 from poker_decision.scenarios import digest, make_folds, scenario_overlap
-from poker_decision.training import (
-    encode_examples,
-    load_prepared,
-    score_model,
-    seed_everything,
-    train_epoch,
-)
+from poker_decision.training import learning_check
 
 
 def main() -> None:
@@ -28,7 +22,7 @@ def main() -> None:
     parser.add_argument("--root", type=Path, default=Path.cwd())
     parser.add_argument("--backbone", choices=list(BACKBONES), required=True)
     parser.add_argument("--epochs", type=int, default=3)
-    parser.add_argument("--output", type=Path, default=Path("artifacts/week2_matrix"))
+    parser.add_argument("--output", type=Path, default=Path("artifacts/decision_matrix"))
     args = parser.parse_args()
     if not torch.cuda.is_available():
         raise RuntimeError("This runner requires a CUDA GPU")
@@ -37,7 +31,7 @@ def main() -> None:
     root = args.root.resolve()
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=True)
-    if not (root / "data/processed/pokerbench_meeting1/manifest.json").exists():
+    if not (prepared_directory(root) / "manifest.json").exists():
         prepare(root)
     train, validation, manifest = load_prepared(root)
     pool, folds, protocol = make_folds(train + validation, n_splits=5, seed=config.seed)
@@ -69,56 +63,10 @@ def main() -> None:
         ),
         flush=True,
     )
-    # Select only first-fold TRAINING examples. Preflight never selects settings.
+    # Only first-fold training examples reach the shared, disposable learning check.
     first_fit = [pool[i] for i in folds[0][0]]
-    tiny, seen = [], set()
-    for row in random.Random(config.seed).sample(first_fit, len(first_fit)):
-        if len(row.inputs.candidates) > 1 and row.inputs.context not in seen:
-            tiny.append(row)
-            seen.add(row.inputs.context)
-        if len(tiny) == 32:
-            break
-    if len(tiny) != 32:
-        raise ValueError("Need 32 distinct multi-option training contexts")
     for head in config.heads:
-        seed_everything(config.seed)
-        tokenizer, model = load_pretrained(
-            *BACKBONES[config.backbone], head_type=head, head_width=config.head_width
-        )
-        model = model.to("cuda")
-        encoded = encode_examples(tiny, tokenizer, max_length=config.max_length)
-        optimizer = torch.optim.AdamW(model.parameters(), lr=1e-4, weight_decay=0)
-        history = []
-        for epoch in range(100):
-            loss = train_epoch(
-                model,
-                encoded,
-                [e.target_index for e in tiny],
-                pad_token_id=tokenizer.pad_token_id,
-                optimizer=optimizer,
-                batch_size=8,
-                seed=config.seed + epoch,
-            )
-            metrics = score_model(model, tiny, encoded, pad_token_id=tokenizer.pad_token_id)[
-                "overall"
-            ]
-            history.append({"epoch": epoch + 1, "training_loss": loss, **metrics})
-            if epoch == 0 or (epoch + 1) % 10 == 0 or metrics["exact_accuracy"] == 1:
-                print(
-                    f"Tiny {head} epoch {epoch + 1}: accuracy={metrics['exact_accuracy']:.3f}",
-                    flush=True,
-                )
-            if metrics["exact_accuracy"] == 1:
-                break
-        write_json(
-            run / f"tiny-{head}.json",
-            {"source_ids": [e.source_id for e in tiny], "history": history},
-        )
-        if history[-1]["exact_accuracy"] < 0.95:
-            raise RuntimeError(f"{args.backbone}/{head} failed training-only learning check")
-        del model, optimizer
-        gc.collect()
-        torch.cuda.empty_cache()
+        learning_check(first_fit, run / f"tiny-{head}.json", config=config, head=head)
     # The CV runner initializes new encoders/heads/optimizers after the tiny check.
     result = run_cross_validation(pool, output, config=config, device="cuda")
     write_json(run / "result.json", result)

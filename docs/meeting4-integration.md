@@ -1,7 +1,7 @@
 # Meeting 4 submission reconciliation
 
 Integrated November 6, 2026. The maintained entry points are
-[notebook 05](../notebooks/05_opponent_history.ipynb) and
+[opponent-modeling notebook](../notebooks/opponent_modeling.ipynb) and
 [`poker_decision.opponents`](../src/poker_decision/opponents). See the
 [run guide](opponent-experiments.md) for commands, retained settings and completion
 conditions. This extends the project with a separate supervised opponent
@@ -24,7 +24,7 @@ unambiguously for later attribution.
 | `results.md` | The smaller archive's saved report | Exact duplicate of `opponent_leduc/results/results.md`; retain one aggregate record |
 | `05_leduc_opponent_history_experiment.ipynb` | Self-contained card-dependent log-weight generator, repeated identities, completed-hand histories, windows 4/16/64, six regression tests, exhaustive summary audit, opponent-cluster intervals and figures | Default weighted generator, identity grouping, completed-hand timing, multi-window comparison, source ideas moved into tested package functions |
 | `Leduc Opponent Experiment` | JSON notebook despite extensionless filename; residual style archetypes, true masked logistic objective, online 25-style Bayesian filter and reset hazard, belief trajectories | Residual policy option, matched masked logistic models, Bayesian filter, validation selection and notebook belief plot |
-| `04_alternative_data_sources.ipynb` | Existing source notebook plus a chronological event/history extension | Keep existing 04 for distinct Pluribus/teacher tasks; route opponent forecasting to 05. Its imported `opponent_history` module was not attached. |
+| `data_sources.ipynb` | Existing source notebook plus a chronological event/history extension | Keep existing 04 for distinct Pluribus/teacher tasks; route opponent forecasting to 05. Its imported `opponent_history` module was not attached. |
 | `05_opponent_forecast.ipynb` | Proposed PokerBench-aligned names, chronological CFR/tight/loose generation and 2,000-decision-per-style datasets | Preserve controlled CFR deviations and compact observer contract; imported generator module and referenced CSV datasets were not attached |
 | `06_opponent_unconditional_baseline.ipynb` | Training-only constant priors, whole-session splits and legal-normalized controls for each known style | Pooled train-only prior in the common suite; historical known-style results retained separately |
 | `07_opponent_logistic_regression.ipynb` | Exact visible-card showdown equity, opportunity-based summaries, numeric parameter export, validation-only model/window choices | Equity features, matched opportunity controls and portable model export; imported `opponent_features` module and CSV datasets were not attached |

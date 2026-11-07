@@ -2,15 +2,16 @@
 
 The repository maintains one executable walkthrough per workflow. Reusable logic
 lives in the Python package, so notebook and command-line runs use the same code.
-Numeric filename prefixes describe a reading order; they are not runtime dependencies.
+Names describe tasks rather than meetings. Run only the workflow you need;
+notebooks exchange saved, audited artifacts through the package.
 
 | Workflow | Notebook | Optional extras | Compute |
 | --- | --- | --- | --- |
-| Source audit and CPU baselines | [PokerBench pipeline](01_pokerbench_pipeline.ipynb) | `analysis` | CPU |
-| Joint state/question/action scoring | [Decision transformer](02_pokerbench_decision_model.ipynb) | `analysis`, `ml` | CUDA GPU for pretrained training |
-| Scenario folds and controlled head comparison | [Scenario evaluation](03_scenario_evaluation.ipynb) | `analysis`, `ml` | CUDA GPU for enabled pretrained fits |
-| Observed-play replay and solver-policy targets | [Alternative sources](04_alternative_data_sources.ipynb) | `analysis`, `experiments` | Follow the notebook's source/runtime guards |
-| Chronological opponent histories and forecasts | [Opponent forecasting](05_opponent_history.ipynb) | `analysis`, `experiments` | CPU, local or Colab |
+| Source audit and CPU baselines | [PokerBench pipeline](data_pipeline.ipynb) | `analysis` | CPU |
+| Joint state/question/action scoring | [Decision transformer](decision_model.ipynb) | `analysis`, `ml` | CUDA GPU for pretrained training |
+| Scenario folds and controlled head comparison | [Scenario evaluation](evaluation.ipynb) | `analysis`, `ml` | CUDA GPU for enabled pretrained fits |
+| Observed-play replay and solver-policy targets | [Alternative sources](data_sources.ipynb) | `analysis`, `experiments` | Follow the notebook's source/runtime guards |
+| Chronological opponent histories and forecasts | [Opponent forecasting](opponent_modeling.ipynb) | `analysis`, `experiments` | CPU, local or Colab |
 
 ## Setup
 
@@ -37,7 +38,7 @@ loaded. [Data integration details](../docs/meeting1-integration.md).
 
 The transformer walkthrough jointly encodes the context, question and all action
 options, pools candidate token spans, and applies a shared linear or MLP head.
-It includes a tiny-set learning check, fitting, checkpoint reload, baseline
+It calls the same `learning_check` and `fit_holdout` routines as the CLI, then checks checkpoint reload, baseline
 comparison and candidate-order probes. `BACKBONE` and `HEAD_TYPE` select pinned
 encoders/heads. BERT Mini is the teaching default; the live demo defaults to
 ModernBERT linear. `POKER_SMOKE=1` reduces the introductory data sizes to 128/64;
@@ -88,3 +89,22 @@ See the [development guide](../docs/development.md),
 [scientific audit](../docs/scientific-audit.md), and
 [documentation index](../docs/README.md). Forecasts currently run separately from
 Hero's decision model; improved prediction alone does not establish better play.
+
+## Connections and shared code
+
+[Project architecture](../docs/architecture.md) maps every notebook to its package
+components and saved artifacts. Setup is shared in `scripts/notebook_setup.py`.
+Data preparation, training and evaluation all load the same audited split through
+`prepared.load_prepared`; none requires another notebook's kernel variables.
+
+The source and opponent walkthroughs demonstrate `tasks.source_task` and
+`tasks.opponent_task`, which expose their records through the decision scorer's
+input/target interface. Each task carries its own question, label meaning and
+external grouping. Pass `question=task.question` when encoding another task.
+This connection enables model reuse; no neural opponent-training result is claimed.
+
+New outputs use `data/processed/pokerbench`, `artifacts/baselines`,
+`artifacts/decision_model`, `artifacts/scenario_evaluation`,
+`artifacts/decision_matrix`, `artifacts/alternative_sources`, and `artifacts/opponents`.
+The package still reads an existing `data/processed/pokerbench_meeting1` dataset
+when the canonical directory is absent, with the same provenance checks.

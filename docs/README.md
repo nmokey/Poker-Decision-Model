@@ -6,7 +6,8 @@ demo. Use the task-based guides below; meeting notes preserve contribution histo
 
 | Topic | Read this |
 | --- | --- |
-| Current architecture, data and boundaries | [Project context](project-context.md) |
+| Shared components, notebook connections and artifact migration | [Architecture](architecture.md) |
+| Current data, results and scientific boundaries | [Project context](project-context.md) |
 | Setup and executable walkthroughs | [Notebook guide](../notebooks/README.md) |
 | All eight transformer/head results | [Decision-model comparison](week2-results.md) |
 | Transformer reproduction and verified resume | [Training guide](week2-training.md) |

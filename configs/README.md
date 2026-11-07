@@ -2,8 +2,8 @@
 
 The completed transformer-comparison settings are declared by `CVConfig` in
 [`cross_validation.py`](../src/poker_decision/cross_validation.py) and the fixed
-matrix runner [`experiments.py`](../src/poker_decision/experiments.py). Notebook 02
-exposes its holdout settings; notebook 03 exposes grouped-CV settings and grid
+matrix runner [`experiments.py`](../src/poker_decision/experiments.py). The decision-model notebook
+exposes its holdout settings; the evaluation notebook exposes grouped-CV settings and grid
 previews. Avoid maintaining a competing configuration file here.
 
 The completed matrix used four pinned encoders, linear/MLP heads, five folds,
@@ -21,7 +21,7 @@ store credentials in experiment settings.
 Opponent generation uses `Config` and history features use `FeatureSpec` in
 [`opponents/data.py`](../src/poker_decision/opponents/data.py). Selection/evaluation
 settings live in [`opponents/experiment.py`](../src/poker_decision/opponents/experiment.py)
-and notebook 05. Data generation and predictor settings are saved with source,
+and the opponent-modeling notebook. Data generation and predictor settings are saved with source,
 software and input hashes; model selection never uses final-test scores.
 See the [forecasting guide](../docs/opponent-experiments.md) for policy families,
 visibility, history timing/windows and validation/grouped-training choices.
