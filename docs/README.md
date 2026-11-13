@@ -13,6 +13,7 @@ demo. Use the task-based guides below; meeting notes preserve contribution histo
 | Transformer reproduction and verified resume | [Training guide](week2-training.md) |
 | Opponent histories, models and commands | [Forecasting guide](opponent-experiments.md) |
 | Forecasting results and behavior changes | [Controlled Leduc results](meeting4-results.md) |
+| Pluribus archive contents and replay facts | [Pluribus archive](pluribus-archive.md) |
 | Data leakage, metrics and scientific limits | [Scientific audit](scientific-audit.md) |
 | Package development and checks | [Development](development.md), [tests](../tests/README.md) |
 | Demo, serving catalogue and hosting | [Deployment](deployment.md) |
