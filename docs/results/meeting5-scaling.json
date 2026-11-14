@@ -1,0 +1,476 @@
+{
+  "results": [
+    {
+      "model": "forecaster",
+      "train_examples": 128,
+      "variant": "without_history",
+      "validation_scope": "expanded",
+      "n": 1024,
+      "accuracy": 0.638671875,
+      "log_loss": 1.3911403326751335
+    },
+    {
+      "model": "forecaster",
+      "train_examples": 128,
+      "variant": "without_history",
+      "validation_scope": "original",
+      "n": 64,
+      "accuracy": 0.671875,
+      "log_loss": 1.0834199965345448
+    },
+    {
+      "model": "forecaster",
+      "train_examples": 128,
+      "variant": "with_history",
+      "validation_scope": "expanded",
+      "n": 1024,
+      "accuracy": 0.6259765625,
+      "log_loss": 1.421411497576091
+    },
+    {
+      "model": "forecaster",
+      "train_examples": 128,
+      "variant": "with_history",
+      "validation_scope": "original",
+      "n": 64,
+      "accuracy": 0.640625,
+      "log_loss": 1.0825082357529916
+    },
+    {
+      "model": "decision",
+      "train_examples": 128,
+      "variant": "without_history",
+      "validation_scope": "expanded",
+      "n": 1024,
+      "accuracy": 0.552734375,
+      "log_loss": 1.02808318831614
+    },
+    {
+      "model": "decision",
+      "train_examples": 128,
+      "variant": "without_history",
+      "validation_scope": "original",
+      "n": 64,
+      "accuracy": 0.578125,
+      "log_loss": 0.9642431510807161
+    },
+    {
+      "model": "decision",
+      "train_examples": 128,
+      "variant": "with_history",
+      "validation_scope": "expanded",
+      "n": 1024,
+      "accuracy": 0.568359375,
+      "log_loss": 1.0637468917824089
+    },
+    {
+      "model": "decision",
+      "train_examples": 128,
+      "variant": "with_history",
+      "validation_scope": "original",
+      "n": 64,
+      "accuracy": 0.625,
+      "log_loss": 0.9434630429821631
+    },
+    {
+      "model": "forecaster",
+      "train_examples": 1024,
+      "variant": "without_history",
+      "validation_scope": "expanded",
+      "n": 1024,
+      "accuracy": 0.677734375,
+      "log_loss": 0.7733219120057268
+    },
+    {
+      "model": "forecaster",
+      "train_examples": 1024,
+      "variant": "without_history",
+      "validation_scope": "original",
+      "n": 64,
+      "accuracy": 0.609375,
+      "log_loss": 0.7404712550228897
+    },
+    {
+      "model": "forecaster",
+      "train_examples": 1024,
+      "variant": "with_history",
+      "validation_scope": "expanded",
+      "n": 1024,
+      "accuracy": 0.671875,
+      "log_loss": 0.7762284895599724
+    },
+    {
+      "model": "forecaster",
+      "train_examples": 1024,
+      "variant": "with_history",
+      "validation_scope": "original",
+      "n": 64,
+      "accuracy": 0.6875,
+      "log_loss": 0.7416325353178829
+    },
+    {
+      "model": "decision",
+      "train_examples": 1024,
+      "variant": "without_history",
+      "validation_scope": "expanded",
+      "n": 1024,
+      "accuracy": 0.7177734375,
+      "log_loss": 0.6801332437618429
+    },
+    {
+      "model": "decision",
+      "train_examples": 1024,
+      "variant": "without_history",
+      "validation_scope": "original",
+      "n": 64,
+      "accuracy": 0.640625,
+      "log_loss": 0.7508409601457613
+    },
+    {
+      "model": "decision",
+      "train_examples": 1024,
+      "variant": "with_history",
+      "validation_scope": "expanded",
+      "n": 1024,
+      "accuracy": 0.71875,
+      "log_loss": 0.7017154452679346
+    },
+    {
+      "model": "decision",
+      "train_examples": 1024,
+      "variant": "with_history",
+      "validation_scope": "original",
+      "n": 64,
+      "accuracy": 0.640625,
+      "log_loss": 0.7889737351779318
+    },
+    {
+      "model": "forecaster",
+      "train_examples": 4096,
+      "variant": "without_history",
+      "validation_scope": "expanded",
+      "n": 1024,
+      "accuracy": 0.6806640625,
+      "log_loss": 0.7052722829395551
+    },
+    {
+      "model": "forecaster",
+      "train_examples": 4096,
+      "variant": "without_history",
+      "validation_scope": "original",
+      "n": 64,
+      "accuracy": 0.703125,
+      "log_loss": 0.6304441693085365
+    },
+    {
+      "model": "forecaster",
+      "train_examples": 4096,
+      "variant": "with_history",
+      "validation_scope": "expanded",
+      "n": 1024,
+      "accuracy": 0.693359375,
+      "log_loss": 0.7006749912571075
+    },
+    {
+      "model": "forecaster",
+      "train_examples": 4096,
+      "variant": "with_history",
+      "validation_scope": "original",
+      "n": 64,
+      "accuracy": 0.671875,
+      "log_loss": 0.6211531769976144
+    },
+    {
+      "model": "decision",
+      "train_examples": 4096,
+      "variant": "without_history",
+      "validation_scope": "expanded",
+      "n": 1024,
+      "accuracy": 0.7314453125,
+      "log_loss": 0.6211080482848
+    },
+    {
+      "model": "decision",
+      "train_examples": 4096,
+      "variant": "without_history",
+      "validation_scope": "original",
+      "n": 64,
+      "accuracy": 0.71875,
+      "log_loss": 0.58620611955989
+    },
+    {
+      "model": "decision",
+      "train_examples": 4096,
+      "variant": "with_history",
+      "validation_scope": "expanded",
+      "n": 1024,
+      "accuracy": 0.724609375,
+      "log_loss": 0.6513983582888596
+    },
+    {
+      "model": "decision",
+      "train_examples": 4096,
+      "variant": "with_history",
+      "validation_scope": "original",
+      "n": 64,
+      "accuracy": 0.703125,
+      "log_loss": 0.6367857845142335
+    }
+  ],
+  "original_validation_size": 64,
+  "protocol": {
+    "host": "temescal",
+    "started_utc": "2026-11-13T10:48:09.507960+00:00",
+    "train_sizes": [
+      128,
+      1024,
+      4096
+    ],
+    "validation_size": 1024,
+    "reference_sample_sha256": "8320fac5ce0ebeb29e069577a9e73d72f7d07c0709597439687082815700e955",
+    "original_validation_size": 64,
+    "seed": 42,
+    "split_policy": "Unchanged original numeric-session groups; nested train, fixed validation",
+    "source_audit": {
+      "hands": 10000,
+      "sessions": 67,
+      "tables": 92,
+      "decisions": 91356,
+      "human_decisions": 76187,
+      "hero_examples": 76187,
+      "warnings": {
+        "There is no reason for this player to fold.": 40616
+      },
+      "window": 64,
+      "history_timing": "completed earlier hands, observer co-present, reset per directory",
+      "split_unit": "numeric session group; letter-suffix directories stay together",
+      "max_sessions": null,
+      "hands_per_session": null
+    },
+    "code_sha256": {
+      "holdem_history.py": "091d9d103e620dbf4415b3e5cd8baf595c70d4abe872e41810210e0911db702b",
+      "holdem_integration.py": "d17c6b9512573682dcb1576edd532ffd6ef0befd61a903318c02af0b9b7b757e",
+      "training.py": "0677bfc116c30752bff5a5c83e2cdffb4678efdce8dfee742a24c06150ce373f",
+      "opponents/data.py": "247ab518ef9bbd65b18f77ad12a49f4070e787207afa218be6b1652b1e3f89df"
+    },
+    "scaling_code_sha256": "bff35a65e80d251db9d4fbd768cd529f1c5f2edc07144efba22116d3cc883468",
+    "device": "cpu",
+    "threads": 4,
+    "epochs": 1,
+    "batch_size": 16,
+    "encoder_lr": 2e-05,
+    "head_lr": 0.001,
+    "weight_decay": 0.01,
+    "starting_checkpoint_sha256": {
+      "encoder/config.json": "f2451e1f5308bf62286e84b07f4acada71417024293fc3f749d1124d51f739ce",
+      "encoder/model.safetensors": "64b32a7aa5ff776518402506991ac3249274428f116f73d9671c3acdf4aca8c5",
+      "head.pt": "11255400341f5fcf1a491c35441f3d071cd0758c222ddb06d770593cc6ce4d4e",
+      "metadata.json": "803f8a7faa30d6c7f966b51c42eab1675af55b8cfb702304c2e18056057931f1",
+      "tokenizer/special_tokens_map.json": "b6d346be366a7d1d48332dbc9fdf3bf8960b5d879522b7799ddba59e76237ee3",
+      "tokenizer/tokenizer.json": "d241a60d5e8f04cc1b2b3e9ef7a4921b27bf526d9f6050ab90f9267a1f9e5c66",
+      "tokenizer/tokenizer_config.json": "e711904cac23112776b678356ccf702cf934babaa01125f698ac43bf9ad38e73",
+      "tokenizer/vocab.txt": "07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3"
+    },
+    "elapsed_seconds": 697.6378753299941
+  },
+  "caution": "One seed, one epoch, inspected session validation; descriptive learning curve. Larger samples also entail more optimizer updates.",
+  "verification": {
+    "train_00128": {
+      "forecaster_paired_change": {
+        "direction": "with_history minus without_history",
+        "validation_session_groups": 14,
+        "scope": "Descriptive session-cluster intervals conditional on these fits; no retraining",
+        "accuracy": {
+          "estimate": -0.0126953125,
+          "interval_95": [
+            -0.030524342267027292,
+            0.00823066458150564
+          ]
+        },
+        "log_loss": {
+          "estimate": 0.030271164900957485,
+          "interval_95": [
+            -0.02505705204867798,
+            0.08660202008628597
+          ]
+        }
+      },
+      "decision_paired_change": {
+        "direction": "with_history minus without_history",
+        "validation_session_groups": 14,
+        "scope": "Descriptive session-cluster intervals conditional on these fits; no retraining",
+        "accuracy": {
+          "estimate": 0.015625,
+          "interval_95": [
+            0.00693670672038439,
+            0.023383116534490947
+          ]
+        },
+        "log_loss": {
+          "estimate": 0.03566370346626867,
+          "interval_95": [
+            0.0141596457494989,
+            0.0577591443165523
+          ]
+        }
+      },
+      "checkpoint_checks": [
+        {
+          "variant": "without_history",
+          "n": 1024,
+          "accuracy": 0.552734375,
+          "log_loss": 1.02808318831614,
+          "training_loss": 0.9851514399051666,
+          "original_64_max_abs_diff": 0.0,
+          "max_tokens": 203
+        },
+        {
+          "variant": "with_history",
+          "n": 1024,
+          "accuracy": 0.568359375,
+          "log_loss": 1.0637468917824089,
+          "training_loss": 0.8959013968706131,
+          "original_64_max_abs_diff": 0.0,
+          "max_tokens": 368
+        }
+      ]
+    },
+    "train_01024": {
+      "forecaster_paired_change": {
+        "direction": "with_history minus without_history",
+        "validation_session_groups": 14,
+        "scope": "Descriptive session-cluster intervals conditional on these fits; no retraining",
+        "accuracy": {
+          "estimate": -0.005859375,
+          "interval_95": [
+            -0.023029489206754482,
+            0.008396505930982383
+          ]
+        },
+        "log_loss": {
+          "estimate": 0.0029065775542454976,
+          "interval_95": [
+            -0.002910657745658983,
+            0.009576341603371273
+          ]
+        }
+      },
+      "decision_paired_change": {
+        "direction": "with_history minus without_history",
+        "validation_session_groups": 14,
+        "scope": "Descriptive session-cluster intervals conditional on these fits; no retraining",
+        "accuracy": {
+          "estimate": 0.0009765625,
+          "interval_95": [
+            -0.017897425623560052,
+            0.022512225492152937
+          ]
+        },
+        "log_loss": {
+          "estimate": 0.0215822015060917,
+          "interval_95": [
+            -0.0011546735351932566,
+            0.04974769064712838
+          ]
+        }
+      },
+      "checkpoint_checks": [
+        {
+          "variant": "without_history",
+          "n": 1024,
+          "accuracy": 0.7177734375,
+          "log_loss": 0.6801332437618429,
+          "training_loss": 0.8528813044540584,
+          "before_accuracy": 0.291015625,
+          "before_log_loss": 1.2489009149704788,
+          "max_tokens": 206,
+          "reload_max_abs_diff": 0.0
+        },
+        {
+          "variant": "with_history",
+          "n": 1024,
+          "accuracy": 0.71875,
+          "log_loss": 0.7017154452679346,
+          "training_loss": 0.8230515685863793,
+          "before_accuracy": 0.5458984375,
+          "before_log_loss": 1.1060144635049873,
+          "max_tokens": 383,
+          "reload_max_abs_diff": 0.0
+        }
+      ]
+    },
+    "train_04096": {
+      "forecaster_paired_change": {
+        "direction": "with_history minus without_history",
+        "validation_session_groups": 14,
+        "scope": "Descriptive session-cluster intervals conditional on these fits; no retraining",
+        "accuracy": {
+          "estimate": 0.0126953125,
+          "interval_95": [
+            0.0,
+            0.027133157402825875
+          ]
+        },
+        "log_loss": {
+          "estimate": -0.004597291682447569,
+          "interval_95": [
+            -0.008053928378917366,
+            -0.0010702034703209185
+          ]
+        }
+      },
+      "decision_paired_change": {
+        "direction": "with_history minus without_history",
+        "validation_session_groups": 14,
+        "scope": "Descriptive session-cluster intervals conditional on these fits; no retraining",
+        "accuracy": {
+          "estimate": -0.0068359375,
+          "interval_95": [
+            -0.025132462762287432,
+            0.010364785537497099
+          ]
+        },
+        "log_loss": {
+          "estimate": 0.03029031000405948,
+          "interval_95": [
+            -0.00017995963652978964,
+            0.06645309292735996
+          ]
+        }
+      },
+      "checkpoint_checks": [
+        {
+          "variant": "without_history",
+          "n": 1024,
+          "accuracy": 0.7314453125,
+          "log_loss": 0.6211080482848,
+          "training_loss": 0.7357519951183349,
+          "before_accuracy": 0.291015625,
+          "before_log_loss": 1.2489009149704788,
+          "max_tokens": 206,
+          "reload_max_abs_diff": 0.0
+        },
+        {
+          "variant": "with_history",
+          "n": 1024,
+          "accuracy": 0.724609375,
+          "log_loss": 0.6513983582888596,
+          "training_loss": 0.7503350841579959,
+          "before_accuracy": 0.5458984375,
+          "before_log_loss": 1.1060144635049873,
+          "max_tokens": 383,
+          "reload_max_abs_diff": 0.0
+        }
+      ]
+    }
+  },
+  "checks": {
+    "offline_tests_passed": 143,
+    "ruff": "passed",
+    "format": "passed",
+    "mypy": "passed, 24 source files",
+    "original_probabilities": "Original 64 transformer predictions reproduce exactly; original forecaster predictions reproduced within 1e-10",
+    "membership": "All train sets nested; all validation rows fixed; original rows preserved; split groups disjoint",
+    "metrics": "Independently recomputed from every saved validation probability within 1e-12"
+  }
+}
