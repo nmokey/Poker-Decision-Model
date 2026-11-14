@@ -26,8 +26,10 @@ opening `index.html` directly. For a local HTTP preview:
 
 The build needs Matplotlib (the existing `analysis` extra), Quarto, and a working
 LaTeX distribution for PDF. Quarto can install TinyTeX if a local TeX installation
-is unavailable. The browser loads no model weights and never sends an API request
-on page load. Math typesetting may load MathJax from its CDN.
+is unavailable. The article loads the live demo in an expanded iframe
+automatically. Model loading and comparison requests are managed by the embedded
+application; recorded figure controls use only the embedded snapshot. Math
+typesetting may load MathJax from its CDN.
 
 ## Sources and boundaries
 
@@ -72,8 +74,8 @@ spelling and order). Confirm affiliations, expand related work and source/archiv
 citations, and review the proposed title and framing. Independent final evaluation,
 multiple training seeds, fitted calibration, a controlled LLM comparison, latency
 measurements, and payoff evaluation remain future experiments. The article makes
-no result claims for these. The existing live application is embedded on explicit
-reader request; this draft does not alter its layout or serving code.
+no result claims for these. The existing live application is expanded and embedded
+by default; this draft does not alter its layout or serving code.
 
 Browser verification covers the recorded-data controls and responsive layouts. The
 external iframe is checked with an intercepted response to avoid issuing live
