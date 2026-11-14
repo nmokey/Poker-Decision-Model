@@ -39,6 +39,7 @@ and [locking](https://docs.astral.sh/uv/concepts/projects/sync/).
 - `evaluation.py`: reference-action probability metrics and deterministic tie handling.
 - `diagnostics.py`: reliability/error diagnostics and conditional grouped intervals.
 - `opponents/`: chronological Leduc data, causal features, forecasters and run artifacts.
+- `holdem_history.py`, `holdem_integration.py`, `holdem_scaling.py`: causal Pluribus views, matched CPU model pairs, and fixed-validation training sizes.
 - `source_experiments.py`: separate observed-play and teacher-policy tasks.
 - `demo_models.py`, `demo_results.py`: serving catalogue and checked result-table data.
 - `apps/`: interactive presentation of package functionality.
@@ -61,6 +62,8 @@ the separate ML CI job checks all modules and runs offline randomly initialized
 BERT, DistilBERT, and ModernBERT tests without fetching pretrained weights.
 The core-only command excludes `training.py`, `cross_validation.py`,
 `experiments.py`, and `models/encoder.py`; the ML job checks all package modules.
+Hold’em imports PyTorch lazily. Mypy permits that optional import when PyTorch is
+absent and checks its installed types in the ML environment.
 
 For executable notebook changes, validate the relevant workflow in its supported
 environment, then clear outputs and execution counts. For prose-only changes,

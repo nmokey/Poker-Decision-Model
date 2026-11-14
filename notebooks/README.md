@@ -11,6 +11,7 @@ notebooks exchange saved, audited artifacts through the package.
 | Joint state/question/action scoring | [Decision transformer](decision_model.ipynb) | `analysis`, `ml` | CUDA GPU for pretrained training |
 | Scenario folds and controlled head comparison | [Scenario evaluation](evaluation.ipynb) | `analysis`, `ml` | CUDA GPU for enabled pretrained fits |
 | Observed-play replay and solver-policy targets | [Alternative sources](data_sources.ipynb) | `analysis`, `experiments` | Follow the notebook's source/runtime guards |
+| Pluribus histories and matched neural integration | [Hold’em integration](holdem_opponent_integration.ipynb) | `analysis`, `ml`, `experiments` | CPU, local or Colab |
 | Chronological opponent histories and forecasts | [Opponent forecasting](opponent_modeling.ipynb) | `analysis`, `experiments` | CPU, local or Colab |
 
 ## Setup
@@ -77,6 +78,26 @@ and paired opponent-cluster uncertainty. [Run guide](../docs/opponent-experiment
 [recorded results](../docs/meeting4-results.md), and
 [contribution map](../docs/meeting4-integration.md).
 
+## Hold’em history integration
+
+[Hold’em integration](holdem_opponent_integration.ipynb) connects causal Pluribus
+histories to the same Leduc summary method and existing decision architecture.
+It downloads the checksum-pinned public data and BERT Mini checkpoint, replays
+completed co-observed hands, joins forecast/Hero views, and uses one 128/64
+session-grouped sample for both comparisons. Input checks and both one-epoch
+fine-tunes run on CPU. No server outputs or other notebook execution are needed.
+The transformer receives history summaries; learned forecast probabilities remain
+separate. Labels are observed human action categories, not PokerBench references.
+
+Use `python -m poker_decision holdem STEP` for `download-data`, `download-model`,
+`prepare`, `forecast`, `check`, `compare`, or `report`. Outputs stay in ignored
+`artifacts/holdem_integration/`. `python -m poker_decision holdem-scale` extends
+nested training sets to 1,024/4,096 while preserving fixed validation; its default
+output is `artifacts/holdem_scaling/`. Existing module/script entry points remain
+available. See [integration details](../docs/meeting5-integration.md),
+[recorded results](../docs/meeting5-results.md), and
+[larger-run evidence](../docs/meeting5-scaling.md).
+
 ## Artifact conventions
 
 Keep notebook outputs and execution counts cleared in Git. Validate executable
@@ -88,7 +109,8 @@ Reviewed aggregate evidence is versioned under `docs/results/`.
 See the [development guide](../docs/development.md),
 [scientific audit](../docs/scientific-audit.md), and
 [documentation index](../docs/README.md). Forecasts currently run separately from
-Hero's decision model; improved prediction alone does not establish better play.
+Hero's reference-action model; the separate Hold’em integration learns observed
+human actions, and predictive changes do not establish better play.
 
 ## Connections and shared code
 
@@ -101,10 +123,12 @@ The source and opponent walkthroughs demonstrate `tasks.source_task` and
 `tasks.opponent_task`, which expose their records through the decision scorer's
 input/target interface. Each task carries its own question, label meaning and
 external grouping. Pass `question=task.question` when encoding another task.
-This connection enables model reuse; no neural opponent-training result is claimed.
+The Hold’em walkthrough reuses the same encoder and training helpers for observed
+human actions, with opponent summaries added to the context.
 
 New outputs use `data/processed/pokerbench`, `artifacts/baselines`,
 `artifacts/decision_model`, `artifacts/scenario_evaluation`,
-`artifacts/decision_matrix`, `artifacts/alternative_sources`, and `artifacts/opponents`.
+`artifacts/decision_matrix`, `artifacts/alternative_sources`, `artifacts/opponents`,
+`artifacts/holdem_integration`, and `artifacts/holdem_scaling`.
 The package still reads an existing `data/processed/pokerbench_meeting1` dataset
 when the canonical directory is absent, with the same provenance checks.

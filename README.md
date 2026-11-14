@@ -12,14 +12,16 @@ The project studies two connected questions:
 
 One shared Python package supports both tasks. The first workflow uses PokerBench and a pretrained encoder with a shared action
 scorer. The second uses chronological Leduc sessions and statistical forecasting
-models. Connecting those forecasts to better Hero decisions is the next research
-step; it requires opponent-dependent response targets or repeated-play evaluation.
+models. A Pluribus Hold’em workflow now tests the same history summaries as extra
+transformer inputs for observed human actions. Better-response or payoff claims
+still require opponent-dependent response targets or repeated-play evaluation.
 
 ## How it works
 
 | Workflow | Input | Target | Current implementation |
 | --- | --- | --- | --- |
 | Hero decision scoring | Poker situation, question, candidate actions | PokerBench reference action | Joint transformer encoding with a shared linear or MLP head |
+| Hold’em history integration | Hero cards, public state and completed-hand opponent summaries | Observed human action category | Matched forecasters and BERT Mini fine-tunes, plus nested training-size comparisons |
 | Opponent forecasting | Observer-visible situation and earlier opponent actions | Opponent's next observed legal action | Priors, Naive Bayes, logistic variants, equity controls, history windows and Bayesian style updates |
 
 The decision scorer returns probabilities aligned to the supplied action menu,
@@ -45,6 +47,12 @@ visibility/history settings preserve different experimental approaches.
   test decisions. History sometimes hurt immediately after a behavior switch.
   [All methods, uncertainty and limitations](docs/meeting4-results.md).
 
+- **Hold’em integration:** on the same 1,024 validation decisions, increasing training
+  from 128 to 4,096 examples raised transformer accuracy from 55.3% to 73.1%
+  without history. The history version reached 72.5%; these summaries did not
+  improve the transformer. [Verified learning curve](docs/meeting5-scaling.md),
+  [workflow and source review](docs/meeting5-integration.md).
+
 These are distinct, one-seed development experiments with different labels and
 populations. Action agreement does not establish a GTO mixed strategy, calibrated
 probabilities or profitable play. Simulated behavior changes do not establish
@@ -68,6 +76,7 @@ Select the project kernel and choose a walkthrough:
 | [Transformer decision scorer](notebooks/decision_model.ipynb) | Tokenize state/question/options, train a shared head, save and reload checkpoints |
 | [Scenario evaluation](notebooks/evaluation.ipynb) | Fixed scenario folds, controlled head comparisons and reliability/error diagnostics |
 | [Alternative data sources](notebooks/data_sources.ipynb) | Separate Pluribus replay and Leduc teacher-policy experiments |
+| [Hold’em history integration](notebooks/holdem_opponent_integration.ipynb) | Build causal Pluribus histories, compare matched forecasters and decision models |
 | [Opponent forecasting](notebooks/opponent_modeling.ipynb) | Generate chronological sessions, compare history representations and inspect behavior changes |
 
 The notebooks are task-based views of the package. Preparation feeds both decision
@@ -82,9 +91,12 @@ uv run --locked --extra analysis python -m poker_decision prepare
 uv run --locked --extra analysis --extra ml python -m poker_decision train --backbone bert_mini
 uv run --locked --extra analysis --extra ml python -m poker_decision evaluate --backbone bert_mini
 uv run --locked --extra analysis --extra experiments python -m poker_decision opponents --help
+uv run --locked --extra analysis --extra ml --extra experiments python -m poker_decision holdem --help
+uv run --locked --extra analysis --extra ml --extra experiments python -m poker_decision holdem-scale --help
 ```
 
-Training/evaluation commands require CUDA. `evaluate` runs the fixed scenario
+The PokerBench `train`/`evaluate` commands require CUDA. Hold’em `holdem compare`
+and `holdem-scale` are bounded CPU workflows. `evaluate` runs the fixed scenario
 comparison; `train` uses validation loss to select an introductory holdout checkpoint.
 Use `python -m poker_decision TASK --help` for that workflow's options.
 

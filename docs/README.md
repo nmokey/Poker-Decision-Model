@@ -1,6 +1,6 @@
 # Documentation
 
-Updated November 6, 2026. The project combines a trained PokerBench decision
+Updated November 13, 2026. The project combines a trained PokerBench decision
 scorer, a controlled Leduc opponent-forecasting workflow and the live PocketSolver
 demo. Use the task-based guides below; meeting notes preserve contribution history.
 
@@ -13,6 +13,7 @@ demo. Use the task-based guides below; meeting notes preserve contribution histo
 | Transformer reproduction and verified resume | [Training guide](week2-training.md) |
 | Opponent histories, models and commands | [Forecasting guide](opponent-experiments.md) |
 | Forecasting results and behavior changes | [Controlled Leduc results](meeting4-results.md) |
+| Real Hold’em histories and decision-feature integration | [Hold’em workflow](meeting5-integration.md), [verified results](meeting5-results.md), [training-size comparison](meeting5-scaling.md) |
 | Data leakage, metrics and scientific limits | [Scientific audit](scientific-audit.md) |
 | Package development and checks | [Development](development.md), [tests](../tests/README.md) |
 | Demo, serving catalogue and hosting | [Deployment](deployment.md) |
@@ -28,6 +29,8 @@ ignored directories or checksum-pinned model release assets.
 - [Transformer architecture reconciliation](meeting2-integration.md)
 - [Demo submission review](meeting3-review.md)
 - [Opponent experiment reconciliation](meeting4-integration.md)
+- [Hold’em integration and member reconciliation](meeting5-integration.md)
+- [Additional Week 7 study review](meeting5-additional-submission.md)
 - [Original proposal](archive/original-proposal.md)
 
 The decision-model and forecasting scores concern different targets and datasets.

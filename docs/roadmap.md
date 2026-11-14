@@ -1,6 +1,6 @@
 # Roadmap and current status
 
-Updated November 6, 2026. The work is organized by capability; the
+Updated November 13, 2026. The work is organized by capability; the
 [original proposal](archive/original-proposal.md) retains the initial calendar.
 
 ## Implemented
@@ -12,6 +12,7 @@ Updated November 6, 2026. The work is organized by capability; the
 | Grouped development comparison | 40 fits on five fixed scenario folds; all eight models reported on 10,000 examples |
 | Interactive inference | Live PocketSolver with all trained model choices, Groq comparison and saved CPU results table |
 | Opponent forecasting | Chronological Leduc sessions, repeated-identity splits, five policy families, causal summaries and Bayesian updates |
+| Hold’em history integration | Real Pluribus replay, shared forecast/Hero sample, matched BERT Mini fits and fixed-validation 128/1,024/4,096-example comparison; current summaries show no transformer benefit |
 | Forecast evaluation | Matched baselines, history-window ablations, validation/grouped-training selection, replay and paired opponent-cluster reporting |
 
 See [decision-model results](week2-results.md), [forecast results](meeting4-results.md)

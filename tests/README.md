@@ -54,3 +54,15 @@ shared setup, canonical/legacy dataset loading, unified CLI dispatch, shared
 optimizer settings, training-only learning checks, holdout checkpoint selection,
 and source/opponent adapters. Adapter tests change current labels and hidden
 identity metadata to verify they do not enter the current model inputs.
+
+## Hold’em integration
+
+`test_holdem_history.py` and `test_holdem_integration.py` cover causal replay
+mutations, private-card/observer visibility, seat rotation, failed-hand rollback,
+windowed Leduc summaries, suffix-directory reset/grouped splitting, unique paired
+views, local/global legal-menu probability mapping, saved-sample corruption, and
+nested training with fixed validation. The project tests include the shared
+notebook setup and dependency-light unified `holdem` / `holdem-scale` help paths.
+The real-data run and historical training-size experiment are separate from these
+offline safeguards; see [the results](../docs/meeting5-results.md) and
+[larger-run evidence](../docs/meeting5-scaling.md).

@@ -12,6 +12,14 @@ COMMANDS = {
         "poker_decision.opponents.experiment",
         "Generate, select, audit or score forecasts",
     ),
+    "holdem": (
+        "poker_decision.holdem_integration",
+        "Compare Pluribus forecasts and decision models with opponent history",
+    ),
+    "holdem-scale": (
+        "poker_decision.holdem_scaling",
+        "Compare nested Hold'em training samples on fixed validation decisions",
+    ),
 }
 
 

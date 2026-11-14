@@ -17,11 +17,15 @@ flowchart TD
     A[Pluribus replay and Leduc teacher] --> I[Shared DecisionInputs / DecisionExample adapters]
     H[Chronological Leduc opponent sessions] --> F[Causal features and statistical forecasts]
     H --> I
+    A --> O[Observer-specific completed-hand Hold’em summaries]
+    O --> P[Matched public forecasters and own-card decision fits]
+    P --> V[Fixed-validation training-size comparison]
     I --> R[Reusable encoder and training interface]
 ```
 
-The adapter connection enables reuse of model components. It is not a demonstrated
-neural forecast or opponent-aware Hero policy. PokerBench, observed actions and
+The adapters share model components. The Hold’em workflow verifies summaries as
+neural inputs for observed-human-action prediction; it does not demonstrate an
+improved Hero policy or a learned forecast-to-decision stack. PokerBench, observed actions and
 teacher argmax labels retain different meanings, questions, action abstractions
 and evaluation protocols. Connecting forecasts to better play still requires
 response targets or repeated-play payoff evaluation.
@@ -34,9 +38,10 @@ response targets or repeated-play payoff evaluation.
 | Inspect and fit a decision scorer | [Decision model](../notebooks/decision_model.ipynb) | `models.encoder`, `training` | `artifacts/decision_model` |
 | Grouped comparisons and diagnostics | [Evaluation](../notebooks/evaluation.ipynb) | `scenarios`, `cross_validation`, `diagnostics`, `experiments` | `artifacts/scenario_evaluation` or `artifacts/decision_matrix` |
 | Replay and teacher-policy sources | [Data sources](../notebooks/data_sources.ipynb) | `source_experiments`, `tasks.source_task` | `artifacts/alternative_sources` |
+| Test Hold’em opponent summaries | [Hold’em integration](../notebooks/holdem_opponent_integration.ipynb) | `holdem_history`, `holdem_integration`, `holdem_scaling`, shared training helpers | `artifacts/holdem_integration`, `artifacts/holdem_scaling` |
 | Forecast an opponent from earlier play | [Opponent modeling](../notebooks/opponent_modeling.ipynb) | `opponents`, `tasks.opponent_task` | `artifacts/opponents` |
 
-`python -m poker_decision {prepare,train,evaluate,opponents}` dispatches to these
+`python -m poker_decision {prepare,train,evaluate,opponents,holdem,holdem-scale}` dispatches to these
 workflows. Each command has its own `--help` and loads only its task's dependencies.
 Existing module entry points remain available. `scripts/run_decision_matrix.py`
 queues the four backbone comparisons on three GPUs; its historical script name
@@ -93,3 +98,17 @@ relevant task notebook. Keep a result table in its canonical results document,
 then link to it from walkthroughs. Meeting integration notes are provenance records,
 not parallel implementations. See [development](development.md) for dependencies
 and [scientific audit](scientific-audit.md) for interpretation limits.
+
+## Hold’em histories and publication evidence
+
+The Hold’em walkthrough uses the same setup and optimizer as the other task
+clients. Public forecasts exclude private cards; Hero sees its own cards and
+summaries built only from completed co-observed hands. Related suffix directories
+stay in one split group while memory resets per directory. The injected feature
+is the history summary, not a learned forecaster probability vector.
+
+Historical Meeting 5 runs used `artifacts/holdem_meeting5` and
+`artifacts/holdem_meeting5_scaling` in the original checkout. Their saved results
+and fingerprints remain historical records. The published workflow uses the
+current task-based default paths above; explicit `--out` is still supported.
+Code changes require new preparation rather than silently accepting old hashes.
