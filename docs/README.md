@@ -14,7 +14,7 @@ demo. Use the task-based guides below; meeting notes preserve contribution histo
 | Opponent histories, models and commands | [Forecasting guide](opponent-experiments.md) |
 | Forecasting results and behavior changes | [Controlled Leduc results](meeting4-results.md) |
 | Real Hold’em histories and decision-feature integration | [Hold’em workflow](meeting5-integration.md), [verified results](meeting5-results.md), [training-size comparison](meeting5-scaling.md) |
-| Hold’em model/head, memory, format and training-seed comparisons | [GPU ablation protocol](meeting5-ablations.md) |
+| Hold’em model/head, memory, format and training-seed comparisons | [GPU ablation protocol](meeting5-ablations.md), [recorded comparisons](meeting5-ablation-results.md) |
 | Data leakage, metrics and scientific limits | [Scientific audit](scientific-audit.md) |
 | Package development and checks | [Development](development.md), [tests](../tests/README.md) |
 | Demo, serving catalogue and hosting | [Deployment](deployment.md) |
@@ -35,5 +35,6 @@ ignored directories or checksum-pinned model release assets.
 - [Original proposal](archive/original-proposal.md)
 
 The decision-model and forecasting scores concern different targets and datasets.
-Both are one-seed development evidence. Neither establishes profitable play or
-human psychological-state inference.
+The original comparisons use one seed. Selected Hold’em configurations also have
+three training-seed repeats on a fixed inspected validation set. These results
+do not establish profitable play or human psychological-state inference.

@@ -6,6 +6,9 @@ It preserves the verified 4,096 training and 1,024 validation decision IDs, thei
 order, targets, current states, menus and session groups. The validation set has
 already been inspected; all selection here is development analysis.
 
+See [the recorded comparisons](meeting5-ablation-results.md) for scores and
+training-seed variability.
+
 ## Declared experiment sequence
 
 1. Compare BERT Mini and DistilBERT, each with its published linear and MLP head,
@@ -26,6 +29,13 @@ already been inspected; all selection here is development analysis.
 The default plan has 18 fits. The two selection decisions and all candidates
 are recorded, including configurations that do not help. Seed repeats assess
 training variability on this split; they are not an independent final test.
+
+The observed three-epoch seed-42 accuracy gain prompted a secondary replication
+of that pair on seeds 43 and 44, adding four fits. It preserves the original
+plan and its log-loss selection, and records the additional accuracy-motivated
+selection separately. Its configuration objects are retained in the aggregate
+results and can be supplied to the existing `fit --fit-json` command. No new
+hyperparameter settings are selected from those repeats.
 
 ## Settings and execution
 

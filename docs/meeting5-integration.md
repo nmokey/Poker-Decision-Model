@@ -150,3 +150,12 @@ fresh notebook execution and exact prediction parity for both 128/64 model pairs
 All 164 tests, full/core type checks, lint and formatting passed. Default fresh outputs
 are `artifacts/holdem_integration` and `artifacts/holdem_scaling`. No model weights
 or generated decision-level data are included in the code change.
+
+## GPU feature ablations
+
+The [GPU follow-up](meeting5-ablations.md) keeps the larger run's 4,096/1,024
+memberships fixed, compares BERT Mini/DistilBERT and linear/MLP heads, then tests
+history windows, serialization, opponent assignment, training duration and seeds.
+It has its own source fingerprints and float32 microbatch protocol. The original
+CPU scores remain historical records. See [ablation results](meeting5-ablation-results.md)
+for the architecture-dependent effects and seed variability.

@@ -21,7 +21,7 @@ still require opponent-dependent response targets or repeated-play evaluation.
 | Workflow | Input | Target | Current implementation |
 | --- | --- | --- | --- |
 | Hero decision scoring | Poker situation, question, candidate actions | PokerBench reference action | Joint transformer encoding with a shared linear or MLP head |
-| Hold’em history integration | Hero cards, public state and completed-hand opponent summaries | Observed human action category | Matched forecasters and BERT Mini fine-tunes, plus nested training-size comparisons |
+| Hold’em history integration | Hero cards, public state and completed-hand opponent summaries | Observed human action category | Matched forecasters and transformer fits, training-size comparisons and feature ablations |
 | Opponent forecasting | Observer-visible situation and earlier opponent actions | Opponent's next observed legal action | Priors, Naive Bayes, logistic variants, equity controls, history windows and Bayesian style updates |
 
 The decision scorer returns probabilities aligned to the supplied action menu,
@@ -50,12 +50,16 @@ visibility/history settings preserve different experimental approaches.
 - **Hold’em integration:** on the same 1,024 validation decisions, increasing training
   from 128 to 4,096 examples raised transformer accuracy from 55.3% to 73.1%
   without history. The history version reached 72.5%; these summaries did not
-  improve the transformer. [Verified learning curve](docs/meeting5-scaling.md),
+  improve BERT Mini in that run. GPU follow-ups find conditional gains with
+  DistilBERT/MLP that vary with the history settings and training seed.
+  [Verified learning curve](docs/meeting5-scaling.md),
   [workflow and source review](docs/meeting5-integration.md),
-  [matched GPU ablation protocol](docs/meeting5-ablations.md).
+  [GPU ablation results](docs/meeting5-ablation-results.md).
 
-These are distinct, one-seed development experiments with different labels and
-populations. Action agreement does not establish a GTO mixed strategy, calibrated
+These are distinct development experiments with different labels and populations.
+The original comparisons use one seed; selected Hold’em configurations also have
+three training-seed repeats on the same validation split.
+Action agreement does not establish a GTO mixed strategy, calibrated
 probabilities or profitable play. Simulated behavior changes do not establish
 human tilt detection. See the [scientific audit](docs/scientific-audit.md).
 

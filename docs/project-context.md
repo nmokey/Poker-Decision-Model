@@ -72,10 +72,17 @@ Pluribus; the transformer sees the acting human’s own cards and opponent
 summaries. Both inputs precede their separate observed-action label.
 
 On a fixed 1,024-decision validation set, increasing training from 128 to 4,096
-examples raised the no-history transformer from 55.3% to 73.1% accuracy. History
+examples raised the no-history BERT Mini from 55.3% to 73.1% accuracy. History
 reached 72.5% and worsened log loss. The 4,096-example forecaster had a modest
 history gain. These one-seed development results demonstrate the integration;
 they do not show an improved reference-action policy. [Results and protocol](meeting5-scaling.md).
+
+A [GPU ablation follow-up](meeting5-ablation-results.md) compares BERT Mini and
+DistilBERT with linear/MLP heads, then varies the history window, wording, opponent
+assignment and training duration. DistilBERT/MLP has conditional gains; the
+three-seed checks show that neither accuracy nor log loss improves uniformly.
+The sampling and session split remain fixed, and additional selection is recorded
+as development analysis.
 
 ## Live PocketSolver
 
