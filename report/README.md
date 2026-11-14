@@ -27,7 +27,7 @@ opening `index.html` directly. For a local HTTP preview:
 The build needs Matplotlib (the existing `analysis` extra), Quarto, and a working
 LaTeX distribution for PDF. Quarto can install TinyTeX if a local TeX installation
 is unavailable. The article loads the live demo in an expanded iframe
-automatically. Model loading and comparison requests are managed by the embedded
+automatically in light mode to match the article. Model loading and comparison requests are managed by the embedded
 application; recorded figure controls use only the embedded snapshot. Math
 typesetting may load MathJax from its CDN.
 
