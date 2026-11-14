@@ -1,0 +1,7 @@
+% Wrap the shared author metadata within the printed page width.
+\makeatletter
+\AtBeginDocument{%
+  \let\pocketsolverauthors\@author
+  \author{\parbox{0.95\textwidth}{\centering\pocketsolverauthors}}%
+}
+\makeatother
