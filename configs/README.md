@@ -17,6 +17,12 @@ resume, and [all accuracy/log-loss results](../docs/week2-results.md) for the
 completed comparison. Raw run artifacts and model files remain ignored. Never
 store credentials in experiment settings.
 
+Hold’em history ablations use [holdem_ablations.json](holdem_ablations.json), a
+separate fixed-membership follow-up to the Meeting 5 integration. It configures
+the encoder/head pairs, history windows, training epochs/seeds and GPU microbatches.
+See [the ablation protocol](../docs/meeting5-ablations.md) for the declared sequence
+and development-selection limits.
+
 
 Opponent generation uses `Config` and history features use `FeatureSpec` in
 [`opponents/data.py`](../src/poker_decision/opponents/data.py). Selection/evaluation

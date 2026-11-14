@@ -14,6 +14,7 @@ demo. Use the task-based guides below; meeting notes preserve contribution histo
 | Opponent histories, models and commands | [Forecasting guide](opponent-experiments.md) |
 | Forecasting results and behavior changes | [Controlled Leduc results](meeting4-results.md) |
 | Real Hold’em histories and decision-feature integration | [Hold’em workflow](meeting5-integration.md), [verified results](meeting5-results.md), [training-size comparison](meeting5-scaling.md) |
+| Hold’em model/head, memory, format and training-seed comparisons | [GPU ablation protocol](meeting5-ablations.md) |
 | Data leakage, metrics and scientific limits | [Scientific audit](scientific-audit.md) |
 | Package development and checks | [Development](development.md), [tests](../tests/README.md) |
 | Demo, serving catalogue and hosting | [Deployment](deployment.md) |

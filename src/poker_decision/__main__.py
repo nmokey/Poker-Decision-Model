@@ -20,6 +20,10 @@ COMMANDS = {
         "poker_decision.holdem_scaling",
         "Compare nested Hold'em training samples on fixed validation decisions",
     ),
+    "holdem-ablate": (
+        "poker_decision.holdem_ablations",
+        "Run matched GPU model, history, format, duration and seed ablations",
+    ),
 }
 
 

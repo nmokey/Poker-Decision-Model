@@ -51,7 +51,8 @@ visibility/history settings preserve different experimental approaches.
   from 128 to 4,096 examples raised transformer accuracy from 55.3% to 73.1%
   without history. The history version reached 72.5%; these summaries did not
   improve the transformer. [Verified learning curve](docs/meeting5-scaling.md),
-  [workflow and source review](docs/meeting5-integration.md).
+  [workflow and source review](docs/meeting5-integration.md),
+  [matched GPU ablation protocol](docs/meeting5-ablations.md).
 
 These are distinct, one-seed development experiments with different labels and
 populations. Action agreement does not establish a GTO mixed strategy, calibrated
@@ -93,11 +94,14 @@ uv run --locked --extra analysis --extra ml python -m poker_decision evaluate --
 uv run --locked --extra analysis --extra experiments python -m poker_decision opponents --help
 uv run --locked --extra analysis --extra ml --extra experiments python -m poker_decision holdem --help
 uv run --locked --extra analysis --extra ml --extra experiments python -m poker_decision holdem-scale --help
+uv run --locked --extra analysis --extra ml --extra experiments python -m poker_decision holdem-ablate --help
 ```
 
 The PokerBench `train`/`evaluate` commands require CUDA. Hold’em `holdem compare`
 and `holdem-scale` are bounded CPU workflows. `evaluate` runs the fixed scenario
 comparison; `train` uses validation loss to select an introductory holdout checkpoint.
+`holdem-ablate` runs matched model/history comparisons on CUDA with configurable
+microbatches and a fixed effective batch size.
 Use `python -m poker_decision TASK --help` for that workflow's options.
 
 Pretrained transformer training also needs `--extra ml` and a local CUDA GPU or

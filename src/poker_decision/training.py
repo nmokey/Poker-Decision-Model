@@ -83,11 +83,14 @@ def train_epoch(
     optimizer: Any,
     batch_size: int = 16,
     seed: int = 42,
+    micro_batch_size: int | None = None,
 ) -> float:
     if not encoded or len(encoded) != len(targets) or batch_size < 1:
         raise ValueError("Need matching nonempty examples/targets and a positive batch size")
     if any(not 0 <= t < len(e.candidate_spans) for e, t in zip(encoded, targets, strict=True)):
         raise ValueError("Target outside actual candidate set")
+    if micro_batch_size is not None and micro_batch_size < 1:
+        raise ValueError("Microbatch size must be positive")
     model.train()
     device = next(model.parameters()).device
     order = list(range(len(encoded)))
@@ -95,16 +98,20 @@ def train_epoch(
     total = 0.0
     for start in range(0, len(order), batch_size):
         indices = order[start : start + batch_size]
-        batch = batch_on_device([encoded[i] for i in indices], pad_token_id, device)
-        labels = torch.tensor([targets[i] for i in indices], device=device)
         optimizer.zero_grad(set_to_none=True)
-        loss = F.cross_entropy(model(**batch), labels)
-        if not torch.isfinite(loss):
-            raise ValueError("Nonfinite loss")
-        loss.backward()  # type: ignore[no-untyped-call]
+        micro_size = micro_batch_size or batch_size
+        for offset in range(0, len(indices), micro_size):
+            micro = indices[offset : offset + micro_size]
+            batch = batch_on_device([encoded[i] for i in micro], pad_token_id, device)
+            labels = torch.tensor([targets[i] for i in micro], device=device)
+            loss = F.cross_entropy(model(**batch), labels)
+            if not torch.isfinite(loss):
+                raise ValueError("Nonfinite loss")
+            weighted = loss * (len(micro) / len(indices))
+            weighted.backward()  # type: ignore[no-untyped-call]
+            total += float(loss.detach()) * len(micro)
         torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
         optimizer.step()
-        total += float(loss.detach()) * len(indices)
     return total / len(encoded)
 
 

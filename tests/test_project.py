@@ -43,12 +43,21 @@ def test_root_discovery_and_unified_help():
     )
     assert all(
         task in result.stdout
-        for task in ["prepare", "train", "evaluate", "opponents", "holdem", "holdem-scale"]
+        for task in [
+            "prepare",
+            "train",
+            "evaluate",
+            "opponents",
+            "holdem",
+            "holdem-scale",
+            "holdem-ablate",
+        ]
     )
     for task, option in (
         ("prepare", "--sample-per-kind"),
         ("holdem", "download-data"),
         ("holdem-scale", "--train-sizes"),
+        ("holdem-ablate", "--gpu"),
     ):
         result = subprocess.run(
             [sys.executable, "-m", "poker_decision", task, "--help"],

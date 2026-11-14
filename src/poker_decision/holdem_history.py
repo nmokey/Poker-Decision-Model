@@ -231,12 +231,15 @@ def load_histories(
     hero_per_session: int | None = 8,
     max_sessions: int | None = None,
     hands_per_session: int | None = None,
+    window: int = WINDOW,
 ) -> tuple[list[dict[str, Any]], list[DecisionExample], dict[str, Any]]:
     """Replay before sampling; optional bounds select a chronological prefix.
 
     The tuple interface and bounded Hero probes remain for the feasibility script.
     The meeting workflow requests all human Hero decisions.
     """
+    if type(window) is not int or window < 1:
+        raise ValueError("window must be a positive integer")
     for name, value in (
         ("hero_per_session", hero_per_session),
         ("max_sessions", max_sessions),
@@ -272,7 +275,7 @@ def load_histories(
                 if hero_per_session is None
                 else set(np.linspace(0, len(hands) - 1, hero_per_session, dtype=int))
             )
-            builder = HistoryBuilder()
+            builder = HistoryBuilder(window=window)
             for position, (hand, name) in enumerate(hands):
                 current, samples, messages = builder.replay(
                     archive.read(name).decode(),
@@ -297,7 +300,7 @@ def load_histories(
             human_decisions=sum(r["actor_alias"] != "Pluribus" for r in rows),
             hero_examples=len(heroes),
             warnings=dict(warnings_seen),
-            window=WINDOW,
+            window=window,
             history_timing="completed earlier hands, observer co-present, reset per directory",
             split_unit="numeric session group; letter-suffix directories stay together",
             max_sessions=max_sessions,
