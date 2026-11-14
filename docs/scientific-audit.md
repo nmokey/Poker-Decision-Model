@@ -2,10 +2,11 @@
 
 Initial review: October 28, 2026. Transformer completion: November 2, 2026.
 Opponent-forecasting update: November 6, 2026.
+Real Hold’em integration and 22-fit GPU ablation update: November 13, 2026.
 
 ## Scope and conclusion
 
-The maintained Meeting 2 notebook and its late-submission extensions were reviewed
+The maintained decision, source, opponent and Hold’em workflows were reviewed
 for input/label separation, related-example isolation, fit/evaluation boundaries,
 checkpoint selection, reproducibility, metric semantics, and source-specific claims.
 The implementation has executable safeguards; this is not proof that all dataset
@@ -23,8 +24,9 @@ ModernBERT + linear has the highest observed accuracy (71.92%) and lowest log lo
 (0.6078), versus 69.69% / 1.0025 for the linear candidate baseline. DistilBERT +
 linear is close at 71.78% / 0.6164; a single seed does not establish a reliable
 advantage for ModernBERT. This is development CV on the inspected working pool.
-Notebook training remains opt-in and requires a local CUDA GPU or Colab GPU;
-offline model tests use tiny randomly initialized encoders. Historical holdout
+PokerBench notebook training remains opt-in and requires a local CUDA GPU or Colab GPU;
+the bounded Hold’em integration uses CPU and its ablation runner requires CUDA.
+Offline model tests use tiny randomly initialized encoders. Historical holdout
 scores below and in the integration notes remain distinct from these CV results.
 
 ## Findings and fixes
@@ -125,8 +127,9 @@ association is not, by itself, evidence of leakage or dataset construction error
 - Pluribus: strict PokerKit replay, acting-player cards and prior public information
   only; menus are built before the observed label is read. Exact sizing is
   abstracted. Replay failures are saved and block modeling exports. Shared hands
-  or identical contexts are joined into connected split components. Player/session
-  dependence and longitudinal opponent-feature construction still need investigation.
+  or identical contexts are joined into connected split components. This source
+  adapter does not construct longitudinal history; the separate Hold’em workflow
+  below adds completed-hand histories and numeric-session-group splitting.
 - Leduc: acting-player information-state inputs, approximate CFR+ teacher
   distributions, argmax labels and sampled actions saved separately. Exploitability
   measures the teacher only. No learned neural student's exploitability is claimed,
@@ -134,8 +137,9 @@ association is not, by itself, evidence of leakage or dataset construction error
 
 Hidden-card mutation controls check both sources. Public data availability and a
 publisher license do not independently establish every upstream redistribution
-right. Full archive replay and full solver-generation runs are not verified by the
-small offline fixtures used here.
+right. Small offline fixtures do not verify a full archive or solver run. The
+separate Hold’em experiment has now replayed all 10,000 archived hands; it does
+not establish a completed full Leduc teacher-generation experiment.
 
 ## Executable checks
 
@@ -163,7 +167,7 @@ Tests cover:
   stored metrics and checkpoint weights.
 - Hidden-card controls, strict replay failure accounting, connected hand/context
   splits, and separate Leduc teacher target semantics.
-- Notebook schema, syntax, cleared outputs, training-disabled defaults and CUDA training guards.
+- Notebook schema, syntax, cleared outputs, training-disabled defaults and task-specific compute guards.
 
 At the initial audit, the scenario and source notebooks also executed from fresh
 local Jupyter kernels with their default training/download/solver flags disabled. The actual
@@ -175,8 +179,9 @@ Reference-action agreement does not establish profitable or unexploitable poker.
 Single labels do not recover full mixed strategies. Tests cannot prove that the
 reference action is optimal, menus exhaust legal actions, or all dataset shortcuts
 have disappeared. The grouped protocol has now completed. The next empirical
-steps are retraining across seeds, measuring serving tradeoffs, and defining an
-independent evaluation or nested grouped selection before claiming a model winner.
+steps for PokerBench include retraining across seeds and an independent evaluation
+or nested grouped selection before claiming a model winner. Local CPU serving
+latency is now recorded separately; representative hosted measurements remain open.
 
 
 ### Encoder swaps and development sweeps
@@ -190,7 +195,7 @@ APIs for both head types, verify matching tokenizer/encoder revisions, and check
 that the displayed learning rates and decay reach AdamW. Full pretrained results
 are reported separately in the [completed experiment report](week2-results.md).
 
-The optional the evaluation notebook grid validates settings, prints fit count, preserves fold
+The optional evaluation notebook grid validates settings, prints fit count, preserves fold
 membership/seed, and saves every trial through the existing protocol runner.
 It explicitly produces development comparisons, not nested model selection.
 Winning sweep scores cannot be reported as independent final test performance.
@@ -224,3 +229,57 @@ combine incomparable source scores into a leaderboard.
 No learned sequence encoder, human tilt detector, fusion with the existing Hero
 policy or improvement in poker payoff was established by this forecasting result.
 Any subsequent tuning on these exposed test results needs a new evaluation design.
+
+## Real Hold’em history features and GPU ablations
+
+The [Hold’em workflow](meeting5-integration.md) replays the checksum-pinned Pluribus
+archive and builds both views before consuming the current action. Memory uses
+only successfully completed, co-observed hands, follows player aliases through
+seat rotations and resets per original directory. Related suffix directories
+stay together in numeric-session split groups. Test mutations cover current/future
+actions, private cards, observer absence and failed-hand rollback.
+
+The public forecaster predicts a human's action using that human's history. The
+transformer predicts the acting human's observed action with access to their own
+cards and summaries of other active opponents. Their shared source IDs do not
+make these the same prediction question. The neural input contains summaries,
+not learned forecaster probabilities; its targets remain observed categories with
+sizing abstracted, rather than optimal responses or PokerBench references.
+
+The [initial 128/64 check](meeting5-results.md), [CPU learning curve](meeting5-scaling.md)
+and [22-fit GPU study](meeting5-ablation-results.md) are separate recorded protocols.
+The GPU comparisons preserve the larger study's ordered 4,096 training and 1,024
+validation decisions. All inputs fit without truncation or silent drops. Paired
+fits use identical starting checkpoint weights, states, labels and menus. Every
+saved model reproduces tokenization and probabilities exactly after reload, and
+independent rescoring verifies all reported metrics and paired intervals.
+
+Architecture and feature selection use an already inspected validation set. The
+original 18-fit plan selects by paired log-loss change; an additional four-fit
+replication of the three-epoch pair was prompted by its seed-42 accuracy gain and
+is recorded separately. Short-history DistilBERT/MLP averages +0.91 accuracy points
+and −0.0102 loss across seeds 42–44. The three-epoch recent-64 pair averages +0.42
+points but +0.0043 worse loss. Neither metric improves for every seed.
+
+The swapped-profile control rotates causal profiles among active seats within a
+decision, without donor rows or cross-split information. It changes 597/1,024
+validation inputs and retains the profile values. Its similar performance limits
+evidence for precise opponent assignment; it does not remove all historical signal.
+
+The same humans can recur in training and validation sessions. Session-cluster
+intervals condition on fitted predictions and omit adaptive-selection uncertainty;
+three training seeds on the same rows are not independent data replications.
+GPU float32/microbatch training is a distinct protocol from the historical CPU
+fits. A larger one-epoch training sample also means more optimizer steps.
+
+The GPU completion checks passed 169 full-environment tests and 112 core tests
+with 33 optional-dependency skips, plus full/core typing, lint, formatting and
+lock consistency. These are run-time verification records, not permanent test
+counts or evidence of predictive superiority. Historical evidence files retain
+their original source hashes and verification counts.
+
+The [additional submitted notebook](meeting5-additional-submission.md) has a
+different protocol and inaccessible prediction/model exports; its scores are
+reviewed claims rather than reproduced results. The [results index](results/README.md)
+keeps these verification levels separate. None of these studies establishes
+improved PokerBench reference decisions, human tilt detection or poker profit.

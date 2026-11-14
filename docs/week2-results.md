@@ -1,5 +1,9 @@
 # Week 2 development results
 
+PokerBench reference-action comparison. See the [results index](results/README.md)
+for the separate Leduc and Hold’em studies. The serving-latency measurements below
+use a different workload from this quality evaluation.
+
 Completed: November 2, 2026. All eight transformer/head combinations have complete
 five-fold results: 40 full encoder fits. Each model has exactly one held-out
 prediction for each of the same 10,000 examples.

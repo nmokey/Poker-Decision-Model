@@ -1,12 +1,16 @@
 # Meeting 5: larger training samples
 
+Stage 2: the historical CPU learning curve. See the [results index](results/README.md)
+for all stages and the [GPU follow-up](meeting5-ablation-results.md) for subsequent
+architecture, feature and training-seed comparisons.
+
 Completed November 13, 2026 on **temescal**. The original server-run metrics were
 verified again: the 64 transformer predictions reproduce exactly, and the original
 forecaster probabilities reproduce within 1e-10. Then the same workflow was run
 with 1,024 and 4,096 training decisions. Original outputs were preserved.
 
-**More training data substantially improves prediction, but the current opponent
-summaries do not improve the transformer in these runs.** The larger forecaster
+**Larger training samples substantially improve prediction, but history does not
+improve BERT Mini linear's log loss in these runs.** The larger forecaster
 has a modest history benefit. These are observed-human-action development results,
 not optimal-strategy or poker-profit measurements.
 
@@ -64,13 +68,13 @@ a supplementary small sample; the 1,024-row set is the primary comparison here.
 - Every saved prediction was independently checked against its target and source
   ID; recomputed metrics match within 1e-12. Train membership is nested, validation
   membership is identical, and session groups do not overlap.
-- All 143 offline tests pass. Repository lint/format checks and full mypy checks
-  pass (24 source files).
+- At this historical run, all 143 offline tests passed. Repository lint/format
+  checks and full mypy checks passed (24 source files).
 - Total experiment time was about 11.6 minutes on CPU, including source replay,
   sampling, refits, evaluation, checkpoint writes, and reload checks.
 
 ```sh
-.venv/bin/python -m poker_decision.holdem_scaling
+.venv/bin/python -m poker_decision holdem-scale
 ```
 
 The runner refuses to overwrite an existing output directory; use `--out NEW_PATH`
@@ -86,3 +90,6 @@ and do not capture retraining or unseen-player uncertainty. A larger one-epoch
 sample also entails more optimizer steps, so the curve is not an equal-compute
 comparison. The injected feature remains a history summary; learned forecaster
 probabilities are not fed to the transformer.
+
+Fresh runs of the refactored published workflow use `artifacts/holdem_scaling/`
+by default; the historical server output path above is preserved as provenance.

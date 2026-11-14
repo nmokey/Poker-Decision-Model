@@ -1,0 +1,342 @@
+{
+  "submissions": [
+    {
+      "file": "Meeting 5 Hold'em.ipynb",
+      "sha256": "483f145bca0800a621d90f1aee3d5fabbd13c76387e9a14ee65e489ca6df2880",
+      "bytes": 105668,
+      "cells": 22,
+      "recorded_outputs": [
+        {
+          "cell": 10,
+          "text": "               n  accuracy  log_loss\npublic_only   64  0.578125  1.059953\nwith_history  64  0.609375  1.061665"
+        },
+        {
+          "cell": 14,
+          "text": "                  n  accuracy  log_loss  training_loss  max_tokens  \\\nwithout_history  64   0.62500  0.862966       0.971960         212   \nwith_history     64   0.65625  0.793378       1.019966         355   \n\n                 checkpoint_reload_max_abs_diff device  \nwithout_history                             0.0    cpu  \nwith_history                                0.0    cpu  "
+        }
+      ]
+    },
+    {
+      "file": "holdem_history.py",
+      "sha256": "562c72410aebf1efc45f9e161c39f0bb587d8cdc23fc1d3fed2639afaa97d116",
+      "bytes": 12622
+    },
+    {
+      "file": "holdem_opponent_integration.ipynb",
+      "sha256": "309b65ed0cb19ec19941ffe9e682466df8f0df152e9de1015efced121e7ff430",
+      "bytes": 66461,
+      "cells": 23,
+      "recorded_outputs": [
+        {
+          "cell": 8,
+          "text": "        split  sessions in split  sessions sampled  decisions  \\\n0       train                 69                48        128   \n1  validation                 23                22         64   \n\n   with actor history  fold  raise  check  bet  call  \n0                 127    61     17     28   12    10  \n1                  64    38     10      7    5     4  "
+        },
+        {
+          "cell": 12,
+          "text": "                                             check  passed         detail\n0        target action changed -> inputs unchanged    True   call -> fold\n1        future action changed -> inputs unchanged    True  p2 cc -> p2 f\n2    same change reaches the next hand's summaries    True               \n3               no 'Hero cards' in any public view    True               \n4  first hand of every session has empty summaries    True               "
+        }
+      ]
+    },
+    {
+      "file": "meeting5-holdem.zip",
+      "sha256": "9203a570f4398233891d18274479b5e54ffc98d4781ca7056f49b93974e4d96f",
+      "bytes": 162569
+    },
+    {
+      "file": "run_holdem_integration.py",
+      "sha256": "c66212dfba5fa65480c2b24194a6015f81d725ae4ac0a4ec2a9da7f7f15760dc",
+      "bytes": 13554
+    },
+    {
+      "file": "test_holdem_history.py",
+      "sha256": "f2169f678c6919ca966f0b7338f36199dfea192dbdf0ff3e6a80039394ab1e64",
+      "bytes": 4814
+    },
+    {
+      "file": "Copy of ACM AI Poker Project",
+      "url": "https://colab.research.google.com/drive/1_tsqHrjjEjCE3KzdnIsENBY0qDXfWPjf",
+      "sha256": "f80cbdc7e19a73d8a8a1788da6befb8838817655896f789c90c130ef3f631e96",
+      "bytes": 291152,
+      "cells": 45,
+      "scope": "Meeting 5 checkpoint/training plumbing demonstrated on constructed 16/8 examples"
+    },
+    {
+      "file": "Week 7 Poker Model",
+      "url": "https://colab.research.google.com/drive/1jHlk6UYUI9kOKGQzb2fo6N4wyhE4cBpm",
+      "sha256": "b2fcf6e89f3b682093c3ab2778e7a7d81bdabdc08a3ae4541767b8c89235edbb",
+      "bytes": 478430,
+      "cells": 31,
+      "scope": "Additional expanded study: engineered-card trees, frozen BERT Mini/MiniLM heads, nested group CV, temperature selection and stress checks",
+      "verification": "Source and recorded-output inspection; declared split independently reconstructed and compared with actual earlier server samples; exported model/data archive inaccessible; reported model metrics not independently reproduced",
+      "archive_url": "https://drive.google.com/file/d/1rOC3MwdhsRZsx_07E5nsYVL59p8x1dlT/view",
+      "split_overlap": {
+        "new_notebook_test_groups": [
+          "105",
+          "64",
+          "65",
+          "73",
+          "76",
+          "77",
+          "91",
+          "94",
+          "97"
+        ],
+        "prior_actual_train_overlap": [
+          "105",
+          "64",
+          "65",
+          "76",
+          "77",
+          "91",
+          "94",
+          "97"
+        ],
+        "prior_actual_validation_overlap": [
+          "73"
+        ],
+        "previously_unused_groups": []
+      },
+      "module_sha256": {
+        "expanded_data.py": "a277e58da77a21c2d9eeaf5b98502bc256de647ce547f4cbe292ee99483da8cd",
+        "expanded_models.py": "d75d1c098b605ad11acb3051d63a8c1ed55d698cd96174d0e83dcae0398ec844",
+        "expanded_validation.py": "db7011aa082fe17e784a3c122aca81ce16d62194111b45f0919a992f51ae630e",
+        "holdem_history.py": "bb18c96f79f6c5d5e2e7200e36506cc60dca771bd5e04920bb9b66dcae76599e",
+        "integration_experiment.py": "3f3352031e7cfea559dc5a124b2397a2d24a14c34d5e49a6d4f0751950cc3359",
+        "predict_inputs.py": "28ebad5e2725106196bb92443abf2875e641e4d545b39068393e9777a7e55f12"
+      },
+      "recorded_result": {
+        "hero_trees_public": {
+          "accuracy": 0.82421875,
+          "log_loss": 0.38807
+        },
+        "hero_trees_history": {
+          "accuracy": 0.818359375,
+          "log_loss": 0.404729
+        },
+        "forecast_trees_public": {
+          "accuracy": 0.7089,
+          "log_loss": 0.626823
+        },
+        "forecast_trees_history": {
+          "accuracy": 0.7066,
+          "log_loss": 0.627548
+        },
+        "precision_note": "Log losses and forecast accuracies transcribed from the notebook rounded report"
+      }
+    }
+  ],
+  "zip_recorded_results": {
+    "zip_forecasting": {
+      "seed": 0,
+      "forecaster": {
+        "kind": "masked_logistic",
+        "c": 1.0
+      },
+      "observer": "Pluribus",
+      "history": "this player's completed earlier hands in the same session; matched street and legal menu; all such hands (no window)",
+      "decisions": 76187,
+      "replay_failures": [],
+      "sessions": {
+        "train": 55,
+        "validation": 18,
+        "test": 19
+      },
+      "shared_sample": {
+        "models": {
+          "Training prior": {
+            "n": 64,
+            "sessions": 15,
+            "opponents": 13,
+            "descriptive_only": false,
+            "log_loss": 0.8212086209707059,
+            "accuracy": 0.71875,
+            "tie_expected_accuracy": 0.71875,
+            "brier": 0.48524389890169556,
+            "session_macro_log_loss": 0.8427486915325454
+          },
+          "No history": {
+            "n": 64,
+            "sessions": 15,
+            "opponents": 13,
+            "descriptive_only": false,
+            "log_loss": 0.7906508558150243,
+            "accuracy": 0.65625,
+            "tie_expected_accuracy": 0.65625,
+            "brier": 0.44160617818805203,
+            "session_macro_log_loss": 0.8562569070537204
+          },
+          "With history": {
+            "n": 64,
+            "sessions": 15,
+            "opponents": 13,
+            "descriptive_only": false,
+            "log_loss": 0.7730554589203911,
+            "accuracy": 0.71875,
+            "tie_expected_accuracy": 0.71875,
+            "brier": 0.4135806296304208,
+            "session_macro_log_loss": 0.8920160678320828
+          }
+        },
+        "with_minus_without_history": {
+          "log_loss": {
+            "estimate": -0.017595396894633023,
+            "interval_95": [
+              -0.12742017758440588,
+              0.14026264671243346
+            ],
+            "opponents": 13,
+            "repetitions": 1000,
+            "descriptive_only": false,
+            "scope": "Paired whole-opponent bootstrap, conditional on simulated population and fitted models"
+          },
+          "accuracy": {
+            "estimate": 0.0625,
+            "interval_95": [
+              -0.01695645821157218,
+              0.15384615384615385
+            ],
+            "opponents": 13,
+            "repetitions": 1000,
+            "descriptive_only": false,
+            "scope": "Paired whole-opponent bootstrap, conditional on simulated population and fitted models"
+          }
+        }
+      },
+      "all_decisions_in_the_same_sessions": {
+        "models": {
+          "Training prior": {
+            "n": 14733,
+            "sessions": 18,
+            "opponents": 13,
+            "descriptive_only": false,
+            "log_loss": 0.8344823000367856,
+            "accuracy": 0.6881829905653974,
+            "tie_expected_accuracy": 0.6881829905653974,
+            "brier": 0.5035516678555962,
+            "session_macro_log_loss": 0.8376865308273426
+          },
+          "No history": {
+            "n": 14733,
+            "sessions": 18,
+            "opponents": 13,
+            "descriptive_only": false,
+            "log_loss": 0.6646068366123296,
+            "accuracy": 0.690965858956085,
+            "tie_expected_accuracy": 0.690965858956085,
+            "brier": 0.41050566458268234,
+            "session_macro_log_loss": 0.673787706123526
+          },
+          "With history": {
+            "n": 14733,
+            "sessions": 18,
+            "opponents": 13,
+            "descriptive_only": false,
+            "log_loss": 0.663846245729958,
+            "accuracy": 0.6920518563768411,
+            "tie_expected_accuracy": 0.6920518563768411,
+            "brier": 0.4101572674186869,
+            "session_macro_log_loss": 0.6732641739234136
+          }
+        },
+        "with_minus_without_history": {
+          "log_loss": {
+            "estimate": -0.0007605908823714985,
+            "interval_95": [
+              -0.0016545990945036318,
+              0.0002918123741665287
+            ],
+            "opponents": 13,
+            "repetitions": 1000,
+            "descriptive_only": false,
+            "scope": "Paired whole-opponent bootstrap, conditional on simulated population and fitted models"
+          },
+          "accuracy": {
+            "estimate": 0.0010859974207561257,
+            "interval_95": [
+              -0.002665948247698679,
+              0.004146861731975522
+            ],
+            "opponents": 13,
+            "repetitions": 1000,
+            "descriptive_only": false,
+            "scope": "Paired whole-opponent bootstrap, conditional on simulated population and fitted models"
+          }
+        }
+      },
+      "versions": {
+        "python": "3.12.15",
+        "numpy": "2.5.3",
+        "open-spiel": "2.0.2",
+        "scikit-learn": "1.9.1",
+        "scipy": "1.18.1"
+      }
+    },
+    "zip_decision": {
+      "base_checkpoint": "bert_mini-linear",
+      "base_checkpoint_sha256": "ae0b59b3c37b6d851617cee2e07651d97591384a88b95913c8609194b8ccdd84",
+      "settings": {
+        "seed": 42,
+        "batch_size": 16,
+        "encoder_lr": 2e-05,
+        "head_lr": 0.001,
+        "weight_decay": 0.01,
+        "epochs": 1,
+        "max_length": 512,
+        "device": "cpu"
+      },
+      "torch": "2.14.1",
+      "longest_input_tokens": {
+        "without_history": 190,
+        "with_history": 328
+      },
+      "uniform_over_candidates": {
+        "accuracy": 0.3333333333333333,
+        "log_loss": 1.0986122886681098
+      },
+      "before_fine_tuning": {
+        "No history": {
+          "n": 64,
+          "accuracy": 0.328125,
+          "log_loss": 1.1796046139597314
+        },
+        "With history": {
+          "n": 64,
+          "accuracy": 0.625,
+          "log_loss": 0.975414288322147
+        }
+      },
+      "after_one_epoch": {
+        "No history": {
+          "n": 64,
+          "accuracy": 0.609375,
+          "log_loss": 0.8363713020206405,
+          "train_loss": 1.0070599466562271
+        },
+        "With history": {
+          "n": 64,
+          "accuracy": 0.625,
+          "log_loss": 0.8424448516969757,
+          "train_loss": 0.9528744891285896
+        }
+      },
+      "with_minus_without_after_one_epoch": {
+        "accuracy": {
+          "estimate": 0.015625,
+          "interval_95": [
+            -0.04111015981735158,
+            0.075
+          ]
+        },
+        "log_loss": {
+          "estimate": 0.006073549676335232,
+          "interval_95": [
+            -0.07007431212712102,
+            0.05631490742920673
+          ]
+        }
+      },
+      "validation_sessions": 15
+    }
+  },
+  "verification": "Source and saved-output inspection. Historical runs are not claimed as exact local reproductions; the combined protocol is rerun independently."
+}

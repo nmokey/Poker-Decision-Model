@@ -8,6 +8,10 @@ conditions. This extends the project with a separate supervised opponent
 forecasting task. PokerBench labels and existing trained Hero decision models
 retain their original meaning.
 
+The later [Hold’em integration](meeting5-integration.md) reuses these summaries as
+neural inputs on real histories. Its observed-action results and the original
+Leduc experiment are organized separately in the [results index](results/README.md).
+
 ## Source inventory and contribution map
 
 All eleven attached files and the linked Colab were inspected. Source SHA-256
@@ -24,7 +28,7 @@ unambiguously for later attribution.
 | `results.md` | The smaller archive's saved report | Exact duplicate of `opponent_leduc/results/results.md`; retain one aggregate record |
 | `05_leduc_opponent_history_experiment.ipynb` | Self-contained card-dependent log-weight generator, repeated identities, completed-hand histories, windows 4/16/64, six regression tests, exhaustive summary audit, opponent-cluster intervals and figures | Default weighted generator, identity grouping, completed-hand timing, multi-window comparison, source ideas moved into tested package functions |
 | `Leduc Opponent Experiment` | JSON notebook despite extensionless filename; residual style archetypes, true masked logistic objective, online 25-style Bayesian filter and reset hazard, belief trajectories | Residual policy option, matched masked logistic models, Bayesian filter, validation selection and notebook belief plot |
-| `data_sources.ipynb` | Existing source notebook plus a chronological event/history extension | Keep existing 04 for distinct Pluribus/teacher tasks; route opponent forecasting to 05. Its imported `opponent_history` module was not attached. |
+| `data_sources.ipynb` | Existing source notebook plus a chronological event/history extension | Keep `data_sources.ipynb` for distinct Pluribus/teacher tasks; route forecasting to `opponent_modeling.ipynb`. Its imported `opponent_history` module was not attached. |
 | `05_opponent_forecast.ipynb` | Proposed PokerBench-aligned names, chronological CFR/tight/loose generation and 2,000-decision-per-style datasets | Preserve controlled CFR deviations and compact observer contract; imported generator module and referenced CSV datasets were not attached |
 | `06_opponent_unconditional_baseline.ipynb` | Training-only constant priors, whole-session splits and legal-normalized controls for each known style | Pooled train-only prior in the common suite; historical known-style results retained separately |
 | `07_opponent_logistic_regression.ipynb` | Exact visible-card showdown equity, opportunity-based summaries, numeric parameter export, validation-only model/window choices | Equity features, matched opportunity controls and portable model export; imported `opponent_features` module and CSV datasets were not attached |
@@ -112,6 +116,10 @@ human tilt detector, or end-to-end fusion with the PokerBench model was demonstr
 A later experiment needs opponent-dependent response targets or repeated-play
 reward evaluation. Preserve this forecasting evidence before tuning new windows,
 decay, generators or neural representations on newly reserved sessions.
+
+The subsequent Hold’em work connects summaries to the shared transformer for
+observed-human-action prediction. It does not establish the adaptive Hero policy
+or payoff claims described above. See [the latest study](meeting5-ablation-results.md).
 
 ## Canonical integration validation
 

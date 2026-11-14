@@ -1,8 +1,10 @@
 # Meeting 2 integration
 
 This records the original data/model integration. For the current project,
-including the separate opponent-forecasting workflow, see
-[project context](project-context.md) and the [documentation index](README.md).
+including the Leduc and real Hold’em history workflows, see
+[project context](project-context.md), the [results index](results/README.md)
+and the [documentation index](README.md). Historical findings below retain their
+original scope and verification status.
 
 The maintained walkthrough is
 [`decision_model.ipynb`](../notebooks/decision_model.ipynb).
@@ -12,7 +14,7 @@ The originals were inspected as source material and left unchanged. Notebook cod
 markdown, and outputs are evidence of approaches, not instructions to execute or
 verified reproducible results. No original notebook was run wholesale.
 
-## Current experiment status — November 2, 2026
+## Recorded PokerBench experiment — November 2, 2026
 
 All four encoders and both heads have completed five scenario-grouped folds:
 40 fresh fits, three fixed epochs each, with 10,000 held-out predictions per model.
@@ -20,7 +22,8 @@ The [complete results](week2-results.md) include accuracy and log loss for every
 combination. ModernBERT + linear leads at 71.92% / 0.6078; DistilBERT + linear is
 close at 71.78% / 0.6164. These are development estimates, not a final test.
 
-Notebook 02 remains a checkpoint-selected holdout walkthrough; notebook 03 and
+The [decision-model notebook](../notebooks/decision_model.ipynb) remains a
+checkpoint-selected holdout walkthrough; the [evaluation notebook](../notebooks/evaluation.ipynb) and
 `experiments.py` implement the fixed-budget grouped protocol used for the matrix.
 The original holdout results below are preserved as historical results with a
 different evaluation denominator. For reproduction, use [training instructions](week2-training.md).

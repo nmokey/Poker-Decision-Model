@@ -11,6 +11,7 @@ notebooks exchange saved, audited artifacts through the package.
 | Joint state/question/action scoring | [Decision transformer](decision_model.ipynb) | `analysis`, `ml` | CUDA GPU for pretrained training |
 | Scenario folds and controlled head comparison | [Scenario evaluation](evaluation.ipynb) | `analysis`, `ml` | CUDA GPU for enabled pretrained fits |
 | Observed-play replay and solver-policy targets | [Alternative sources](data_sources.ipynb) | `analysis`, `experiments` | Follow the notebook's source/runtime guards |
+| Pluribus histories and matched neural integration | [Hold’em integration](holdem_opponent_integration.ipynb) | `analysis`, `ml`, `experiments` | CPU, local or Colab |
 | Chronological opponent histories and forecasts | [Opponent forecasting](opponent_modeling.ipynb) | `analysis`, `experiments` | CPU, local or Colab |
 
 ## Setup
@@ -77,18 +78,50 @@ and paired opponent-cluster uncertainty. [Run guide](../docs/opponent-experiment
 [recorded results](../docs/meeting4-results.md), and
 [contribution map](../docs/meeting4-integration.md).
 
+## Hold’em history integration
+
+[Hold’em integration](holdem_opponent_integration.ipynb) connects causal Pluribus
+histories to the same Leduc summary method and existing decision architecture.
+It downloads the checksum-pinned public data and BERT Mini checkpoint, replays
+completed co-observed hands, joins forecast/Hero views, and uses one 128/64
+session-grouped sample for both comparisons. Input checks and both one-epoch
+fine-tunes run on CPU. No server outputs or other notebook execution are needed.
+The transformer receives history summaries; learned forecast probabilities remain
+separate. Labels are observed human action categories, not PokerBench references.
+
+Use `python -m poker_decision holdem STEP` for `download-data`, `download-model`,
+`prepare`, `forecast`, `check`, `compare`, or `report`. Outputs stay in ignored
+`artifacts/holdem_integration/`. `python -m poker_decision holdem-scale` extends
+nested training sets to 1,024/4,096 while preserving fixed validation; its default
+output is `artifacts/holdem_scaling/`. Existing module/script entry points remain
+available. See [integration details](../docs/meeting5-integration.md),
+[recorded results](../docs/meeting5-results.md), and
+[larger-run evidence](../docs/meeting5-scaling.md).
+
+The [GPU ablation CLI](../docs/meeting5-ablations.md) continues from the 4,096-row
+scaling output; it is not an additional notebook. `holdem-ablate prepare` verifies
+that sample and builds the 16/64/256-action histories, `suite` runs the original
+18-fit comparison on CUDA, and `report` verifies saved results. The completed
+study also includes a separately recorded four-fit replication, totaling 22 fits.
+Encoder/head, formatting, assignment, epochs and selected training-seed repeats
+are configured through [the JSON configuration](../configs/holdem_ablations.json).
+See [latest findings](../docs/meeting5-ablation-results.md) and the
+[results index](../docs/results/README.md) before interpreting an individual run.
+
 ## Artifact conventions
 
 Keep notebook outputs and execution counts cleared in Git. Validate executable
 changes in the supported environment; prose-only edits require schema/code-cell
 checks without repeating training. Source data, generated sessions, split files,
 per-example predictions and weights stay in ignored `data/` or `artifacts/` paths.
-Reviewed aggregate evidence is versioned under `docs/results/`.
+Reviewed aggregate evidence is versioned under `docs/results/` and organized in
+the [results index](../docs/results/README.md).
 
 See the [development guide](../docs/development.md),
 [scientific audit](../docs/scientific-audit.md), and
 [documentation index](../docs/README.md). Forecasts currently run separately from
-Hero's decision model; improved prediction alone does not establish better play.
+Hero's reference-action model; the separate Hold’em integration learns observed
+human actions, and predictive changes do not establish better play.
 
 ## Connections and shared code
 
@@ -101,10 +134,14 @@ The source and opponent walkthroughs demonstrate `tasks.source_task` and
 `tasks.opponent_task`, which expose their records through the decision scorer's
 input/target interface. Each task carries its own question, label meaning and
 external grouping. Pass `question=task.question` when encoding another task.
-This connection enables model reuse; no neural opponent-training result is claimed.
+The Hold’em walkthrough reuses the same encoder and training helpers for observed
+human actions, with opponent summaries added to the context.
 
 New outputs use `data/processed/pokerbench`, `artifacts/baselines`,
 `artifacts/decision_model`, `artifacts/scenario_evaluation`,
-`artifacts/decision_matrix`, `artifacts/alternative_sources`, and `artifacts/opponents`.
+`artifacts/decision_matrix`, `artifacts/alternative_sources`, `artifacts/opponents`,
+`artifacts/holdem_integration`, `artifacts/holdem_scaling`, and
+`artifacts/holdem_ablations`. The completed GPU study used the explicit output
+`artifacts/holdem_ablations_gpu`; historical paths are retained in its evidence.
 The package still reads an existing `data/processed/pokerbench_meeting1` dataset
 when the canonical directory is absent, with the same provenance checks.

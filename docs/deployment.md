@@ -155,8 +155,9 @@ References: [dependency discovery](https://docs.streamlit.io/deploy/streamlit-co
 ## Relationship to opponent forecasting
 
 The serving catalogue and live comparison use PokerBench Hero reference-action
-checkpoints. The separate Leduc opponent-forecasting package/notebook is an
-experiment and is not connected to the hosted action scorer. Adding it to the
-product requires a decision-training or payoff experiment, not an editable
-opponent description alone. See [current project context](project-context.md)
-and [forecasting workflow](opponent-experiments.md).
+checkpoints. Leduc forecasting and the real Hold’em history-feature models remain
+research workflows. The latter reuse the neural architecture but predict observed
+human actions; they are not deployed models or demonstrated better responses to
+opponents. Adding an adaptive policy to the product requires appropriate response
+targets or a payoff experiment. See the [results index](results/README.md),
+[current project context](project-context.md) and [Hold’em study](meeting5-ablation-results.md).

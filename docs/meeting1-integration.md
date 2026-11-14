@@ -1,8 +1,10 @@
 # Meeting 1 integration
 
 This records the original data/model integration. For the current project,
-including the separate opponent-forecasting workflow, see
-[project context](project-context.md) and the [documentation index](README.md).
+including the Leduc and real Hold’em history workflows, see
+[project context](project-context.md), the [results index](results/README.md)
+and the [documentation index](README.md). Historical findings below retain their
+original scope and verification status.
 
 The consolidated notebook and package combine eight unique shared Colab notebooks.
 The PokerBench integration link was supplied twice. The last notebook contains a

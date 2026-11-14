@@ -1,0 +1,108 @@
+{
+  "checked_utc": "2026-11-14T02:19:52.864358+00:00",
+  "host": "temescal",
+  "publication_base_commit": "2cd119fd268174959cdd80ea7a94396d78dc1587",
+  "notebook": "notebooks/holdem_opponent_integration.ipynb",
+  "notebook_sha256": "caa47032d3047c4d9cc4676734929b12534ed74c095a822bd82a8a524935e110",
+  "notebook_executed_successfully": true,
+  "code_sha256": {
+    "holdem_history.py": "091d9d103e620dbf4415b3e5cd8baf595c70d4abe872e41810210e0911db702b",
+    "holdem_integration.py": "a5bfda94dd59adc54abe425f04c5d90b1584859324159ef6a8e447619a5bbdef",
+    "training.py": "06b33e534a07bb896e725347a6b46f3f1a5309b9d81183d51e1d57708807d6bb",
+    "opponents/data.py": "247ab518ef9bbd65b18f77ad12a49f4070e787207afa218be6b1652b1e3f89df"
+  },
+  "archive_sha256": "bfefe55e138fdffae90859592d765951c0904bcf83691b9f25b3c5c7581e7363",
+  "sample_sha256": "8320fac5ce0ebeb29e069577a9e73d72f7d07c0709597439687082815700e955",
+  "checkpoint_source": {
+    "url": "https://github.com/nmokey/Poker-Decision-Model/releases/download/meeting3-demo-models-2026-11-02-v2/bert_mini-linear.tar.gz",
+    "archive_sha256": "ae0b59b3c37b6d851617cee2e07651d97591384a88b95913c8609194b8ccdd84",
+    "checkpoint_sha256": {
+      "encoder/config.json": "f2451e1f5308bf62286e84b07f4acada71417024293fc3f749d1124d51f739ce",
+      "encoder/model.safetensors": "64b32a7aa5ff776518402506991ac3249274428f116f73d9671c3acdf4aca8c5",
+      "head.pt": "11255400341f5fcf1a491c35441f3d071cd0758c222ddb06d770593cc6ce4d4e",
+      "metadata.json": "803f8a7faa30d6c7f966b51c42eab1675af55b8cfb702304c2e18056057931f1",
+      "tokenizer/special_tokens_map.json": "b6d346be366a7d1d48332dbc9fdf3bf8960b5d879522b7799ddba59e76237ee3",
+      "tokenizer/tokenizer.json": "d241a60d5e8f04cc1b2b3e9ef7a4921b27bf526d9f6050ab90f9267a1f9e5c66",
+      "tokenizer/tokenizer_config.json": "e711904cac23112776b678356ccf702cf934babaa01125f698ac43bf9ad38e73",
+      "tokenizer/vocab.txt": "07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3"
+    }
+  },
+  "input_checks": [
+    {
+      "variant": "without_history",
+      "examples": 192,
+      "max_tokens": 183,
+      "valid_predictions": 192
+    },
+    {
+      "variant": "with_history",
+      "examples": 192,
+      "max_tokens": 383,
+      "valid_predictions": 192
+    }
+  ],
+  "comparisons": {
+    "forecaster_comparison": {
+      "scores": [
+        {
+          "variant": "without_history",
+          "n": 64,
+          "accuracy": 0.671875,
+          "log_loss": 1.0834199965345448
+        },
+        {
+          "variant": "with_history",
+          "n": 64,
+          "accuracy": 0.640625,
+          "log_loss": 1.0825082357529916
+        }
+      ],
+      "max_probability_difference_from_original": {
+        "without_history": 0.0,
+        "with_history": 0.0
+      }
+    },
+    "decision_comparison": {
+      "scores": [
+        {
+          "variant": "without_history",
+          "n": 64,
+          "accuracy": 0.578125,
+          "log_loss": 0.9642431510807161,
+          "training_loss": 0.9851514399051666,
+          "before_accuracy": 0.296875,
+          "before_log_loss": 1.2414019551302653,
+          "max_tokens": 183,
+          "reload_max_abs_diff": 0.0
+        },
+        {
+          "variant": "with_history",
+          "n": 64,
+          "accuracy": 0.625,
+          "log_loss": 0.9434630429821631,
+          "training_loss": 0.8959013968706131,
+          "before_accuracy": 0.59375,
+          "before_log_loss": 1.1058977656288982,
+          "max_tokens": 383,
+          "reload_max_abs_diff": 0.0
+        }
+      ],
+      "max_probability_difference_from_original": {
+        "without_history": 0.0,
+        "with_history": 0.0
+      }
+    }
+  },
+  "checks": {
+    "full_suite_passed": 164,
+    "core_suite_passed": 108,
+    "core_suite_skipped_optional_dependencies": 33,
+    "full_mypy_source_files": 30,
+    "core_mypy_source_files": 26,
+    "ruff_check": "passed",
+    "ruff_format_check": "passed",
+    "uv_lock_check": "passed",
+    "ci_workflow": "Unchanged; optional torch import is allowed by project mypy configuration when the ML extra is absent."
+  },
+  "scope": "Fresh end-to-end 128/64 notebook execution on refactored main, including exact prediction parity with the historical server run. The 1024/4096 training-size experiments were not rerun during publication; their original fingerprints and verified results are retained in meeting5-scaling.json."
+}

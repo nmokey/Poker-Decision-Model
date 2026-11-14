@@ -1,0 +1,3663 @@
+{
+  "protocol": {
+    "started_utc": "2026-11-14T03:57:43.102891+00:00",
+    "host": "temescal",
+    "settings": {
+      "backbones": [
+        "bert_mini",
+        "distilbert"
+      ],
+      "heads": [
+        "linear",
+        "mlp"
+      ],
+      "windows": [
+        16,
+        64,
+        256
+      ],
+      "epochs": [
+        1,
+        3
+      ],
+      "training_seeds": [
+        42,
+        43,
+        44
+      ],
+      "batch_size": 16,
+      "micro_batch_size": 2,
+      "encoder_lr": 2e-05,
+      "head_lr": 0.001,
+      "weight_decay": 0.01,
+      "max_length": 512,
+      "gpu_memory_fraction": 0.1
+    },
+    "source_sha256": {
+      "holdem_ablations.py": "98fb5990c3f35186e6e4318aced7317373034947e3817787bfd931f04f50f8f0",
+      "holdem_history.py": "b8e73f9b5b98b5e8d29ab2003feafa217fab2411e4d16531d6432c08c30b1096",
+      "holdem_integration.py": "a5bfda94dd59adc54abe425f04c5d90b1584859324159ef6a8e447619a5bbdef",
+      "holdem_scaling.py": "7f167f583efb7ccacf02f0443ccd6c030ee830abebd150ebc1eb55379d7fdf2e",
+      "training.py": "74245472bebd858252219771c86d8213ee1bc59e0c330855dffb82b04816ef88",
+      "models/encoder.py": "4b9b37352e4dafaafd4466634d7be48468a586329939e543e2f1aba72d234f7c",
+      "opponents/data.py": "247ab518ef9bbd65b18f77ad12a49f4070e787207afa218be6b1652b1e3f89df"
+    },
+    "reference_sample_sha256": "43e725550cf30d73002330ab7ec036aa6e5e9717f354ac15d8db65165ce6e393",
+    "reference_out": "/home/nmokey/Poker-Decision-Model/artifacts/holdem_meeting5_scaling/train_04096",
+    "source_archive_sha256": "bfefe55e138fdffae90859592d765951c0904bcf83691b9f25b3c5c7581e7363",
+    "sampling_seed": 42,
+    "train_sessions": [
+      "100",
+      "101",
+      "102",
+      "103",
+      "104",
+      "105",
+      "106",
+      "108",
+      "110",
+      "111",
+      "112",
+      "113",
+      "114",
+      "117",
+      "118",
+      "30",
+      "32",
+      "33",
+      "34",
+      "35",
+      "41",
+      "42",
+      "43",
+      "50",
+      "51",
+      "53",
+      "60",
+      "61",
+      "62",
+      "63",
+      "64",
+      "65",
+      "70",
+      "71",
+      "72",
+      "74",
+      "75",
+      "76",
+      "77",
+      "84",
+      "85",
+      "86",
+      "87",
+      "88",
+      "89",
+      "91",
+      "92",
+      "93",
+      "94",
+      "95",
+      "97",
+      "98",
+      "99"
+    ],
+    "validation_sessions": [
+      "107",
+      "109",
+      "115",
+      "116",
+      "31",
+      "40",
+      "44",
+      "45",
+      "52",
+      "73",
+      "78",
+      "83",
+      "90",
+      "96"
+    ],
+    "selection": "Architecture: smallest history-minus-control validation log loss. Then vary windows/format/epochs on that architecture. Repeat the best real-history pair on seeds 43/44; swapped is a control only.",
+    "scope": "Adaptive development comparisons on inspected validation; no final-test claim",
+    "sample_sha256": {
+      "window_016.json": "9ea5b9f3ab22957b56e6d35bfd5272ec8d56ee217ec8a298a60e2f8fb53f1c52",
+      "window_064.json": "952720c120a8e5a83316811c19afb3af28ae40b7888c680ec84530dc5299820f",
+      "window_256.json": "62e1c4827f23eb391215dddd9907baca114bff61688bb0ad6d7ec71c19091f76"
+    },
+    "checkpoint_root": "/home/nmokey/Poker-Decision-Model/artifacts/deployment/pocketsolver-models-v2",
+    "checkpoints": {
+      "bert_mini-linear": {
+        "encoder/config.json": "f2451e1f5308bf62286e84b07f4acada71417024293fc3f749d1124d51f739ce",
+        "encoder/model.safetensors": "64b32a7aa5ff776518402506991ac3249274428f116f73d9671c3acdf4aca8c5",
+        "head.pt": "11255400341f5fcf1a491c35441f3d071cd0758c222ddb06d770593cc6ce4d4e",
+        "metadata.json": "803f8a7faa30d6c7f966b51c42eab1675af55b8cfb702304c2e18056057931f1",
+        "tokenizer/special_tokens_map.json": "b6d346be366a7d1d48332dbc9fdf3bf8960b5d879522b7799ddba59e76237ee3",
+        "tokenizer/tokenizer.json": "d241a60d5e8f04cc1b2b3e9ef7a4921b27bf526d9f6050ab90f9267a1f9e5c66",
+        "tokenizer/tokenizer_config.json": "e711904cac23112776b678356ccf702cf934babaa01125f698ac43bf9ad38e73",
+        "tokenizer/vocab.txt": "07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3"
+      },
+      "bert_mini-mlp": {
+        "encoder/config.json": "f2451e1f5308bf62286e84b07f4acada71417024293fc3f749d1124d51f739ce",
+        "encoder/model.safetensors": "4c05fd24bd82643ae74d49aee65527050d1b74d7f94e94a2759b0b3adb5ebd9e",
+        "head.pt": "fcb4baa054a7b8facf095eaa134b518c4246cee04bba1eee016483ca64235428",
+        "metadata.json": "4372235bf3cf87293a9dbcf2cf8509ac38fde83b5f75d1dbfb077b4c9927675f",
+        "tokenizer/special_tokens_map.json": "b6d346be366a7d1d48332dbc9fdf3bf8960b5d879522b7799ddba59e76237ee3",
+        "tokenizer/tokenizer.json": "d241a60d5e8f04cc1b2b3e9ef7a4921b27bf526d9f6050ab90f9267a1f9e5c66",
+        "tokenizer/tokenizer_config.json": "e711904cac23112776b678356ccf702cf934babaa01125f698ac43bf9ad38e73",
+        "tokenizer/vocab.txt": "07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3"
+      },
+      "distilbert-linear": {
+        "encoder/config.json": "7973787872361b47543a6372f26f208b5be61dcfd8810d9bf18adf561093c9a1",
+        "encoder/model.safetensors": "e99a9de3b1056a8bb25f0790679b73ed00f548b06bf2a6a8168bc520829884bb",
+        "head.pt": "24c6660d4fe11af220317a496732b65cd4d27f49a2ce2ea15f3aaba53e79ac89",
+        "metadata.json": "ae6843ec3c62adc4af0fa72fc4a40631396f8ee56df8b6bf3dc3b73c1db02fc6",
+        "tokenizer/special_tokens_map.json": "b6d346be366a7d1d48332dbc9fdf3bf8960b5d879522b7799ddba59e76237ee3",
+        "tokenizer/tokenizer.json": "343989712a36cd8b253efeaf8baf6a08b9d2583f78e395e83832e8ee9f8d8ee1",
+        "tokenizer/tokenizer_config.json": "91955163d30880d1ef0928cfdd729baaf413401dc4456f3ab1a48b3eec2ec624",
+        "tokenizer/vocab.txt": "eeaa9875b23b04b4c54ef759d03db9d1ba1554838f8fb26c5d96fa551df93d02"
+      },
+      "distilbert-mlp": {
+        "encoder/config.json": "7973787872361b47543a6372f26f208b5be61dcfd8810d9bf18adf561093c9a1",
+        "encoder/model.safetensors": "269893aab46ca7f1244cfe09e9f7af431f86bd6ba8f40ae4d3eb628baa5ba7e3",
+        "head.pt": "9a52326e471abdbf76822b340353d2ebe5600db74effccca48158016a72b66fe",
+        "metadata.json": "cd45917cec7c2c3f31cb4f7f0e5a74caf3f57df608d382d53fc49674e7f4ce87",
+        "tokenizer/special_tokens_map.json": "b6d346be366a7d1d48332dbc9fdf3bf8960b5d879522b7799ddba59e76237ee3",
+        "tokenizer/tokenizer.json": "343989712a36cd8b253efeaf8baf6a08b9d2583f78e395e83832e8ee9f8d8ee1",
+        "tokenizer/tokenizer_config.json": "91955163d30880d1ef0928cfdd729baaf413401dc4456f3ab1a48b3eec2ec624",
+        "tokenizer/vocab.txt": "eeaa9875b23b04b4c54ef759d03db9d1ba1554838f8fb26c5d96fa551df93d02"
+      }
+    },
+    "checkpoint_releases": {
+      "bert_mini-linear": {
+        "encoder": "bert_mini",
+        "head": "linear",
+        "backbone": "google/bert_uncased_L-4_H-256_A-4",
+        "url": "https://github.com/nmokey/Poker-Decision-Model/releases/download/meeting3-demo-models-2026-11-02-v2/bert_mini-linear.tar.gz",
+        "sha256": "ae0b59b3c37b6d851617cee2e07651d97591384a88b95913c8609194b8ccdd84",
+        "n_hands": 256,
+        "fold": 1,
+        "protocol_sha256": "7038ddd3689c844c172ea150b1fc49f3172308a43c4b12be798b1200b02d5839"
+      },
+      "bert_mini-mlp": {
+        "encoder": "bert_mini",
+        "head": "mlp",
+        "backbone": "google/bert_uncased_L-4_H-256_A-4",
+        "url": "https://github.com/nmokey/Poker-Decision-Model/releases/download/meeting3-demo-models-2026-11-02-v2/bert_mini-mlp.tar.gz",
+        "sha256": "7ac02387d9295ae6272c215e306ac41ef38dc99f3d7154ae031cd2666c5ba416",
+        "n_hands": 256,
+        "fold": 1,
+        "protocol_sha256": "7038ddd3689c844c172ea150b1fc49f3172308a43c4b12be798b1200b02d5839"
+      },
+      "distilbert-linear": {
+        "encoder": "distilbert",
+        "head": "linear",
+        "backbone": "distilbert/distilbert-base-cased",
+        "url": "https://github.com/nmokey/Poker-Decision-Model/releases/download/meeting3-demo-models-2026-11-02-v2/distilbert-linear.tar.gz",
+        "sha256": "292a3de06ddce8dacac3acd7c3477d7e591c57b9be4b7929ac23565d7e3f8567",
+        "n_hands": 256,
+        "fold": 1,
+        "protocol_sha256": "e4bb898a213d817bcb0a86df8fd561075c426ac273ab9a1a06f41918b77a6f91"
+      },
+      "distilbert-mlp": {
+        "encoder": "distilbert",
+        "head": "mlp",
+        "backbone": "distilbert/distilbert-base-cased",
+        "url": "https://github.com/nmokey/Poker-Decision-Model/releases/download/meeting3-demo-models-2026-11-02-v2/distilbert-mlp.tar.gz",
+        "sha256": "9fed0b7ec2472bd9aad1c28162025aa8273b538c5672f66ba106d6287d8daac4",
+        "n_hands": 256,
+        "fold": 1,
+        "protocol_sha256": "e4bb898a213d817bcb0a86df8fd561075c426ac273ab9a1a06f41918b77a6f91"
+      }
+    },
+    "membership": {
+      "train": {
+        "n": 4096,
+        "ordered_ids_sha256": "c88b39e1e972bad292a33ff75fd0b2d2ad75af6cea3b0364838715491654c12e"
+      },
+      "validation": {
+        "n": 1024,
+        "ordered_ids_sha256": "a673b717fd7a48021689e33858430d2d7fea17a3faa4e3146ccd6f8b51eaf5f0"
+      }
+    }
+  },
+  "results": [
+    {
+      "key": "bert_mini-linear-w000-none-e1-s42",
+      "backbone": "bert_mini",
+      "head": "linear",
+      "window": 0,
+      "representation": "none",
+      "epochs": 1,
+      "seed": 42,
+      "n": 1024,
+      "accuracy": 0.7333984375,
+      "log_loss": 0.6107177277111429,
+      "slices": {
+        "preflop": {
+          "n": 692,
+          "accuracy": 0.7760115606936416,
+          "log_loss": 0.559952331162059
+        },
+        "flop": {
+          "n": 174,
+          "accuracy": 0.6724137931034483,
+          "log_loss": 0.6655136750400914
+        },
+        "turn": {
+          "n": 97,
+          "accuracy": 0.6185567010309279,
+          "log_loss": 0.7687259634139098
+        },
+        "river": {
+          "n": 61,
+          "accuracy": 0.6065573770491803,
+          "log_loss": 0.7790515099006602
+        },
+        "history_0": {
+          "n": 32,
+          "accuracy": 0.78125,
+          "log_loss": 0.5848963125955409
+        },
+        "history_1_to_9": {
+          "n": 260,
+          "accuracy": 0.6307692307692307,
+          "log_loss": 0.7177224643946689
+        },
+        "history_10_plus": {
+          "n": 732,
+          "accuracy": 0.76775956284153,
+          "log_loss": 0.5738393858340697
+        }
+      },
+      "reload_max_abs_diff": 0.0,
+      "max_tokens": 206,
+      "gpu": "NVIDIA GeForce RTX 3090",
+      "elapsed_seconds": 51.43031202799466,
+      "peak_allocated_bytes": 290505728
+    },
+    {
+      "key": "bert_mini-linear-w064-compact-e1-s42",
+      "backbone": "bert_mini",
+      "head": "linear",
+      "window": 64,
+      "representation": "compact",
+      "epochs": 1,
+      "seed": 42,
+      "n": 1024,
+      "accuracy": 0.7236328125,
+      "log_loss": 0.6630621608365368,
+      "slices": {
+        "preflop": {
+          "n": 692,
+          "accuracy": 0.7832369942196532,
+          "log_loss": 0.5950928516975453
+        },
+        "flop": {
+          "n": 174,
+          "accuracy": 0.6379310344827587,
+          "log_loss": 0.7401304042431964
+        },
+        "turn": {
+          "n": 97,
+          "accuracy": 0.5154639175257731,
+          "log_loss": 0.9264593736596276
+        },
+        "river": {
+          "n": 61,
+          "accuracy": 0.6229508196721312,
+          "log_loss": 0.7954450776821689
+        },
+        "history_0": {
+          "n": 32,
+          "accuracy": 0.65625,
+          "log_loss": 0.751891964973004
+        },
+        "history_1_to_9": {
+          "n": 260,
+          "accuracy": 0.6076923076923076,
+          "log_loss": 0.7951316365081066
+        },
+        "history_10_plus": {
+          "n": 732,
+          "accuracy": 0.76775956284153,
+          "log_loss": 0.6122689676576091
+        }
+      },
+      "reload_max_abs_diff": 0.0,
+      "max_tokens": 383,
+      "gpu": "NVIDIA GeForce RTX 3090",
+      "elapsed_seconds": 56.69317747998866,
+      "peak_allocated_bytes": 308220416
+    },
+    {
+      "key": "bert_mini-mlp-w000-none-e1-s42",
+      "backbone": "bert_mini",
+      "head": "mlp",
+      "window": 0,
+      "representation": "none",
+      "epochs": 1,
+      "seed": 42,
+      "n": 1024,
+      "accuracy": 0.7265625,
+      "log_loss": 0.6284830321602772,
+      "slices": {
+        "preflop": {
+          "n": 692,
+          "accuracy": 0.7644508670520231,
+          "log_loss": 0.5964679978381464
+        },
+        "flop": {
+          "n": 174,
+          "accuracy": 0.6896551724137931,
+          "log_loss": 0.640154018654122
+        },
+        "turn": {
+          "n": 97,
+          "accuracy": 0.5979381443298969,
+          "log_loss": 0.7500784240353809
+        },
+        "river": {
+          "n": 61,
+          "accuracy": 0.6065573770491803,
+          "log_loss": 0.765022361489794
+        },
+        "history_0": {
+          "n": 32,
+          "accuracy": 0.71875,
+          "log_loss": 0.6079042266924819
+        },
+        "history_1_to_9": {
+          "n": 260,
+          "accuracy": 0.6461538461538462,
+          "log_loss": 0.7042696520243618
+        },
+        "history_10_plus": {
+          "n": 732,
+          "accuracy": 0.755464480874317,
+          "log_loss": 0.6024639073109705
+        }
+      },
+      "reload_max_abs_diff": 0.0,
+      "max_tokens": 206,
+      "gpu": "NVIDIA GeForce RTX 3090",
+      "elapsed_seconds": 51.47716506499273,
+      "peak_allocated_bytes": 290767872
+    },
+    {
+      "key": "bert_mini-mlp-w064-compact-e1-s42",
+      "backbone": "bert_mini",
+      "head": "mlp",
+      "window": 64,
+      "representation": "compact",
+      "epochs": 1,
+      "seed": 42,
+      "n": 1024,
+      "accuracy": 0.712890625,
+      "log_loss": 0.6579091775963991,
+      "slices": {
+        "preflop": {
+          "n": 692,
+          "accuracy": 0.7745664739884393,
+          "log_loss": 0.6025346573227328
+        },
+        "flop": {
+          "n": 174,
+          "accuracy": 0.6494252873563219,
+          "log_loss": 0.709851283248387
+        },
+        "turn": {
+          "n": 97,
+          "accuracy": 0.5051546391752577,
+          "log_loss": 0.8703391931835182
+        },
+        "river": {
+          "n": 61,
+          "accuracy": 0.5245901639344263,
+          "log_loss": 0.8001309830714918
+        },
+        "history_0": {
+          "n": 32,
+          "accuracy": 0.59375,
+          "log_loss": 0.8469757790322243
+        },
+        "history_1_to_9": {
+          "n": 260,
+          "accuracy": 0.5884615384615385,
+          "log_loss": 0.7591968994580054
+        },
+        "history_10_plus": {
+          "n": 732,
+          "accuracy": 0.7622950819672131,
+          "log_loss": 0.6136674577467215
+        }
+      },
+      "reload_max_abs_diff": 0.0,
+      "max_tokens": 383,
+      "gpu": "NVIDIA GeForce RTX 3090",
+      "elapsed_seconds": 56.23218185600126,
+      "peak_allocated_bytes": 308482560
+    },
+    {
+      "key": "distilbert-linear-w000-none-e1-s42",
+      "backbone": "distilbert",
+      "head": "linear",
+      "window": 0,
+      "representation": "none",
+      "epochs": 1,
+      "seed": 42,
+      "n": 1024,
+      "accuracy": 0.7353515625,
+      "log_loss": 0.6056902397725541,
+      "slices": {
+        "preflop": {
+          "n": 692,
+          "accuracy": 0.7789017341040463,
+          "log_loss": 0.5646705179886078
+        },
+        "flop": {
+          "n": 174,
+          "accuracy": 0.6954022988505747,
+          "log_loss": 0.6419253105336276
+        },
+        "turn": {
+          "n": 97,
+          "accuracy": 0.5979381443298969,
+          "log_loss": 0.7383371607183765
+        },
+        "river": {
+          "n": 61,
+          "accuracy": 0.5737704918032787,
+          "log_loss": 0.7567393189581155
+        },
+        "history_0": {
+          "n": 32,
+          "accuracy": 0.71875,
+          "log_loss": 0.6182382392252126
+        },
+        "history_1_to_9": {
+          "n": 260,
+          "accuracy": 0.6461538461538462,
+          "log_loss": 0.6932225542418
+        },
+        "history_10_plus": {
+          "n": 732,
+          "accuracy": 0.76775956284153,
+          "log_loss": 0.5740509805587714
+        }
+      },
+      "reload_max_abs_diff": 0.0,
+      "max_tokens": 219,
+      "gpu": "NVIDIA GeForce RTX 3090",
+      "elapsed_seconds": 85.37379182400764,
+      "peak_allocated_bytes": 1377975296
+    },
+    {
+      "key": "distilbert-linear-w064-compact-e1-s42",
+      "backbone": "distilbert",
+      "head": "linear",
+      "window": 64,
+      "representation": "compact",
+      "epochs": 1,
+      "seed": 42,
+      "n": 1024,
+      "accuracy": 0.728515625,
+      "log_loss": 0.6324160340653788,
+      "slices": {
+        "preflop": {
+          "n": 692,
+          "accuracy": 0.7615606936416185,
+          "log_loss": 0.5981101160741741
+        },
+        "flop": {
+          "n": 174,
+          "accuracy": 0.6954022988505747,
+          "log_loss": 0.6620918086610578
+        },
+        "turn": {
+          "n": 97,
+          "accuracy": 0.6288659793814433,
+          "log_loss": 0.7569590344880521
+        },
+        "river": {
+          "n": 61,
+          "accuracy": 0.6065573770491803,
+          "log_loss": 0.7388986476599081
+        },
+        "history_0": {
+          "n": 32,
+          "accuracy": 0.75,
+          "log_loss": 0.6582217204149349
+        },
+        "history_1_to_9": {
+          "n": 260,
+          "accuracy": 0.6653846153846154,
+          "log_loss": 0.6938231928464982
+        },
+        "history_10_plus": {
+          "n": 732,
+          "accuracy": 0.75,
+          "log_loss": 0.6094766307234707
+        }
+      },
+      "reload_max_abs_diff": 0.0,
+      "max_tokens": 391,
+      "gpu": "NVIDIA GeForce RTX 3090",
+      "elapsed_seconds": 116.07933276200492,
+      "peak_allocated_bytes": 1382587904
+    },
+    {
+      "key": "distilbert-mlp-w000-none-e1-s42",
+      "backbone": "distilbert",
+      "head": "mlp",
+      "window": 0,
+      "representation": "none",
+      "epochs": 1,
+      "seed": 42,
+      "n": 1024,
+      "accuracy": 0.728515625,
+      "log_loss": 0.6241197912332728,
+      "slices": {
+        "preflop": {
+          "n": 692,
+          "accuracy": 0.773121387283237,
+          "log_loss": 0.5875809108845023
+        },
+        "flop": {
+          "n": 174,
+          "accuracy": 0.6724137931034483,
+          "log_loss": 0.6559128462146915
+        },
+        "turn": {
+          "n": 97,
+          "accuracy": 0.5876288659793815,
+          "log_loss": 0.7489886063759529
+        },
+        "river": {
+          "n": 61,
+          "accuracy": 0.6065573770491803,
+          "log_loss": 0.749376161163476
+        },
+        "history_0": {
+          "n": 32,
+          "accuracy": 0.6875,
+          "log_loss": 0.6096496358215091
+        },
+        "history_1_to_9": {
+          "n": 260,
+          "accuracy": 0.6423076923076924,
+          "log_loss": 0.713309199184936
+        },
+        "history_10_plus": {
+          "n": 732,
+          "accuracy": 0.7609289617486339,
+          "log_loss": 0.5930730684269121
+        }
+      },
+      "reload_max_abs_diff": 0.0,
+      "max_tokens": 219,
+      "gpu": "NVIDIA GeForce RTX 3090",
+      "elapsed_seconds": 88.98082942600013,
+      "peak_allocated_bytes": 1378753536
+    },
+    {
+      "key": "distilbert-mlp-w000-none-e1-s43",
+      "backbone": "distilbert",
+      "head": "mlp",
+      "window": 0,
+      "representation": "none",
+      "epochs": 1,
+      "seed": 43,
+      "n": 1024,
+      "accuracy": 0.7265625,
+      "log_loss": 0.6113100941064467,
+      "slices": {
+        "preflop": {
+          "n": 692,
+          "accuracy": 0.7760115606936416,
+          "log_loss": 0.5534557655050328
+        },
+        "flop": {
+          "n": 174,
+          "accuracy": 0.6206896551724138,
+          "log_loss": 0.6980609305899719
+        },
+        "turn": {
+          "n": 97,
+          "accuracy": 0.6391752577319587,
+          "log_loss": 0.7567036887534517
+        },
+        "river": {
+          "n": 61,
+          "accuracy": 0.6065573770491803,
+          "log_loss": 0.7889719164553891
+        },
+        "history_0": {
+          "n": 32,
+          "accuracy": 0.65625,
+          "log_loss": 0.6550279237811651
+        },
+        "history_1_to_9": {
+          "n": 260,
+          "accuracy": 0.6538461538461539,
+          "log_loss": 0.7172613257346773
+        },
+        "history_10_plus": {
+          "n": 732,
+          "accuracy": 0.755464480874317,
+          "log_loss": 0.5717659810286722
+        }
+      },
+      "reload_max_abs_diff": 0.0,
+      "max_tokens": 219,
+      "gpu": "NVIDIA GeForce RTX 3090",
+      "elapsed_seconds": 86.00073006800085,
+      "peak_allocated_bytes": 1380137472
+    },
+    {
+      "key": "distilbert-mlp-w000-none-e1-s44",
+      "backbone": "distilbert",
+      "head": "mlp",
+      "window": 0,
+      "representation": "none",
+      "epochs": 1,
+      "seed": 44,
+      "n": 1024,
+      "accuracy": 0.7275390625,
+      "log_loss": 0.608970128877074,
+      "slices": {
+        "preflop": {
+          "n": 692,
+          "accuracy": 0.7673410404624278,
+          "log_loss": 0.5571532322744156
+        },
+        "flop": {
+          "n": 174,
+          "accuracy": 0.6896551724137931,
+          "log_loss": 0.648795217645784
+        },
+        "turn": {
+          "n": 97,
+          "accuracy": 0.6082474226804123,
+          "log_loss": 0.7992826679115212
+        },
+        "river": {
+          "n": 61,
+          "accuracy": 0.5737704918032787,
+          "log_loss": 0.7805670258761354
+        },
+        "history_0": {
+          "n": 32,
+          "accuracy": 0.71875,
+          "log_loss": 0.5569351790478487
+        },
+        "history_1_to_9": {
+          "n": 260,
+          "accuracy": 0.6423076923076924,
+          "log_loss": 0.7435474220638952
+        },
+        "history_10_plus": {
+          "n": 732,
+          "accuracy": 0.7581967213114754,
+          "log_loss": 0.5634442028742894
+        }
+      },
+      "reload_max_abs_diff": 0.0,
+      "max_tokens": 219,
+      "gpu": "NVIDIA GeForce RTX 3090",
+      "elapsed_seconds": 85.61351560500043,
+      "peak_allocated_bytes": 1378754560
+    },
+    {
+      "key": "distilbert-mlp-w000-none-e3-s42",
+      "backbone": "distilbert",
+      "head": "mlp",
+      "window": 0,
+      "representation": "none",
+      "epochs": 3,
+      "seed": 42,
+      "n": 1024,
+      "accuracy": 0.7412109375,
+      "log_loss": 0.571766279528744,
+      "slices": {
+        "preflop": {
+          "n": 692,
+          "accuracy": 0.7817919075144508,
+          "log_loss": 0.5129944625478355
+        },
+        "flop": {
+          "n": 174,
+          "accuracy": 0.6896551724137931,
+          "log_loss": 0.6270492792742325
+        },
+        "turn": {
+          "n": 97,
+          "accuracy": 0.6185567010309279,
+          "log_loss": 0.7500770105717506
+        },
+        "river": {
+          "n": 61,
+          "accuracy": 0.6229508196721312,
+          "log_loss": 0.7972534022156617
+        },
+        "history_0": {
+          "n": 32,
+          "accuracy": 0.75,
+          "log_loss": 0.5708433194943228
+        },
+        "history_1_to_9": {
+          "n": 260,
+          "accuracy": 0.6653846153846154,
+          "log_loss": 0.7111352823111144
+        },
+        "history_10_plus": {
+          "n": 732,
+          "accuracy": 0.76775956284153,
+          "log_loss": 0.5223039762468931
+        }
+      },
+      "reload_max_abs_diff": 0.0,
+      "max_tokens": 219,
+      "gpu": "NVIDIA GeForce RTX 3090",
+      "elapsed_seconds": 226.0462376679934,
+      "peak_allocated_bytes": 1378777600
+    },
+    {
+      "key": "distilbert-mlp-w000-none-e3-s43",
+      "backbone": "distilbert",
+      "head": "mlp",
+      "window": 0,
+      "representation": "none",
+      "epochs": 3,
+      "seed": 43,
+      "n": 1024,
+      "accuracy": 0.73046875,
+      "log_loss": 0.5882566234095987,
+      "slices": {
+        "preflop": {
+          "n": 692,
+          "accuracy": 0.8005780346820809,
+          "log_loss": 0.5232433310081542
+        },
+        "flop": {
+          "n": 174,
+          "accuracy": 0.603448275862069,
+          "log_loss": 0.6797022906730952
+        },
+        "turn": {
+          "n": 97,
+          "accuracy": 0.5876288659793815,
+          "log_loss": 0.7308297660840081
+        },
+        "river": {
+          "n": 61,
+          "accuracy": 0.5245901639344263,
+          "log_loss": 0.8382247774839189
+        },
+        "history_0": {
+          "n": 32,
+          "accuracy": 0.65625,
+          "log_loss": 0.6338175575633361
+        },
+        "history_1_to_9": {
+          "n": 260,
+          "accuracy": 0.6038461538461538,
+          "log_loss": 0.7214634304986656
+        },
+        "history_10_plus": {
+          "n": 732,
+          "accuracy": 0.7786885245901639,
+          "log_loss": 0.5389509953548488
+        }
+      },
+      "reload_max_abs_diff": 0.0,
+      "max_tokens": 219,
+      "gpu": "NVIDIA GeForce RTX 3090",
+      "elapsed_seconds": 222.6379629389994,
+      "peak_allocated_bytes": 1380137984
+    },
+    {
+      "key": "distilbert-mlp-w000-none-e3-s44",
+      "backbone": "distilbert",
+      "head": "mlp",
+      "window": 0,
+      "representation": "none",
+      "epochs": 3,
+      "seed": 44,
+      "n": 1024,
+      "accuracy": 0.74609375,
+      "log_loss": 0.5648205854042174,
+      "slices": {
+        "preflop": {
+          "n": 692,
+          "accuracy": 0.8092485549132948,
+          "log_loss": 0.4911634804702571
+        },
+        "flop": {
+          "n": 174,
+          "accuracy": 0.6206896551724138,
+          "log_loss": 0.6583186283954773
+        },
+        "turn": {
+          "n": 97,
+          "accuracy": 0.6288659793814433,
+          "log_loss": 0.7748046255595933
+        },
+        "river": {
+          "n": 61,
+          "accuracy": 0.5737704918032787,
+          "log_loss": 0.7997977204656923
+        },
+        "history_0": {
+          "n": 32,
+          "accuracy": 0.65625,
+          "log_loss": 0.6088115897507389
+        },
+        "history_1_to_9": {
+          "n": 260,
+          "accuracy": 0.6384615384615384,
+          "log_loss": 0.724106138862084
+        },
+        "history_10_plus": {
+          "n": 732,
+          "accuracy": 0.7882513661202186,
+          "log_loss": 0.5063206454614115
+        }
+      },
+      "reload_max_abs_diff": 0.0,
+      "max_tokens": 219,
+      "gpu": "NVIDIA GeForce RTX 3090",
+      "elapsed_seconds": 235.81638690100226,
+      "peak_allocated_bytes": 1378754560
+    },
+    {
+      "key": "distilbert-mlp-w016-compact-e1-s42",
+      "backbone": "distilbert",
+      "head": "mlp",
+      "window": 16,
+      "representation": "compact",
+      "epochs": 1,
+      "seed": 42,
+      "n": 1024,
+      "accuracy": 0.7265625,
+      "log_loss": 0.5937725004105272,
+      "slices": {
+        "preflop": {
+          "n": 692,
+          "accuracy": 0.7615606936416185,
+          "log_loss": 0.5420374535398347
+        },
+        "flop": {
+          "n": 174,
+          "accuracy": 0.6954022988505747,
+          "log_loss": 0.6632316976908007
+        },
+        "turn": {
+          "n": 97,
+          "accuracy": 0.5979381443298969,
+          "log_loss": 0.7408163512902117
+        },
+        "river": {
+          "n": 61,
+          "accuracy": 0.6229508196721312,
+          "log_loss": 0.7487150999584323
+        },
+        "history_0": {
+          "n": 60,
+          "accuracy": 0.7833333333333333,
+          "log_loss": 0.5936974985998356
+        },
+        "history_1_to_9": {
+          "n": 333,
+          "accuracy": 0.6396396396396397,
+          "log_loss": 0.7217989448190454
+        },
+        "history_10_plus": {
+          "n": 631,
+          "accuracy": 0.7670364500792393,
+          "log_loss": 0.5262157557522147
+        }
+      },
+      "reload_max_abs_diff": 0.0,
+      "max_tokens": 362,
+      "gpu": "NVIDIA GeForce RTX 3090",
+      "elapsed_seconds": 114.94726248799998,
+      "peak_allocated_bytes": 1381665280
+    },
+    {
+      "key": "distilbert-mlp-w016-compact-e1-s43",
+      "backbone": "distilbert",
+      "head": "mlp",
+      "window": 16,
+      "representation": "compact",
+      "epochs": 1,
+      "seed": 43,
+      "n": 1024,
+      "accuracy": 0.7412109375,
+      "log_loss": 0.6073485049644103,
+      "slices": {
+        "preflop": {
+          "n": 692,
+          "accuracy": 0.7789017341040463,
+          "log_loss": 0.5551339644905118
+        },
+        "flop": {
+          "n": 174,
+          "accuracy": 0.6896551724137931,
+          "log_loss": 0.6708100245013162
+        },
+        "turn": {
+          "n": 97,
+          "accuracy": 0.6391752577319587,
+          "log_loss": 0.7702219893368014
+        },
+        "river": {
+          "n": 61,
+          "accuracy": 0.6229508196721312,
+          "log_loss": 0.7596670233971027
+        },
+        "history_0": {
+          "n": 60,
+          "accuracy": 0.7833333333333333,
+          "log_loss": 0.6008191816780365
+        },
+        "history_1_to_9": {
+          "n": 333,
+          "accuracy": 0.6366366366366366,
+          "log_loss": 0.7299707971074578
+        },
+        "history_10_plus": {
+          "n": 631,
+          "accuracy": 0.7923930269413629,
+          "log_loss": 0.5432574369985587
+        }
+      },
+      "reload_max_abs_diff": 0.0,
+      "max_tokens": 362,
+      "gpu": "NVIDIA GeForce RTX 3090",
+      "elapsed_seconds": 112.77566020199447,
+      "peak_allocated_bytes": 1382520320
+    },
+    {
+      "key": "distilbert-mlp-w016-compact-e1-s44",
+      "backbone": "distilbert",
+      "head": "mlp",
+      "window": 16,
+      "representation": "compact",
+      "epochs": 1,
+      "seed": 44,
+      "n": 1024,
+      "accuracy": 0.7421875,
+      "log_loss": 0.6126117794996917,
+      "slices": {
+        "preflop": {
+          "n": 692,
+          "accuracy": 0.7789017341040463,
+          "log_loss": 0.5462973448812118
+        },
+        "flop": {
+          "n": 174,
+          "accuracy": 0.7011494252873564,
+          "log_loss": 0.6657496215090656
+        },
+        "turn": {
+          "n": 97,
+          "accuracy": 0.6185567010309279,
+          "log_loss": 0.8344969726910925
+        },
+        "river": {
+          "n": 61,
+          "accuracy": 0.639344262295082,
+          "log_loss": 0.8604927714142999
+        },
+        "history_0": {
+          "n": 60,
+          "accuracy": 0.7833333333333333,
+          "log_loss": 0.568078940021342
+        },
+        "history_1_to_9": {
+          "n": 333,
+          "accuracy": 0.6486486486486487,
+          "log_loss": 0.7692790314821972
+        },
+        "history_10_plus": {
+          "n": 631,
+          "accuracy": 0.7876386687797148,
+          "log_loss": 0.5341676835544089
+        }
+      },
+      "reload_max_abs_diff": 0.0,
+      "max_tokens": 362,
+      "gpu": "NVIDIA GeForce RTX 3090",
+      "elapsed_seconds": 122.82315874101187,
+      "peak_allocated_bytes": 1381378560
+    },
+    {
+      "key": "distilbert-mlp-w064-compact-e1-s42",
+      "backbone": "distilbert",
+      "head": "mlp",
+      "window": 64,
+      "representation": "compact",
+      "epochs": 1,
+      "seed": 42,
+      "n": 1024,
+      "accuracy": 0.7255859375,
+      "log_loss": 0.6039483521032007,
+      "slices": {
+        "preflop": {
+          "n": 692,
+          "accuracy": 0.7572254335260116,
+          "log_loss": 0.5569391777069337
+        },
+        "flop": {
+          "n": 174,
+          "accuracy": 0.6896551724137931,
+          "log_loss": 0.6678629178393897
+        },
+        "turn": {
+          "n": 97,
+          "accuracy": 0.6288659793814433,
+          "log_loss": 0.7205547623352728
+        },
+        "river": {
+          "n": 61,
+          "accuracy": 0.6229508196721312,
+          "log_loss": 0.7694957693426933
+        },
+        "history_0": {
+          "n": 32,
+          "accuracy": 0.59375,
+          "log_loss": 0.7423175882730267
+        },
+        "history_1_to_9": {
+          "n": 260,
+          "accuracy": 0.6538461538461539,
+          "log_loss": 0.704199019501568
+        },
+        "history_10_plus": {
+          "n": 732,
+          "accuracy": 0.7568306010928961,
+          "log_loss": 0.5622912631947173
+        }
+      },
+      "reload_max_abs_diff": 0.0,
+      "max_tokens": 391,
+      "gpu": "NVIDIA GeForce RTX 3090",
+      "elapsed_seconds": 116.85854033200303,
+      "peak_allocated_bytes": 1383366144
+    },
+    {
+      "key": "distilbert-mlp-w064-compact-e3-s42",
+      "backbone": "distilbert",
+      "head": "mlp",
+      "window": 64,
+      "representation": "compact",
+      "epochs": 3,
+      "seed": 42,
+      "n": 1024,
+      "accuracy": 0.7568359375,
+      "log_loss": 0.5717636186847841,
+      "slices": {
+        "preflop": {
+          "n": 692,
+          "accuracy": 0.8049132947976878,
+          "log_loss": 0.5121279789989615
+        },
+        "flop": {
+          "n": 174,
+          "accuracy": 0.6954022988505747,
+          "log_loss": 0.6176107437791414
+        },
+        "turn": {
+          "n": 97,
+          "accuracy": 0.6082474226804123,
+          "log_loss": 0.7614524413976708
+        },
+        "river": {
+          "n": 61,
+          "accuracy": 0.6229508196721312,
+          "log_loss": 0.8158725874228364
+        },
+        "history_0": {
+          "n": 32,
+          "accuracy": 0.6875,
+          "log_loss": 0.5709030686062566
+        },
+        "history_1_to_9": {
+          "n": 260,
+          "accuracy": 0.6576923076923077,
+          "log_loss": 0.6947033574911337
+        },
+        "history_10_plus": {
+          "n": 732,
+          "accuracy": 0.7950819672131147,
+          "log_loss": 0.528134118019295
+        }
+      },
+      "reload_max_abs_diff": 0.0,
+      "max_tokens": 391,
+      "gpu": "NVIDIA GeForce RTX 3090",
+      "elapsed_seconds": 309.8645548170025,
+      "peak_allocated_bytes": 1387687424
+    },
+    {
+      "key": "distilbert-mlp-w064-compact-e3-s43",
+      "backbone": "distilbert",
+      "head": "mlp",
+      "window": 64,
+      "representation": "compact",
+      "epochs": 3,
+      "seed": 43,
+      "n": 1024,
+      "accuracy": 0.732421875,
+      "log_loss": 0.5941669124975735,
+      "slices": {
+        "preflop": {
+          "n": 692,
+          "accuracy": 0.7817919075144508,
+          "log_loss": 0.5457741327439137
+        },
+        "flop": {
+          "n": 174,
+          "accuracy": 0.6609195402298851,
+          "log_loss": 0.6521224504679011
+        },
+        "turn": {
+          "n": 97,
+          "accuracy": 0.6082474226804123,
+          "log_loss": 0.7429591235377931
+        },
+        "river": {
+          "n": 61,
+          "accuracy": 0.5737704918032787,
+          "log_loss": 0.7412274946581325
+        },
+        "history_0": {
+          "n": 32,
+          "accuracy": 0.625,
+          "log_loss": 0.7085203055046296
+        },
+        "history_1_to_9": {
+          "n": 260,
+          "accuracy": 0.6461538461538462,
+          "log_loss": 0.6873372859612833
+        },
+        "history_10_plus": {
+          "n": 732,
+          "accuracy": 0.76775956284153,
+          "log_loss": 0.5560745550156193
+        }
+      },
+      "reload_max_abs_diff": 0.0,
+      "max_tokens": 391,
+      "gpu": "NVIDIA GeForce RTX 3090",
+      "elapsed_seconds": 314.1937765779876,
+      "peak_allocated_bytes": 1387916800
+    },
+    {
+      "key": "distilbert-mlp-w064-compact-e3-s44",
+      "backbone": "distilbert",
+      "head": "mlp",
+      "window": 64,
+      "representation": "compact",
+      "epochs": 3,
+      "seed": 44,
+      "n": 1024,
+      "accuracy": 0.7412109375,
+      "log_loss": 0.5718842707662295,
+      "slices": {
+        "preflop": {
+          "n": 692,
+          "accuracy": 0.8005780346820809,
+          "log_loss": 0.5049316302983977
+        },
+        "flop": {
+          "n": 174,
+          "accuracy": 0.6609195402298851,
+          "log_loss": 0.6412193394988893
+        },
+        "turn": {
+          "n": 97,
+          "accuracy": 0.6082474226804123,
+          "log_loss": 0.7694889476263329
+        },
+        "river": {
+          "n": 61,
+          "accuracy": 0.5081967213114754,
+          "log_loss": 0.8194133132060105
+        },
+        "history_0": {
+          "n": 32,
+          "accuracy": 0.75,
+          "log_loss": 0.6162963874422253
+        },
+        "history_1_to_9": {
+          "n": 260,
+          "accuracy": 0.6230769230769231,
+          "log_loss": 0.7172598789427492
+        },
+        "history_10_plus": {
+          "n": 732,
+          "accuracy": 0.7827868852459017,
+          "log_loss": 0.5183066124881871
+        }
+      },
+      "reload_max_abs_diff": 0.0,
+      "max_tokens": 391,
+      "gpu": "NVIDIA GeForce RTX 3090",
+      "elapsed_seconds": 332.19405371199537,
+      "peak_allocated_bytes": 1386526208
+    },
+    {
+      "key": "distilbert-mlp-w064-explicit-e1-s42",
+      "backbone": "distilbert",
+      "head": "mlp",
+      "window": 64,
+      "representation": "explicit",
+      "epochs": 1,
+      "seed": 42,
+      "n": 1024,
+      "accuracy": 0.73046875,
+      "log_loss": 0.6261510977094389,
+      "slices": {
+        "preflop": {
+          "n": 692,
+          "accuracy": 0.773121387283237,
+          "log_loss": 0.5942927658757896
+        },
+        "flop": {
+          "n": 174,
+          "accuracy": 0.6666666666666666,
+          "log_loss": 0.6522952597753775
+        },
+        "turn": {
+          "n": 97,
+          "accuracy": 0.6082474226804123,
+          "log_loss": 0.7429868795155955
+        },
+        "river": {
+          "n": 61,
+          "accuracy": 0.6229508196721312,
+          "log_loss": 0.7271971730244344
+        },
+        "history_0": {
+          "n": 32,
+          "accuracy": 0.75,
+          "log_loss": 0.6700137978202835
+        },
+        "history_1_to_9": {
+          "n": 260,
+          "accuracy": 0.6346153846153846,
+          "log_loss": 0.7049880299180945
+        },
+        "history_10_plus": {
+          "n": 732,
+          "accuracy": 0.7636612021857924,
+          "log_loss": 0.5962314135867647
+        }
+      },
+      "reload_max_abs_diff": 0.0,
+      "max_tokens": 371,
+      "gpu": "NVIDIA GeForce RTX 3090",
+      "elapsed_seconds": 115.53339709500142,
+      "peak_allocated_bytes": 1383603712
+    },
+    {
+      "key": "distilbert-mlp-w064-swapped-e1-s42",
+      "backbone": "distilbert",
+      "head": "mlp",
+      "window": 64,
+      "representation": "swapped",
+      "epochs": 1,
+      "seed": 42,
+      "n": 1024,
+      "accuracy": 0.732421875,
+      "log_loss": 0.6051689445299796,
+      "slices": {
+        "preflop": {
+          "n": 692,
+          "accuracy": 0.7687861271676301,
+          "log_loss": 0.5610536130413828
+        },
+        "flop": {
+          "n": 174,
+          "accuracy": 0.6781609195402298,
+          "log_loss": 0.6594122880869059
+        },
+        "turn": {
+          "n": 97,
+          "accuracy": 0.6288659793814433,
+          "log_loss": 0.7363676059585283
+        },
+        "river": {
+          "n": 61,
+          "accuracy": 0.639344262295082,
+          "log_loss": 0.7422705421141541
+        },
+        "history_0": {
+          "n": 32,
+          "accuracy": 0.71875,
+          "log_loss": 0.704125911830777
+        },
+        "history_1_to_9": {
+          "n": 260,
+          "accuracy": 0.6538461538461539,
+          "log_loss": 0.6955542950475634
+        },
+        "history_10_plus": {
+          "n": 732,
+          "accuracy": 0.7609289617486339,
+          "log_loss": 0.5687388706389997
+        }
+      },
+      "reload_max_abs_diff": 0.0,
+      "max_tokens": 391,
+      "gpu": "NVIDIA GeForce RTX 3090",
+      "elapsed_seconds": 122.37103419699997,
+      "peak_allocated_bytes": 1383366144
+    },
+    {
+      "key": "distilbert-mlp-w256-compact-e1-s42",
+      "backbone": "distilbert",
+      "head": "mlp",
+      "window": 256,
+      "representation": "compact",
+      "epochs": 1,
+      "seed": 42,
+      "n": 1024,
+      "accuracy": 0.732421875,
+      "log_loss": 0.623461376230946,
+      "slices": {
+        "preflop": {
+          "n": 692,
+          "accuracy": 0.773121387283237,
+          "log_loss": 0.5836520956153737
+        },
+        "flop": {
+          "n": 174,
+          "accuracy": 0.6839080459770115,
+          "log_loss": 0.671451758146775
+        },
+        "turn": {
+          "n": 97,
+          "accuracy": 0.6082474226804123,
+          "log_loss": 0.7487867304182377
+        },
+        "river": {
+          "n": 61,
+          "accuracy": 0.6065573770491803,
+          "log_loss": 0.7388898414187247
+        },
+        "history_0": {
+          "n": 32,
+          "accuracy": 0.71875,
+          "log_loss": 0.693253404828206
+        },
+        "history_1_to_9": {
+          "n": 161,
+          "accuracy": 0.7018633540372671,
+          "log_loss": 0.6764574567458869
+        },
+        "history_10_plus": {
+          "n": 831,
+          "accuracy": 0.7388688327316486,
+          "log_loss": 0.6105062452104674
+        }
+      },
+      "reload_max_abs_diff": 0.0,
+      "max_tokens": 396,
+      "gpu": "NVIDIA GeForce RTX 3090",
+      "elapsed_seconds": 125.23023522600124,
+      "peak_allocated_bytes": 1390685696
+    }
+  ],
+  "paired_changes": [
+    {
+      "key": "bert_mini-linear-w064-compact-e1-s42",
+      "control": "bert_mini-linear-w000-none-e1-s42",
+      "accuracy": {
+        "estimate": -0.009765625,
+        "interval_95": [
+          -0.023354080528099657,
+          0.006135126310038869
+        ]
+      },
+      "log_loss": {
+        "estimate": 0.05234443312539397,
+        "interval_95": [
+          0.02099465735285242,
+          0.08776893489440006
+        ]
+      },
+      "slices_using_fixed_64_action_coverage": {
+        "preflop": {
+          "without_history": {
+            "n": 692,
+            "accuracy": 0.7760115606936416,
+            "log_loss": 0.559952331162059
+          },
+          "with_history": {
+            "n": 692,
+            "accuracy": 0.7832369942196532,
+            "log_loss": 0.5950928516975453
+          },
+          "delta_accuracy": 0.007225433526011571,
+          "delta_log_loss": 0.03514052053548633
+        },
+        "flop": {
+          "without_history": {
+            "n": 174,
+            "accuracy": 0.6724137931034483,
+            "log_loss": 0.6655136750400915
+          },
+          "with_history": {
+            "n": 174,
+            "accuracy": 0.6379310344827587,
+            "log_loss": 0.7401304042431962
+          },
+          "delta_accuracy": -0.03448275862068961,
+          "delta_log_loss": 0.07461672920310469
+        },
+        "turn": {
+          "without_history": {
+            "n": 97,
+            "accuracy": 0.6185567010309279,
+            "log_loss": 0.7687259634139098
+          },
+          "with_history": {
+            "n": 97,
+            "accuracy": 0.5154639175257731,
+            "log_loss": 0.9264593736596276
+          },
+          "delta_accuracy": -0.10309278350515472,
+          "delta_log_loss": 0.15773341024571785
+        },
+        "river": {
+          "without_history": {
+            "n": 61,
+            "accuracy": 0.6065573770491803,
+            "log_loss": 0.7790515099006602
+          },
+          "with_history": {
+            "n": 61,
+            "accuracy": 0.6229508196721312,
+            "log_loss": 0.7954450776821689
+          },
+          "delta_accuracy": 0.016393442622950838,
+          "delta_log_loss": 0.01639356778150869
+        },
+        "history_0": {
+          "without_history": {
+            "n": 32,
+            "accuracy": 0.78125,
+            "log_loss": 0.5848963125955409
+          },
+          "with_history": {
+            "n": 32,
+            "accuracy": 0.65625,
+            "log_loss": 0.751891964973004
+          },
+          "delta_accuracy": -0.125,
+          "delta_log_loss": 0.16699565237746317
+        },
+        "history_1_to_9": {
+          "without_history": {
+            "n": 260,
+            "accuracy": 0.6307692307692307,
+            "log_loss": 0.717722464394669
+          },
+          "with_history": {
+            "n": 260,
+            "accuracy": 0.6076923076923076,
+            "log_loss": 0.7951316365081065
+          },
+          "delta_accuracy": -0.023076923076923106,
+          "delta_log_loss": 0.07740917211343745
+        },
+        "history_10_plus": {
+          "without_history": {
+            "n": 732,
+            "accuracy": 0.76775956284153,
+            "log_loss": 0.5738393858340697
+          },
+          "with_history": {
+            "n": 732,
+            "accuracy": 0.76775956284153,
+            "log_loss": 0.6122689676576091
+          },
+          "delta_accuracy": 0.0,
+          "delta_log_loss": 0.038429581823539394
+        }
+      }
+    },
+    {
+      "key": "bert_mini-mlp-w064-compact-e1-s42",
+      "control": "bert_mini-mlp-w000-none-e1-s42",
+      "accuracy": {
+        "estimate": -0.013671875,
+        "interval_95": [
+          -0.030864793364793364,
+          0.0010121457489878543
+        ]
+      },
+      "log_loss": {
+        "estimate": 0.02942614543612187,
+        "interval_95": [
+          -0.0036741471410736324,
+          0.0698241929793354
+        ]
+      },
+      "slices_using_fixed_64_action_coverage": {
+        "preflop": {
+          "without_history": {
+            "n": 692,
+            "accuracy": 0.7644508670520231,
+            "log_loss": 0.5964679978381464
+          },
+          "with_history": {
+            "n": 692,
+            "accuracy": 0.7745664739884393,
+            "log_loss": 0.6025346573227328
+          },
+          "delta_accuracy": 0.01011560693641611,
+          "delta_log_loss": 0.006066659484586401
+        },
+        "flop": {
+          "without_history": {
+            "n": 174,
+            "accuracy": 0.6896551724137931,
+            "log_loss": 0.6401540186541219
+          },
+          "with_history": {
+            "n": 174,
+            "accuracy": 0.6494252873563219,
+            "log_loss": 0.709851283248387
+          },
+          "delta_accuracy": -0.04022988505747127,
+          "delta_log_loss": 0.06969726459426506
+        },
+        "turn": {
+          "without_history": {
+            "n": 97,
+            "accuracy": 0.5979381443298969,
+            "log_loss": 0.7500784240353809
+          },
+          "with_history": {
+            "n": 97,
+            "accuracy": 0.5051546391752577,
+            "log_loss": 0.8703391931835179
+          },
+          "delta_accuracy": -0.09278350515463918,
+          "delta_log_loss": 0.12026076914813699
+        },
+        "river": {
+          "without_history": {
+            "n": 61,
+            "accuracy": 0.6065573770491803,
+            "log_loss": 0.7650223614897941
+          },
+          "with_history": {
+            "n": 61,
+            "accuracy": 0.5245901639344263,
+            "log_loss": 0.8001309830714918
+          },
+          "delta_accuracy": -0.08196721311475408,
+          "delta_log_loss": 0.0351086215816977
+        },
+        "history_0": {
+          "without_history": {
+            "n": 32,
+            "accuracy": 0.71875,
+            "log_loss": 0.6079042266924819
+          },
+          "with_history": {
+            "n": 32,
+            "accuracy": 0.59375,
+            "log_loss": 0.8469757790322243
+          },
+          "delta_accuracy": -0.125,
+          "delta_log_loss": 0.23907155233974242
+        },
+        "history_1_to_9": {
+          "without_history": {
+            "n": 260,
+            "accuracy": 0.6461538461538462,
+            "log_loss": 0.7042696520243618
+          },
+          "with_history": {
+            "n": 260,
+            "accuracy": 0.5884615384615385,
+            "log_loss": 0.7591968994580054
+          },
+          "delta_accuracy": -0.05769230769230771,
+          "delta_log_loss": 0.05492724743364363
+        },
+        "history_10_plus": {
+          "without_history": {
+            "n": 732,
+            "accuracy": 0.755464480874317,
+            "log_loss": 0.6024639073109704
+          },
+          "with_history": {
+            "n": 732,
+            "accuracy": 0.7622950819672131,
+            "log_loss": 0.6136674577467215
+          },
+          "delta_accuracy": 0.006830601092896127,
+          "delta_log_loss": 0.011203550435751053
+        }
+      }
+    },
+    {
+      "key": "distilbert-linear-w064-compact-e1-s42",
+      "control": "distilbert-linear-w000-none-e1-s42",
+      "accuracy": {
+        "estimate": -0.0068359375,
+        "interval_95": [
+          -0.02443395689053652,
+          0.01254017073795863
+        ]
+      },
+      "log_loss": {
+        "estimate": 0.026725794292824828,
+        "interval_95": [
+          0.01186508973495224,
+          0.04296645041901329
+        ]
+      },
+      "slices_using_fixed_64_action_coverage": {
+        "preflop": {
+          "without_history": {
+            "n": 692,
+            "accuracy": 0.7789017341040463,
+            "log_loss": 0.5646705179886078
+          },
+          "with_history": {
+            "n": 692,
+            "accuracy": 0.7615606936416185,
+            "log_loss": 0.5981101160741741
+          },
+          "delta_accuracy": -0.017341040462427793,
+          "delta_log_loss": 0.03343959808556629
+        },
+        "flop": {
+          "without_history": {
+            "n": 174,
+            "accuracy": 0.6954022988505747,
+            "log_loss": 0.6419253105336276
+          },
+          "with_history": {
+            "n": 174,
+            "accuracy": 0.6954022988505747,
+            "log_loss": 0.6620918086610578
+          },
+          "delta_accuracy": 0.0,
+          "delta_log_loss": 0.02016649812743021
+        },
+        "turn": {
+          "without_history": {
+            "n": 97,
+            "accuracy": 0.5979381443298969,
+            "log_loss": 0.7383371607183765
+          },
+          "with_history": {
+            "n": 97,
+            "accuracy": 0.6288659793814433,
+            "log_loss": 0.7569590344880519
+          },
+          "delta_accuracy": 0.030927835051546393,
+          "delta_log_loss": 0.01862187376967539
+        },
+        "river": {
+          "without_history": {
+            "n": 61,
+            "accuracy": 0.5737704918032787,
+            "log_loss": 0.7567393189581155
+          },
+          "with_history": {
+            "n": 61,
+            "accuracy": 0.6065573770491803,
+            "log_loss": 0.7388986476599082
+          },
+          "delta_accuracy": 0.032786885245901676,
+          "delta_log_loss": -0.017840671298207322
+        },
+        "history_0": {
+          "without_history": {
+            "n": 32,
+            "accuracy": 0.71875,
+            "log_loss": 0.6182382392252125
+          },
+          "with_history": {
+            "n": 32,
+            "accuracy": 0.75,
+            "log_loss": 0.6582217204149349
+          },
+          "delta_accuracy": 0.03125,
+          "delta_log_loss": 0.03998348118972239
+        },
+        "history_1_to_9": {
+          "without_history": {
+            "n": 260,
+            "accuracy": 0.6461538461538462,
+            "log_loss": 0.6932225542417999
+          },
+          "with_history": {
+            "n": 260,
+            "accuracy": 0.6653846153846154,
+            "log_loss": 0.6938231928464982
+          },
+          "delta_accuracy": 0.019230769230769162,
+          "delta_log_loss": 0.0006006386046982781
+        },
+        "history_10_plus": {
+          "without_history": {
+            "n": 732,
+            "accuracy": 0.76775956284153,
+            "log_loss": 0.5740509805587714
+          },
+          "with_history": {
+            "n": 732,
+            "accuracy": 0.75,
+            "log_loss": 0.6094766307234707
+          },
+          "delta_accuracy": -0.01775956284153002,
+          "delta_log_loss": 0.03542565016469934
+        }
+      }
+    },
+    {
+      "key": "distilbert-mlp-w064-compact-e1-s42",
+      "control": "distilbert-mlp-w000-none-e1-s42",
+      "accuracy": {
+        "estimate": -0.0029296875,
+        "interval_95": [
+          -0.02765498493692337,
+          0.018224993101739466
+        ]
+      },
+      "log_loss": {
+        "estimate": -0.02017143913007198,
+        "interval_95": [
+          -0.03588333436472525,
+          -0.004281753545751048
+        ]
+      },
+      "slices_using_fixed_64_action_coverage": {
+        "preflop": {
+          "without_history": {
+            "n": 692,
+            "accuracy": 0.773121387283237,
+            "log_loss": 0.5875809108845023
+          },
+          "with_history": {
+            "n": 692,
+            "accuracy": 0.7572254335260116,
+            "log_loss": 0.5569391777069337
+          },
+          "delta_accuracy": -0.01589595375722541,
+          "delta_log_loss": -0.030641733177568575
+        },
+        "flop": {
+          "without_history": {
+            "n": 174,
+            "accuracy": 0.6724137931034483,
+            "log_loss": 0.6559128462146915
+          },
+          "with_history": {
+            "n": 174,
+            "accuracy": 0.6896551724137931,
+            "log_loss": 0.6678629178393894
+          },
+          "delta_accuracy": 0.017241379310344862,
+          "delta_log_loss": 0.011950071624697967
+        },
+        "turn": {
+          "without_history": {
+            "n": 97,
+            "accuracy": 0.5876288659793815,
+            "log_loss": 0.7489886063759527
+          },
+          "with_history": {
+            "n": 97,
+            "accuracy": 0.6288659793814433,
+            "log_loss": 0.7205547623352728
+          },
+          "delta_accuracy": 0.04123711340206182,
+          "delta_log_loss": -0.028433844040679834
+        },
+        "river": {
+          "without_history": {
+            "n": 61,
+            "accuracy": 0.6065573770491803,
+            "log_loss": 0.7493761611634758
+          },
+          "with_history": {
+            "n": 61,
+            "accuracy": 0.6229508196721312,
+            "log_loss": 0.7694957693426934
+          },
+          "delta_accuracy": 0.016393442622950838,
+          "delta_log_loss": 0.02011960817921754
+        },
+        "history_0": {
+          "without_history": {
+            "n": 32,
+            "accuracy": 0.6875,
+            "log_loss": 0.6096496358215091
+          },
+          "with_history": {
+            "n": 32,
+            "accuracy": 0.59375,
+            "log_loss": 0.7423175882730267
+          },
+          "delta_accuracy": -0.09375,
+          "delta_log_loss": 0.13266795245151763
+        },
+        "history_1_to_9": {
+          "without_history": {
+            "n": 260,
+            "accuracy": 0.6423076923076924,
+            "log_loss": 0.713309199184936
+          },
+          "with_history": {
+            "n": 260,
+            "accuracy": 0.6538461538461539,
+            "log_loss": 0.704199019501568
+          },
+          "delta_accuracy": 0.011538461538461497,
+          "delta_log_loss": -0.009110179683367914
+        },
+        "history_10_plus": {
+          "without_history": {
+            "n": 732,
+            "accuracy": 0.7609289617486339,
+            "log_loss": 0.5930730684269122
+          },
+          "with_history": {
+            "n": 732,
+            "accuracy": 0.7568306010928961,
+            "log_loss": 0.5622912631947173
+          },
+          "delta_accuracy": -0.004098360655737765,
+          "delta_log_loss": -0.03078180523219487
+        }
+      }
+    },
+    {
+      "key": "distilbert-mlp-w016-compact-e1-s42",
+      "control": "distilbert-mlp-w000-none-e1-s42",
+      "accuracy": {
+        "estimate": -0.001953125,
+        "interval_95": [
+          -0.031106414938737042,
+          0.02564488392089422
+        ]
+      },
+      "log_loss": {
+        "estimate": -0.03034729082274565,
+        "interval_95": [
+          -0.05364933389201091,
+          -0.0069200262981812975
+        ]
+      },
+      "slices_using_fixed_64_action_coverage": {
+        "preflop": {
+          "without_history": {
+            "n": 692,
+            "accuracy": 0.773121387283237,
+            "log_loss": 0.5875809108845023
+          },
+          "with_history": {
+            "n": 692,
+            "accuracy": 0.7615606936416185,
+            "log_loss": 0.5420374535398346
+          },
+          "delta_accuracy": -0.011560693641618491,
+          "delta_log_loss": -0.04554345734466769
+        },
+        "flop": {
+          "without_history": {
+            "n": 174,
+            "accuracy": 0.6724137931034483,
+            "log_loss": 0.6559128462146915
+          },
+          "with_history": {
+            "n": 174,
+            "accuracy": 0.6954022988505747,
+            "log_loss": 0.6632316976908008
+          },
+          "delta_accuracy": 0.02298850574712641,
+          "delta_log_loss": 0.007318851476109334
+        },
+        "turn": {
+          "without_history": {
+            "n": 97,
+            "accuracy": 0.5876288659793815,
+            "log_loss": 0.7489886063759527
+          },
+          "with_history": {
+            "n": 97,
+            "accuracy": 0.5979381443298969,
+            "log_loss": 0.7408163512902115
+          },
+          "delta_accuracy": 0.010309278350515427,
+          "delta_log_loss": -0.008172255085741154
+        },
+        "river": {
+          "without_history": {
+            "n": 61,
+            "accuracy": 0.6065573770491803,
+            "log_loss": 0.7493761611634758
+          },
+          "with_history": {
+            "n": 61,
+            "accuracy": 0.6229508196721312,
+            "log_loss": 0.7487150999584324
+          },
+          "delta_accuracy": 0.016393442622950838,
+          "delta_log_loss": -0.0006610612050433895
+        },
+        "history_0": {
+          "without_history": {
+            "n": 32,
+            "accuracy": 0.6875,
+            "log_loss": 0.6096496358215091
+          },
+          "with_history": {
+            "n": 32,
+            "accuracy": 0.75,
+            "log_loss": 0.6393751822035812
+          },
+          "delta_accuracy": 0.0625,
+          "delta_log_loss": 0.029725546382072143
+        },
+        "history_1_to_9": {
+          "without_history": {
+            "n": 260,
+            "accuracy": 0.6423076923076924,
+            "log_loss": 0.713309199184936
+          },
+          "with_history": {
+            "n": 260,
+            "accuracy": 0.6346153846153846,
+            "log_loss": 0.7018612023680163
+          },
+          "delta_accuracy": -0.007692307692307776,
+          "delta_log_loss": -0.011447996816919659
+        },
+        "history_10_plus": {
+          "without_history": {
+            "n": 732,
+            "accuracy": 0.7609289617486339,
+            "log_loss": 0.5930730684269122
+          },
+          "with_history": {
+            "n": 732,
+            "accuracy": 0.7581967213114754,
+            "log_loss": 0.5533867786532527
+          },
+          "delta_accuracy": -0.002732240437158473,
+          "delta_log_loss": -0.03968628977365951
+        }
+      }
+    },
+    {
+      "key": "distilbert-mlp-w256-compact-e1-s42",
+      "control": "distilbert-mlp-w000-none-e1-s42",
+      "accuracy": {
+        "estimate": 0.00390625,
+        "interval_95": [
+          -0.019263293820297706,
+          0.02639047865550756
+        ]
+      },
+      "log_loss": {
+        "estimate": -0.0006584150023267472,
+        "interval_95": [
+          -0.0167440537078145,
+          0.011733595017097422
+        ]
+      },
+      "slices_using_fixed_64_action_coverage": {
+        "preflop": {
+          "without_history": {
+            "n": 692,
+            "accuracy": 0.773121387283237,
+            "log_loss": 0.5875809108845023
+          },
+          "with_history": {
+            "n": 692,
+            "accuracy": 0.773121387283237,
+            "log_loss": 0.5836520956153737
+          },
+          "delta_accuracy": 0.0,
+          "delta_log_loss": -0.003928815269128583
+        },
+        "flop": {
+          "without_history": {
+            "n": 174,
+            "accuracy": 0.6724137931034483,
+            "log_loss": 0.6559128462146915
+          },
+          "with_history": {
+            "n": 174,
+            "accuracy": 0.6839080459770115,
+            "log_loss": 0.671451758146775
+          },
+          "delta_accuracy": 0.011494252873563204,
+          "delta_log_loss": 0.015538911932083566
+        },
+        "turn": {
+          "without_history": {
+            "n": 97,
+            "accuracy": 0.5876288659793815,
+            "log_loss": 0.7489886063759527
+          },
+          "with_history": {
+            "n": 97,
+            "accuracy": 0.6082474226804123,
+            "log_loss": 0.7487867304182377
+          },
+          "delta_accuracy": 0.020618556701030855,
+          "delta_log_loss": -0.0002018759577149254
+        },
+        "river": {
+          "without_history": {
+            "n": 61,
+            "accuracy": 0.6065573770491803,
+            "log_loss": 0.7493761611634758
+          },
+          "with_history": {
+            "n": 61,
+            "accuracy": 0.6065573770491803,
+            "log_loss": 0.7388898414187247
+          },
+          "delta_accuracy": 0.0,
+          "delta_log_loss": -0.010486319744751116
+        },
+        "history_0": {
+          "without_history": {
+            "n": 32,
+            "accuracy": 0.6875,
+            "log_loss": 0.6096496358215091
+          },
+          "with_history": {
+            "n": 32,
+            "accuracy": 0.71875,
+            "log_loss": 0.693253404828206
+          },
+          "delta_accuracy": 0.03125,
+          "delta_log_loss": 0.08360376900669686
+        },
+        "history_1_to_9": {
+          "without_history": {
+            "n": 260,
+            "accuracy": 0.6423076923076924,
+            "log_loss": 0.713309199184936
+          },
+          "with_history": {
+            "n": 260,
+            "accuracy": 0.6538461538461539,
+            "log_loss": 0.7081455257110641
+          },
+          "delta_accuracy": 0.011538461538461497,
+          "delta_log_loss": -0.00516367347387181
+        },
+        "history_10_plus": {
+          "without_history": {
+            "n": 732,
+            "accuracy": 0.7609289617486339,
+            "log_loss": 0.5930730684269122
+          },
+          "with_history": {
+            "n": 732,
+            "accuracy": 0.7609289617486339,
+            "log_loss": 0.5903312890998763
+          },
+          "delta_accuracy": 0.0,
+          "delta_log_loss": -0.002741779327035898
+        }
+      }
+    },
+    {
+      "key": "distilbert-mlp-w064-explicit-e1-s42",
+      "control": "distilbert-mlp-w000-none-e1-s42",
+      "accuracy": {
+        "estimate": 0.001953125,
+        "interval_95": [
+          -0.024867618867618867,
+          0.030170983578804787
+        ]
+      },
+      "log_loss": {
+        "estimate": 0.0020313064761660615,
+        "interval_95": [
+          -0.014691765134423988,
+          0.017799323388213075
+        ]
+      },
+      "slices_using_fixed_64_action_coverage": {
+        "preflop": {
+          "without_history": {
+            "n": 692,
+            "accuracy": 0.773121387283237,
+            "log_loss": 0.5875809108845023
+          },
+          "with_history": {
+            "n": 692,
+            "accuracy": 0.773121387283237,
+            "log_loss": 0.5942927658757897
+          },
+          "delta_accuracy": 0.0,
+          "delta_log_loss": 0.006711854991287458
+        },
+        "flop": {
+          "without_history": {
+            "n": 174,
+            "accuracy": 0.6724137931034483,
+            "log_loss": 0.6559128462146915
+          },
+          "with_history": {
+            "n": 174,
+            "accuracy": 0.6666666666666666,
+            "log_loss": 0.6522952597753776
+          },
+          "delta_accuracy": -0.005747126436781658,
+          "delta_log_loss": -0.003617586439313869
+        },
+        "turn": {
+          "without_history": {
+            "n": 97,
+            "accuracy": 0.5876288659793815,
+            "log_loss": 0.7489886063759527
+          },
+          "with_history": {
+            "n": 97,
+            "accuracy": 0.6082474226804123,
+            "log_loss": 0.7429868795155955
+          },
+          "delta_accuracy": 0.020618556701030855,
+          "delta_log_loss": -0.006001726860357159
+        },
+        "river": {
+          "without_history": {
+            "n": 61,
+            "accuracy": 0.6065573770491803,
+            "log_loss": 0.7493761611634758
+          },
+          "with_history": {
+            "n": 61,
+            "accuracy": 0.6229508196721312,
+            "log_loss": 0.7271971730244344
+          },
+          "delta_accuracy": 0.016393442622950838,
+          "delta_log_loss": -0.0221789881390414
+        },
+        "history_0": {
+          "without_history": {
+            "n": 32,
+            "accuracy": 0.6875,
+            "log_loss": 0.6096496358215091
+          },
+          "with_history": {
+            "n": 32,
+            "accuracy": 0.75,
+            "log_loss": 0.6700137978202835
+          },
+          "delta_accuracy": 0.0625,
+          "delta_log_loss": 0.06036416199877437
+        },
+        "history_1_to_9": {
+          "without_history": {
+            "n": 260,
+            "accuracy": 0.6423076923076924,
+            "log_loss": 0.713309199184936
+          },
+          "with_history": {
+            "n": 260,
+            "accuracy": 0.6346153846153846,
+            "log_loss": 0.7049880299180945
+          },
+          "delta_accuracy": -0.007692307692307776,
+          "delta_log_loss": -0.008321169266841455
+        },
+        "history_10_plus": {
+          "without_history": {
+            "n": 732,
+            "accuracy": 0.7609289617486339,
+            "log_loss": 0.5930730684269122
+          },
+          "with_history": {
+            "n": 732,
+            "accuracy": 0.7636612021857924,
+            "log_loss": 0.5962314135867647
+          },
+          "delta_accuracy": 0.002732240437158473,
+          "delta_log_loss": 0.0031583451598524714
+        }
+      }
+    },
+    {
+      "key": "distilbert-mlp-w064-swapped-e1-s42",
+      "control": "distilbert-mlp-w000-none-e1-s42",
+      "accuracy": {
+        "estimate": 0.00390625,
+        "interval_95": [
+          -0.022789787971602915,
+          0.027525046434400846
+        ]
+      },
+      "log_loss": {
+        "estimate": -0.01895084670329318,
+        "interval_95": [
+          -0.03564289501450718,
+          -0.002366656433567296
+        ]
+      },
+      "slices_using_fixed_64_action_coverage": {
+        "preflop": {
+          "without_history": {
+            "n": 692,
+            "accuracy": 0.773121387283237,
+            "log_loss": 0.5875809108845023
+          },
+          "with_history": {
+            "n": 692,
+            "accuracy": 0.7687861271676301,
+            "log_loss": 0.5610536130413827
+          },
+          "delta_accuracy": -0.00433526011560692,
+          "delta_log_loss": -0.02652729784311958
+        },
+        "flop": {
+          "without_history": {
+            "n": 174,
+            "accuracy": 0.6724137931034483,
+            "log_loss": 0.6559128462146915
+          },
+          "with_history": {
+            "n": 174,
+            "accuracy": 0.6781609195402298,
+            "log_loss": 0.6594122880869059
+          },
+          "delta_accuracy": 0.005747126436781547,
+          "delta_log_loss": 0.003499441872214404
+        },
+        "turn": {
+          "without_history": {
+            "n": 97,
+            "accuracy": 0.5876288659793815,
+            "log_loss": 0.7489886063759527
+          },
+          "with_history": {
+            "n": 97,
+            "accuracy": 0.6288659793814433,
+            "log_loss": 0.7363676059585285
+          },
+          "delta_accuracy": 0.04123711340206182,
+          "delta_log_loss": -0.0126210004174242
+        },
+        "river": {
+          "without_history": {
+            "n": 61,
+            "accuracy": 0.6065573770491803,
+            "log_loss": 0.7493761611634758
+          },
+          "with_history": {
+            "n": 61,
+            "accuracy": 0.639344262295082,
+            "log_loss": 0.7422705421141541
+          },
+          "delta_accuracy": 0.032786885245901676,
+          "delta_log_loss": -0.007105619049321721
+        },
+        "history_0": {
+          "without_history": {
+            "n": 32,
+            "accuracy": 0.6875,
+            "log_loss": 0.6096496358215091
+          },
+          "with_history": {
+            "n": 32,
+            "accuracy": 0.71875,
+            "log_loss": 0.704125911830777
+          },
+          "delta_accuracy": 0.03125,
+          "delta_log_loss": 0.09447627600926789
+        },
+        "history_1_to_9": {
+          "without_history": {
+            "n": 260,
+            "accuracy": 0.6423076923076924,
+            "log_loss": 0.713309199184936
+          },
+          "with_history": {
+            "n": 260,
+            "accuracy": 0.6538461538461539,
+            "log_loss": 0.6955542950475634
+          },
+          "delta_accuracy": 0.011538461538461497,
+          "delta_log_loss": -0.017754904137372574
+        },
+        "history_10_plus": {
+          "without_history": {
+            "n": 732,
+            "accuracy": 0.7609289617486339,
+            "log_loss": 0.5930730684269122
+          },
+          "with_history": {
+            "n": 732,
+            "accuracy": 0.7609289617486339,
+            "log_loss": 0.5687388706389996
+          },
+          "delta_accuracy": 0.0,
+          "delta_log_loss": -0.02433419778791257
+        }
+      }
+    },
+    {
+      "key": "distilbert-mlp-w064-compact-e3-s42",
+      "control": "distilbert-mlp-w000-none-e3-s42",
+      "accuracy": {
+        "estimate": 0.015625,
+        "interval_95": [
+          0.0010235333666140617,
+          0.029000657157141976
+        ]
+      },
+      "log_loss": {
+        "estimate": -2.6608439598480027e-06,
+        "interval_95": [
+          -0.017938786645028768,
+          0.019094616095142916
+        ]
+      },
+      "slices_using_fixed_64_action_coverage": {
+        "preflop": {
+          "without_history": {
+            "n": 692,
+            "accuracy": 0.7817919075144508,
+            "log_loss": 0.5129944625478355
+          },
+          "with_history": {
+            "n": 692,
+            "accuracy": 0.8049132947976878,
+            "log_loss": 0.5121279789989613
+          },
+          "delta_accuracy": 0.023121387283236983,
+          "delta_log_loss": -0.0008664835488741973
+        },
+        "flop": {
+          "without_history": {
+            "n": 174,
+            "accuracy": 0.6896551724137931,
+            "log_loss": 0.6270492792742326
+          },
+          "with_history": {
+            "n": 174,
+            "accuracy": 0.6954022988505747,
+            "log_loss": 0.6176107437791413
+          },
+          "delta_accuracy": 0.005747126436781547,
+          "delta_log_loss": -0.009438535495091327
+        },
+        "turn": {
+          "without_history": {
+            "n": 97,
+            "accuracy": 0.6185567010309279,
+            "log_loss": 0.7500770105717506
+          },
+          "with_history": {
+            "n": 97,
+            "accuracy": 0.6082474226804123,
+            "log_loss": 0.7614524413976707
+          },
+          "delta_accuracy": -0.010309278350515538,
+          "delta_log_loss": 0.011375430825920074
+        },
+        "river": {
+          "without_history": {
+            "n": 61,
+            "accuracy": 0.6229508196721312,
+            "log_loss": 0.7972534022156617
+          },
+          "with_history": {
+            "n": 61,
+            "accuracy": 0.6229508196721312,
+            "log_loss": 0.8158725874228363
+          },
+          "delta_accuracy": 0.0,
+          "delta_log_loss": 0.01861918520717465
+        },
+        "history_0": {
+          "without_history": {
+            "n": 32,
+            "accuracy": 0.75,
+            "log_loss": 0.5708433194943228
+          },
+          "with_history": {
+            "n": 32,
+            "accuracy": 0.6875,
+            "log_loss": 0.5709030686062566
+          },
+          "delta_accuracy": -0.0625,
+          "delta_log_loss": 5.974911193384891e-05
+        },
+        "history_1_to_9": {
+          "without_history": {
+            "n": 260,
+            "accuracy": 0.6653846153846154,
+            "log_loss": 0.7111352823111146
+          },
+          "with_history": {
+            "n": 260,
+            "accuracy": 0.6576923076923077,
+            "log_loss": 0.6947033574911337
+          },
+          "delta_accuracy": -0.007692307692307665,
+          "delta_log_loss": -0.016431924819980903
+        },
+        "history_10_plus": {
+          "without_history": {
+            "n": 732,
+            "accuracy": 0.76775956284153,
+            "log_loss": 0.5223039762468931
+          },
+          "with_history": {
+            "n": 732,
+            "accuracy": 0.7950819672131147,
+            "log_loss": 0.528134118019295
+          },
+          "delta_accuracy": 0.02732240437158473,
+          "delta_log_loss": 0.005830141772401931
+        }
+      }
+    },
+    {
+      "key": "distilbert-mlp-w016-compact-e1-s43",
+      "control": "distilbert-mlp-w000-none-e1-s43",
+      "accuracy": {
+        "estimate": 0.0146484375,
+        "interval_95": [
+          -0.0012650423621120223,
+          0.029888104474612022
+        ]
+      },
+      "log_loss": {
+        "estimate": -0.003961589142036305,
+        "interval_95": [
+          -0.028284613832466672,
+          0.021417344949112273
+        ]
+      },
+      "slices_using_fixed_64_action_coverage": {
+        "preflop": {
+          "without_history": {
+            "n": 692,
+            "accuracy": 0.7760115606936416,
+            "log_loss": 0.5534557655050328
+          },
+          "with_history": {
+            "n": 692,
+            "accuracy": 0.7789017341040463,
+            "log_loss": 0.5551339644905118
+          },
+          "delta_accuracy": 0.0028901734104046506,
+          "delta_log_loss": 0.0016781989854789403
+        },
+        "flop": {
+          "without_history": {
+            "n": 174,
+            "accuracy": 0.6206896551724138,
+            "log_loss": 0.6980609305899718
+          },
+          "with_history": {
+            "n": 174,
+            "accuracy": 0.6896551724137931,
+            "log_loss": 0.6708100245013161
+          },
+          "delta_accuracy": 0.06896551724137934,
+          "delta_log_loss": -0.027250906088655658
+        },
+        "turn": {
+          "without_history": {
+            "n": 97,
+            "accuracy": 0.6391752577319587,
+            "log_loss": 0.7567036887534517
+          },
+          "with_history": {
+            "n": 97,
+            "accuracy": 0.6391752577319587,
+            "log_loss": 0.7702219893368014
+          },
+          "delta_accuracy": 0.0,
+          "delta_log_loss": 0.013518300583349685
+        },
+        "river": {
+          "without_history": {
+            "n": 61,
+            "accuracy": 0.6065573770491803,
+            "log_loss": 0.788971916455389
+          },
+          "with_history": {
+            "n": 61,
+            "accuracy": 0.6229508196721312,
+            "log_loss": 0.7596670233971027
+          },
+          "delta_accuracy": 0.016393442622950838,
+          "delta_log_loss": -0.02930489305828632
+        },
+        "history_0": {
+          "without_history": {
+            "n": 32,
+            "accuracy": 0.65625,
+            "log_loss": 0.6550279237811651
+          },
+          "with_history": {
+            "n": 32,
+            "accuracy": 0.75,
+            "log_loss": 0.5944438773553523
+          },
+          "delta_accuracy": 0.09375,
+          "delta_log_loss": -0.06058404642581283
+        },
+        "history_1_to_9": {
+          "without_history": {
+            "n": 260,
+            "accuracy": 0.6538461538461539,
+            "log_loss": 0.7172613257346773
+          },
+          "with_history": {
+            "n": 260,
+            "accuracy": 0.6576923076923077,
+            "log_loss": 0.7205892186337449
+          },
+          "delta_accuracy": 0.0038461538461538325,
+          "delta_log_loss": 0.0033278928990676526
+        },
+        "history_10_plus": {
+          "without_history": {
+            "n": 732,
+            "accuracy": 0.755464480874317,
+            "log_loss": 0.5717659810286722
+          },
+          "with_history": {
+            "n": 732,
+            "accuracy": 0.7704918032786885,
+            "log_loss": 0.5676905302778841
+          },
+          "delta_accuracy": 0.015027322404371546,
+          "delta_log_loss": -0.004075450750788079
+        }
+      }
+    },
+    {
+      "key": "distilbert-mlp-w016-compact-e1-s44",
+      "control": "distilbert-mlp-w000-none-e1-s44",
+      "accuracy": {
+        "estimate": 0.0146484375,
+        "interval_95": [
+          0.006781722261373424,
+          0.022795978202139033
+        ]
+      },
+      "log_loss": {
+        "estimate": 0.003641650622617633,
+        "interval_95": [
+          -0.012013673878190072,
+          0.019719306692819513
+        ]
+      },
+      "slices_using_fixed_64_action_coverage": {
+        "preflop": {
+          "without_history": {
+            "n": 692,
+            "accuracy": 0.7673410404624278,
+            "log_loss": 0.5571532322744156
+          },
+          "with_history": {
+            "n": 692,
+            "accuracy": 0.7789017341040463,
+            "log_loss": 0.5462973448812118
+          },
+          "delta_accuracy": 0.011560693641618491,
+          "delta_log_loss": -0.010855887393203756
+        },
+        "flop": {
+          "without_history": {
+            "n": 174,
+            "accuracy": 0.6896551724137931,
+            "log_loss": 0.648795217645784
+          },
+          "with_history": {
+            "n": 174,
+            "accuracy": 0.7011494252873564,
+            "log_loss": 0.6657496215090656
+          },
+          "delta_accuracy": 0.011494252873563204,
+          "delta_log_loss": 0.01695440386328162
+        },
+        "turn": {
+          "without_history": {
+            "n": 97,
+            "accuracy": 0.6082474226804123,
+            "log_loss": 0.7992826679115212
+          },
+          "with_history": {
+            "n": 97,
+            "accuracy": 0.6185567010309279,
+            "log_loss": 0.8344969726910926
+          },
+          "delta_accuracy": 0.010309278350515538,
+          "delta_log_loss": 0.035214304779571326
+        },
+        "river": {
+          "without_history": {
+            "n": 61,
+            "accuracy": 0.5737704918032787,
+            "log_loss": 0.7805670258761354
+          },
+          "with_history": {
+            "n": 61,
+            "accuracy": 0.639344262295082,
+            "log_loss": 0.8604927714142999
+          },
+          "delta_accuracy": 0.06557377049180335,
+          "delta_log_loss": 0.07992574553816456
+        },
+        "history_0": {
+          "without_history": {
+            "n": 32,
+            "accuracy": 0.71875,
+            "log_loss": 0.5569351790478487
+          },
+          "with_history": {
+            "n": 32,
+            "accuracy": 0.75,
+            "log_loss": 0.6106076920803991
+          },
+          "delta_accuracy": 0.03125,
+          "delta_log_loss": 0.053672513032550384
+        },
+        "history_1_to_9": {
+          "without_history": {
+            "n": 260,
+            "accuracy": 0.6423076923076924,
+            "log_loss": 0.7435474220638952
+          },
+          "with_history": {
+            "n": 260,
+            "accuracy": 0.6653846153846154,
+            "log_loss": 0.759900814422349
+          },
+          "delta_accuracy": 0.023076923076922995,
+          "delta_log_loss": 0.01635339235845379
+        },
+        "history_10_plus": {
+          "without_history": {
+            "n": 732,
+            "accuracy": 0.7581967213114754,
+            "log_loss": 0.5634442028742895
+          },
+          "with_history": {
+            "n": 732,
+            "accuracy": 0.7691256830601093,
+            "log_loss": 0.5603836124471322
+          },
+          "delta_accuracy": 0.010928961748633892,
+          "delta_log_loss": -0.003060590427157339
+        }
+      }
+    },
+    {
+      "key": "distilbert-mlp-w064-compact-e3-s43",
+      "control": "distilbert-mlp-w000-none-e3-s43",
+      "accuracy": {
+        "estimate": 0.001953125,
+        "interval_95": [
+          -0.02332385811467444,
+          0.026805749590519307
+        ]
+      },
+      "log_loss": {
+        "estimate": 0.005910289087974687,
+        "interval_95": [
+          -0.015593834154372767,
+          0.030088862205902008
+        ]
+      },
+      "slices_using_fixed_64_action_coverage": {
+        "preflop": {
+          "without_history": {
+            "n": 692,
+            "accuracy": 0.8005780346820809,
+            "log_loss": 0.5232433310081542
+          },
+          "with_history": {
+            "n": 692,
+            "accuracy": 0.7817919075144508,
+            "log_loss": 0.5457741327439137
+          },
+          "delta_accuracy": -0.018786127167630062,
+          "delta_log_loss": 0.022530801735759498
+        },
+        "flop": {
+          "without_history": {
+            "n": 174,
+            "accuracy": 0.603448275862069,
+            "log_loss": 0.6797022906730952
+          },
+          "with_history": {
+            "n": 174,
+            "accuracy": 0.6609195402298851,
+            "log_loss": 0.6521224504679011
+          },
+          "delta_accuracy": 0.05747126436781613,
+          "delta_log_loss": -0.027579840205194106
+        },
+        "turn": {
+          "without_history": {
+            "n": 97,
+            "accuracy": 0.5876288659793815,
+            "log_loss": 0.7308297660840083
+          },
+          "with_history": {
+            "n": 97,
+            "accuracy": 0.6082474226804123,
+            "log_loss": 0.7429591235377931
+          },
+          "delta_accuracy": 0.020618556701030855,
+          "delta_log_loss": 0.01212935745378485
+        },
+        "river": {
+          "without_history": {
+            "n": 61,
+            "accuracy": 0.5245901639344263,
+            "log_loss": 0.8382247774839189
+          },
+          "with_history": {
+            "n": 61,
+            "accuracy": 0.5737704918032787,
+            "log_loss": 0.7412274946581325
+          },
+          "delta_accuracy": 0.0491803278688524,
+          "delta_log_loss": -0.09699728282578635
+        },
+        "history_0": {
+          "without_history": {
+            "n": 32,
+            "accuracy": 0.65625,
+            "log_loss": 0.633817557563336
+          },
+          "with_history": {
+            "n": 32,
+            "accuracy": 0.625,
+            "log_loss": 0.7085203055046296
+          },
+          "delta_accuracy": -0.03125,
+          "delta_log_loss": 0.07470274794129361
+        },
+        "history_1_to_9": {
+          "without_history": {
+            "n": 260,
+            "accuracy": 0.6038461538461538,
+            "log_loss": 0.7214634304986656
+          },
+          "with_history": {
+            "n": 260,
+            "accuracy": 0.6461538461538462,
+            "log_loss": 0.6873372859612833
+          },
+          "delta_accuracy": 0.04230769230769238,
+          "delta_log_loss": -0.034126144537382275
+        },
+        "history_10_plus": {
+          "without_history": {
+            "n": 732,
+            "accuracy": 0.7786885245901639,
+            "log_loss": 0.5389509953548488
+          },
+          "with_history": {
+            "n": 732,
+            "accuracy": 0.76775956284153,
+            "log_loss": 0.5560745550156193
+          },
+          "delta_accuracy": -0.010928961748633892,
+          "delta_log_loss": 0.017123559660770504
+        }
+      }
+    },
+    {
+      "key": "distilbert-mlp-w064-compact-e3-s44",
+      "control": "distilbert-mlp-w000-none-e3-s44",
+      "accuracy": {
+        "estimate": -0.0048828125,
+        "interval_95": [
+          -0.018889788209901524,
+          0.011422245135363785
+        ]
+      },
+      "log_loss": {
+        "estimate": 0.00706368536201195,
+        "interval_95": [
+          -0.01692541375508044,
+          0.03274807858748761
+        ]
+      },
+      "slices_using_fixed_64_action_coverage": {
+        "preflop": {
+          "without_history": {
+            "n": 692,
+            "accuracy": 0.8092485549132948,
+            "log_loss": 0.4911634804702571
+          },
+          "with_history": {
+            "n": 692,
+            "accuracy": 0.8005780346820809,
+            "log_loss": 0.5049316302983977
+          },
+          "delta_accuracy": -0.008670520231213952,
+          "delta_log_loss": 0.013768149828140619
+        },
+        "flop": {
+          "without_history": {
+            "n": 174,
+            "accuracy": 0.6206896551724138,
+            "log_loss": 0.6583186283954773
+          },
+          "with_history": {
+            "n": 174,
+            "accuracy": 0.6609195402298851,
+            "log_loss": 0.6412193394988893
+          },
+          "delta_accuracy": 0.04022988505747127,
+          "delta_log_loss": -0.01709928889658796
+        },
+        "turn": {
+          "without_history": {
+            "n": 97,
+            "accuracy": 0.6288659793814433,
+            "log_loss": 0.7748046255595931
+          },
+          "with_history": {
+            "n": 97,
+            "accuracy": 0.6082474226804123,
+            "log_loss": 0.7694889476263329
+          },
+          "delta_accuracy": -0.020618556701030966,
+          "delta_log_loss": -0.0053156779332601545
+        },
+        "river": {
+          "without_history": {
+            "n": 61,
+            "accuracy": 0.5737704918032787,
+            "log_loss": 0.7997977204656924
+          },
+          "with_history": {
+            "n": 61,
+            "accuracy": 0.5081967213114754,
+            "log_loss": 0.8194133132060106
+          },
+          "delta_accuracy": -0.06557377049180324,
+          "delta_log_loss": 0.01961559274031821
+        },
+        "history_0": {
+          "without_history": {
+            "n": 32,
+            "accuracy": 0.65625,
+            "log_loss": 0.6088115897507389
+          },
+          "with_history": {
+            "n": 32,
+            "accuracy": 0.75,
+            "log_loss": 0.6162963874422251
+          },
+          "delta_accuracy": 0.09375,
+          "delta_log_loss": 0.007484797691486245
+        },
+        "history_1_to_9": {
+          "without_history": {
+            "n": 260,
+            "accuracy": 0.6384615384615384,
+            "log_loss": 0.7241061388620841
+          },
+          "with_history": {
+            "n": 260,
+            "accuracy": 0.6230769230769231,
+            "log_loss": 0.7172598789427493
+          },
+          "delta_accuracy": -0.01538461538461533,
+          "delta_log_loss": -0.006846259919334741
+        },
+        "history_10_plus": {
+          "without_history": {
+            "n": 732,
+            "accuracy": 0.7882513661202186,
+            "log_loss": 0.5063206454614114
+          },
+          "with_history": {
+            "n": 732,
+            "accuracy": 0.7827868852459017,
+            "log_loss": 0.5183066124881871
+          },
+          "delta_accuracy": -0.005464480874316946,
+          "delta_log_loss": 0.011985967026775679
+        }
+      }
+    }
+  ],
+  "architecture_selection": {
+    "selected": {
+      "backbone": "distilbert",
+      "head": "mlp",
+      "window": 64,
+      "representation": "compact",
+      "epochs": 1,
+      "seed": 42
+    },
+    "criterion": "minimum paired validation log-loss change",
+    "candidates": [
+      {
+        "fit": {
+          "backbone": "bert_mini",
+          "head": "linear",
+          "window": 64,
+          "representation": "compact",
+          "epochs": 1,
+          "seed": 42
+        },
+        "delta_log_loss": 0.05234443312539394
+      },
+      {
+        "fit": {
+          "backbone": "bert_mini",
+          "head": "mlp",
+          "window": 64,
+          "representation": "compact",
+          "epochs": 1,
+          "seed": 42
+        },
+        "delta_log_loss": 0.029426145436121875
+      },
+      {
+        "fit": {
+          "backbone": "distilbert",
+          "head": "linear",
+          "window": 64,
+          "representation": "compact",
+          "epochs": 1,
+          "seed": 42
+        },
+        "delta_log_loss": 0.026725794292824734
+      },
+      {
+        "fit": {
+          "backbone": "distilbert",
+          "head": "mlp",
+          "window": 64,
+          "representation": "compact",
+          "epochs": 1,
+          "seed": 42
+        },
+        "delta_log_loss": -0.020171439130072022
+      }
+    ]
+  },
+  "seed_selection": {
+    "selected": {
+      "backbone": "distilbert",
+      "head": "mlp",
+      "window": 16,
+      "representation": "compact",
+      "epochs": 1,
+      "seed": 42
+    },
+    "delta_log_loss": -0.030347290822745565,
+    "scope": "Selected on inspected validation; repeats are not independent final testing"
+  },
+  "caution": "Adaptive development sweeps, one inspected session split; no final-test estimate.",
+  "training_seed_repeats": {
+    "selected_fit": {
+      "backbone": "distilbert",
+      "head": "mlp",
+      "window": 16,
+      "representation": "compact",
+      "epochs": 1,
+      "seed": 42
+    },
+    "per_seed": [
+      {
+        "training_seed": 42,
+        "without_history": {
+          "n": 1024,
+          "accuracy": 0.728515625,
+          "log_loss": 0.6241197912332728
+        },
+        "with_history": {
+          "n": 1024,
+          "accuracy": 0.7265625,
+          "log_loss": 0.5937725004105272
+        },
+        "delta_accuracy": -0.001953125,
+        "delta_log_loss": -0.030347290822745565
+      },
+      {
+        "training_seed": 43,
+        "without_history": {
+          "n": 1024,
+          "accuracy": 0.7265625,
+          "log_loss": 0.6113100941064467
+        },
+        "with_history": {
+          "n": 1024,
+          "accuracy": 0.7412109375,
+          "log_loss": 0.6073485049644103
+        },
+        "delta_accuracy": 0.0146484375,
+        "delta_log_loss": -0.00396158914203637
+      },
+      {
+        "training_seed": 44,
+        "without_history": {
+          "n": 1024,
+          "accuracy": 0.7275390625,
+          "log_loss": 0.608970128877074
+        },
+        "with_history": {
+          "n": 1024,
+          "accuracy": 0.7421875,
+          "log_loss": 0.6126117794996917
+        },
+        "delta_accuracy": 0.0146484375,
+        "delta_log_loss": 0.003641650622617676
+      }
+    ],
+    "mean_delta_accuracy": 0.009114583333333334,
+    "sample_std_delta_accuracy": 0.009584916578343396,
+    "mean_delta_log_loss": -0.01022240978072142,
+    "sample_std_delta_log_loss": 0.017838454009426415,
+    "scope": "Three training seeds, fixed inspected validation; selected on seed 42. No final-test estimate."
+  },
+  "secondary_epoch_replication": {
+    "fit": {
+      "backbone": "distilbert",
+      "head": "mlp",
+      "window": 64,
+      "representation": "compact",
+      "epochs": 3,
+      "seed": 42
+    },
+    "per_seed": [
+      {
+        "training_seed": 42,
+        "without_history": {
+          "n": 1024,
+          "accuracy": 0.7412109375,
+          "log_loss": 0.571766279528744
+        },
+        "with_history": {
+          "n": 1024,
+          "accuracy": 0.7568359375,
+          "log_loss": 0.5717636186847841
+        },
+        "delta_accuracy": 0.015625,
+        "delta_log_loss": -2.6608439599451472e-06
+      },
+      {
+        "training_seed": 43,
+        "without_history": {
+          "n": 1024,
+          "accuracy": 0.73046875,
+          "log_loss": 0.5882566234095987
+        },
+        "with_history": {
+          "n": 1024,
+          "accuracy": 0.732421875,
+          "log_loss": 0.5941669124975735
+        },
+        "delta_accuracy": 0.001953125,
+        "delta_log_loss": 0.005910289087974752
+      },
+      {
+        "training_seed": 44,
+        "without_history": {
+          "n": 1024,
+          "accuracy": 0.74609375,
+          "log_loss": 0.5648205854042174
+        },
+        "with_history": {
+          "n": 1024,
+          "accuracy": 0.7412109375,
+          "log_loss": 0.5718842707662295
+        },
+        "delta_accuracy": -0.0048828125,
+        "delta_log_loss": 0.007063685362012073
+      }
+    ],
+    "mean_delta_accuracy": 0.004231770833333333,
+    "sample_std_delta_accuracy": 0.01044206701324573,
+    "mean_delta_log_loss": 0.00432377120200896,
+    "sample_std_delta_log_loss": 0.0037909222397103856,
+    "scope": "Secondary replication after observing a 1.5625 percentage-point accuracy gain with essentially unchanged log loss at three epochs. This is separate from the predeclared minimum-log-loss selection and does not change the original 18-fit plan."
+  },
+  "secondary_plan": {
+    "rationale": "Secondary replication after observing a 1.5625 percentage-point accuracy gain with essentially unchanged log loss at three epochs. This is separate from the predeclared minimum-log-loss selection and does not change the original 18-fit plan.",
+    "fits": [
+      {
+        "backbone": "distilbert",
+        "head": "mlp",
+        "window": 0,
+        "representation": "none",
+        "epochs": 3,
+        "seed": 43
+      },
+      {
+        "backbone": "distilbert",
+        "head": "mlp",
+        "window": 64,
+        "representation": "compact",
+        "epochs": 3,
+        "seed": 43
+      },
+      {
+        "backbone": "distilbert",
+        "head": "mlp",
+        "window": 0,
+        "representation": "none",
+        "epochs": 3,
+        "seed": 44
+      },
+      {
+        "backbone": "distilbert",
+        "head": "mlp",
+        "window": 64,
+        "representation": "compact",
+        "epochs": 3,
+        "seed": 44
+      }
+    ],
+    "gpu_assignment": {
+      "43": 2,
+      "44": 1
+    },
+    "initial_gpu_assignment": {
+      "43": 0,
+      "44": 1
+    },
+    "resource_retry": "GPU 0 was filled by another workload before training; reroute seed 43 to GPU 2 after the primary sweep. Training settings and samples are unchanged."
+  },
+  "resource_retry": "GPU 0 became full before seed-43 training; same configuration rerun on GPU 2 after the primary sweep.",
+  "preflight": {
+    "token_checks": [
+      {
+        "backbone": "bert_mini",
+        "window": 16,
+        "representation": "compact",
+        "examples": 5120,
+        "max_tokens": 354
+      },
+      {
+        "backbone": "bert_mini",
+        "window": 16,
+        "representation": "explicit",
+        "examples": 5120,
+        "max_tokens": 338
+      },
+      {
+        "backbone": "bert_mini",
+        "window": 16,
+        "representation": "swapped",
+        "examples": 5120,
+        "max_tokens": 354
+      },
+      {
+        "backbone": "bert_mini",
+        "window": 64,
+        "representation": "compact",
+        "examples": 5120,
+        "max_tokens": 383
+      },
+      {
+        "backbone": "bert_mini",
+        "window": 64,
+        "representation": "explicit",
+        "examples": 5120,
+        "max_tokens": 363
+      },
+      {
+        "backbone": "bert_mini",
+        "window": 64,
+        "representation": "swapped",
+        "examples": 5120,
+        "max_tokens": 383
+      },
+      {
+        "backbone": "bert_mini",
+        "window": 256,
+        "representation": "compact",
+        "examples": 5120,
+        "max_tokens": 388
+      },
+      {
+        "backbone": "bert_mini",
+        "window": 256,
+        "representation": "explicit",
+        "examples": 5120,
+        "max_tokens": 368
+      },
+      {
+        "backbone": "bert_mini",
+        "window": 256,
+        "representation": "swapped",
+        "examples": 5120,
+        "max_tokens": 388
+      },
+      {
+        "backbone": "distilbert",
+        "window": 16,
+        "representation": "compact",
+        "examples": 5120,
+        "max_tokens": 362
+      },
+      {
+        "backbone": "distilbert",
+        "window": 16,
+        "representation": "explicit",
+        "examples": 5120,
+        "max_tokens": 346
+      },
+      {
+        "backbone": "distilbert",
+        "window": 16,
+        "representation": "swapped",
+        "examples": 5120,
+        "max_tokens": 362
+      },
+      {
+        "backbone": "distilbert",
+        "window": 64,
+        "representation": "compact",
+        "examples": 5120,
+        "max_tokens": 391
+      },
+      {
+        "backbone": "distilbert",
+        "window": 64,
+        "representation": "explicit",
+        "examples": 5120,
+        "max_tokens": 371
+      },
+      {
+        "backbone": "distilbert",
+        "window": 64,
+        "representation": "swapped",
+        "examples": 5120,
+        "max_tokens": 391
+      },
+      {
+        "backbone": "distilbert",
+        "window": 256,
+        "representation": "compact",
+        "examples": 5120,
+        "max_tokens": 396
+      },
+      {
+        "backbone": "distilbert",
+        "window": 256,
+        "representation": "explicit",
+        "examples": 5120,
+        "max_tokens": 376
+      },
+      {
+        "backbone": "distilbert",
+        "window": 256,
+        "representation": "swapped",
+        "examples": 5120,
+        "max_tokens": 396
+      }
+    ],
+    "assignment_control": {
+      "train": {
+        "total": 4096,
+        "multiple_active_opponents": 2380,
+        "changed_by_swap": 2340
+      },
+      "validation": {
+        "total": 1024,
+        "multiple_active_opponents": 611,
+        "changed_by_swap": 597
+      }
+    }
+  },
+  "coverage_by_window": {
+    "16": {
+      "decisions": 1024,
+      "no_comparable_history": 60,
+      "1_to_9_opportunities": 333,
+      "10_plus_opportunities": 631
+    },
+    "64": {
+      "decisions": 1024,
+      "no_comparable_history": 32,
+      "1_to_9_opportunities": 260,
+      "10_plus_opportunities": 732
+    },
+    "256": {
+      "decisions": 1024,
+      "no_comparable_history": 32,
+      "1_to_9_opportunities": 161,
+      "10_plus_opportunities": 831
+    }
+  },
+  "execution_revision": {
+    "code_commit": "7561eb4543719dd8a23cc61d94fb16923dca2eb5",
+    "all_source_hashes_match_commit": true
+  },
+  "saved_checkpoint_sha256": {
+    "bert_mini-linear-w000-none-e1-s42": {
+      "encoder/config.json": "f2451e1f5308bf62286e84b07f4acada71417024293fc3f749d1124d51f739ce",
+      "encoder/model.safetensors": "34f31f15139fe6d80318755cfeababb12515eb76e49c61dcc91f3f115a1eb35f",
+      "head.pt": "077e7a80bdf9803f441b778d3dd07cc0fe9f785970c75d4cf77afdd0e0643f73",
+      "metadata.json": "038e593d2f48cbf598236e293efcb7432bb20a1d3671dc173520737125f2f401",
+      "tokenizer/special_tokens_map.json": "5d5b662e421ea9fac075174bb0688ee0d9431699900b90662acd44b2a350503a",
+      "tokenizer/tokenizer.json": "d241a60d5e8f04cc1b2b3e9ef7a4921b27bf526d9f6050ab90f9267a1f9e5c66",
+      "tokenizer/tokenizer_config.json": "e711904cac23112776b678356ccf702cf934babaa01125f698ac43bf9ad38e73",
+      "tokenizer/vocab.txt": "07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3"
+    },
+    "bert_mini-linear-w064-compact-e1-s42": {
+      "encoder/config.json": "f2451e1f5308bf62286e84b07f4acada71417024293fc3f749d1124d51f739ce",
+      "encoder/model.safetensors": "8ddef43eb4274046cfb5d84abdeff211685ea4ff287e5bd19ecf011f51d00a93",
+      "head.pt": "7d358df45840baf4bd0ba3b6e840c0f4ca48601669aaa302238d016a5c32ba35",
+      "metadata.json": "78b00269762e4feff93a672666c7d6a042bb944631b4de51640719830b8ab6a1",
+      "tokenizer/special_tokens_map.json": "5d5b662e421ea9fac075174bb0688ee0d9431699900b90662acd44b2a350503a",
+      "tokenizer/tokenizer.json": "d241a60d5e8f04cc1b2b3e9ef7a4921b27bf526d9f6050ab90f9267a1f9e5c66",
+      "tokenizer/tokenizer_config.json": "e711904cac23112776b678356ccf702cf934babaa01125f698ac43bf9ad38e73",
+      "tokenizer/vocab.txt": "07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3"
+    },
+    "bert_mini-mlp-w000-none-e1-s42": {
+      "encoder/config.json": "f2451e1f5308bf62286e84b07f4acada71417024293fc3f749d1124d51f739ce",
+      "encoder/model.safetensors": "9338b227419d4d5544a2318863251e12788435adeb066fa7b57a9ad0ba9f8f0c",
+      "head.pt": "4f056fbe9a71932c7d7578916b60cace09f5517b4089ecce16ecfaa25cebf48a",
+      "metadata.json": "2462bc36013a3ea93ad35467dc1bd5999f71f346380a347e1c785c7cefd65fce",
+      "tokenizer/special_tokens_map.json": "5d5b662e421ea9fac075174bb0688ee0d9431699900b90662acd44b2a350503a",
+      "tokenizer/tokenizer.json": "d241a60d5e8f04cc1b2b3e9ef7a4921b27bf526d9f6050ab90f9267a1f9e5c66",
+      "tokenizer/tokenizer_config.json": "e711904cac23112776b678356ccf702cf934babaa01125f698ac43bf9ad38e73",
+      "tokenizer/vocab.txt": "07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3"
+    },
+    "bert_mini-mlp-w064-compact-e1-s42": {
+      "encoder/config.json": "f2451e1f5308bf62286e84b07f4acada71417024293fc3f749d1124d51f739ce",
+      "encoder/model.safetensors": "3b80a6abb7052b2ab8ff1a87fa9994afe5cbd8f35d658534b81e6236ba5f133d",
+      "head.pt": "1e66f142e6fbad4ce87e11db91250924f4ba96a133237edf6e3f7f55a72589d3",
+      "metadata.json": "5181dff1fe643fe297c161f5067a3b7e037f4e8c17ec920becb61e2bbc3779fc",
+      "tokenizer/special_tokens_map.json": "5d5b662e421ea9fac075174bb0688ee0d9431699900b90662acd44b2a350503a",
+      "tokenizer/tokenizer.json": "d241a60d5e8f04cc1b2b3e9ef7a4921b27bf526d9f6050ab90f9267a1f9e5c66",
+      "tokenizer/tokenizer_config.json": "e711904cac23112776b678356ccf702cf934babaa01125f698ac43bf9ad38e73",
+      "tokenizer/vocab.txt": "07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3"
+    },
+    "distilbert-linear-w000-none-e1-s42": {
+      "encoder/config.json": "7973787872361b47543a6372f26f208b5be61dcfd8810d9bf18adf561093c9a1",
+      "encoder/model.safetensors": "4cea21a4651db03817174baaa6469d361a118e59977ee0b320da36befa27be86",
+      "head.pt": "7fa1f2dd93be588c9b35b4d9bf2cd095147ae430c09e7fb55667edaf8535bd28",
+      "metadata.json": "7a1b9cd4e4dadde28c599633ae8ebee9bb0cc5db6543a6aeac7ed0cc7ce7ebe9",
+      "tokenizer/special_tokens_map.json": "5d5b662e421ea9fac075174bb0688ee0d9431699900b90662acd44b2a350503a",
+      "tokenizer/tokenizer.json": "343989712a36cd8b253efeaf8baf6a08b9d2583f78e395e83832e8ee9f8d8ee1",
+      "tokenizer/tokenizer_config.json": "91955163d30880d1ef0928cfdd729baaf413401dc4456f3ab1a48b3eec2ec624",
+      "tokenizer/vocab.txt": "eeaa9875b23b04b4c54ef759d03db9d1ba1554838f8fb26c5d96fa551df93d02"
+    },
+    "distilbert-linear-w064-compact-e1-s42": {
+      "encoder/config.json": "7973787872361b47543a6372f26f208b5be61dcfd8810d9bf18adf561093c9a1",
+      "encoder/model.safetensors": "09126859a7889ca8e5c1b0ac429e455b8c14d5b9fee745f2fe149e8cd3e9af1b",
+      "head.pt": "943c6e8c9ac091d45e5f205318971ae231db121b9b7dbfb6f907cdbc3e93939e",
+      "metadata.json": "4fb772a08a0b0ace99c373eb5ebbeb1d261bd05af6ba90d104ad2f21718a3e99",
+      "tokenizer/special_tokens_map.json": "5d5b662e421ea9fac075174bb0688ee0d9431699900b90662acd44b2a350503a",
+      "tokenizer/tokenizer.json": "343989712a36cd8b253efeaf8baf6a08b9d2583f78e395e83832e8ee9f8d8ee1",
+      "tokenizer/tokenizer_config.json": "91955163d30880d1ef0928cfdd729baaf413401dc4456f3ab1a48b3eec2ec624",
+      "tokenizer/vocab.txt": "eeaa9875b23b04b4c54ef759d03db9d1ba1554838f8fb26c5d96fa551df93d02"
+    },
+    "distilbert-mlp-w000-none-e1-s42": {
+      "encoder/config.json": "7973787872361b47543a6372f26f208b5be61dcfd8810d9bf18adf561093c9a1",
+      "encoder/model.safetensors": "3c2e7335e566fc3fb663b32dfb0c35c13ef6fdc26dcd0b1d8c5b41699c52bd86",
+      "head.pt": "7e87595d3fc5c3dd7cd1143ab4ab0e6935992982fe8a090d46dda8fdd88e5fe0",
+      "metadata.json": "365c377b445ea7e091d260acec37f6da24a01098fc22ecc2d6999f7798365061",
+      "tokenizer/special_tokens_map.json": "5d5b662e421ea9fac075174bb0688ee0d9431699900b90662acd44b2a350503a",
+      "tokenizer/tokenizer.json": "343989712a36cd8b253efeaf8baf6a08b9d2583f78e395e83832e8ee9f8d8ee1",
+      "tokenizer/tokenizer_config.json": "91955163d30880d1ef0928cfdd729baaf413401dc4456f3ab1a48b3eec2ec624",
+      "tokenizer/vocab.txt": "eeaa9875b23b04b4c54ef759d03db9d1ba1554838f8fb26c5d96fa551df93d02"
+    },
+    "distilbert-mlp-w064-compact-e1-s42": {
+      "encoder/config.json": "7973787872361b47543a6372f26f208b5be61dcfd8810d9bf18adf561093c9a1",
+      "encoder/model.safetensors": "318725278e906dff13337c1ce97dfebedcec92e57bb4b2eb282b06c4d7f3d898",
+      "head.pt": "bc97559e02274a3e013cde7e2d25291d048da48e9317757b349ed977468d088c",
+      "metadata.json": "1b5b1224a131d17d6b96ab31f8432da0bb2870224b4487fd79e62a9b79b49de9",
+      "tokenizer/special_tokens_map.json": "5d5b662e421ea9fac075174bb0688ee0d9431699900b90662acd44b2a350503a",
+      "tokenizer/tokenizer.json": "343989712a36cd8b253efeaf8baf6a08b9d2583f78e395e83832e8ee9f8d8ee1",
+      "tokenizer/tokenizer_config.json": "91955163d30880d1ef0928cfdd729baaf413401dc4456f3ab1a48b3eec2ec624",
+      "tokenizer/vocab.txt": "eeaa9875b23b04b4c54ef759d03db9d1ba1554838f8fb26c5d96fa551df93d02"
+    },
+    "distilbert-mlp-w016-compact-e1-s42": {
+      "encoder/config.json": "7973787872361b47543a6372f26f208b5be61dcfd8810d9bf18adf561093c9a1",
+      "encoder/model.safetensors": "f4b284bda6283d6acfdcba2d947d35adcc65c02433cd8cbd1830a83ac5300869",
+      "head.pt": "ac8044d9363f6dba5ea0333769f639f5e7b1147333fa11adae20a9067dce2910",
+      "metadata.json": "bcb9a5d4c20a064f287c6cb0d0414ec2c622e1129be18c500dda7df22c64ad73",
+      "tokenizer/special_tokens_map.json": "5d5b662e421ea9fac075174bb0688ee0d9431699900b90662acd44b2a350503a",
+      "tokenizer/tokenizer.json": "343989712a36cd8b253efeaf8baf6a08b9d2583f78e395e83832e8ee9f8d8ee1",
+      "tokenizer/tokenizer_config.json": "91955163d30880d1ef0928cfdd729baaf413401dc4456f3ab1a48b3eec2ec624",
+      "tokenizer/vocab.txt": "eeaa9875b23b04b4c54ef759d03db9d1ba1554838f8fb26c5d96fa551df93d02"
+    },
+    "distilbert-mlp-w256-compact-e1-s42": {
+      "encoder/config.json": "7973787872361b47543a6372f26f208b5be61dcfd8810d9bf18adf561093c9a1",
+      "encoder/model.safetensors": "be78186b690c2aace92bd51310d57c9d98e4e1594716278b88530fff140001e9",
+      "head.pt": "cac27870f4de82b2e51b55eee96a7f0666dc0c9a4294ac5106815746df2193b2",
+      "metadata.json": "b4287a95df1cad74e041dec0bb6e6a53b34970508b66e1a828b59892b4c50e14",
+      "tokenizer/special_tokens_map.json": "5d5b662e421ea9fac075174bb0688ee0d9431699900b90662acd44b2a350503a",
+      "tokenizer/tokenizer.json": "343989712a36cd8b253efeaf8baf6a08b9d2583f78e395e83832e8ee9f8d8ee1",
+      "tokenizer/tokenizer_config.json": "91955163d30880d1ef0928cfdd729baaf413401dc4456f3ab1a48b3eec2ec624",
+      "tokenizer/vocab.txt": "eeaa9875b23b04b4c54ef759d03db9d1ba1554838f8fb26c5d96fa551df93d02"
+    },
+    "distilbert-mlp-w064-explicit-e1-s42": {
+      "encoder/config.json": "7973787872361b47543a6372f26f208b5be61dcfd8810d9bf18adf561093c9a1",
+      "encoder/model.safetensors": "9b58772b66f0e07ffdd879a8a12d2ae41b26c04066d48f269d32feca848f7ce2",
+      "head.pt": "c0ddd1961c6d6ef06fa13f830bfd26ba4b8fb9d5116197800473107869dc7006",
+      "metadata.json": "c94bf873ace092d2b8ee49289faf1a2f6a65afe58b0c518b37a51d21b55534c6",
+      "tokenizer/special_tokens_map.json": "5d5b662e421ea9fac075174bb0688ee0d9431699900b90662acd44b2a350503a",
+      "tokenizer/tokenizer.json": "343989712a36cd8b253efeaf8baf6a08b9d2583f78e395e83832e8ee9f8d8ee1",
+      "tokenizer/tokenizer_config.json": "91955163d30880d1ef0928cfdd729baaf413401dc4456f3ab1a48b3eec2ec624",
+      "tokenizer/vocab.txt": "eeaa9875b23b04b4c54ef759d03db9d1ba1554838f8fb26c5d96fa551df93d02"
+    },
+    "distilbert-mlp-w064-swapped-e1-s42": {
+      "encoder/config.json": "7973787872361b47543a6372f26f208b5be61dcfd8810d9bf18adf561093c9a1",
+      "encoder/model.safetensors": "3f8224ecaed355a48b8ae59bde658b8aa351acd5156c7631682e18ada3e1c43c",
+      "head.pt": "5b7c24365332f441e15a3a39d378161997ebacef09540bef3f4ad818e6033acf",
+      "metadata.json": "403d2c6c0ff8d8be307443dee8418e98013208cf99528f8fe8d77df4e1ec94dd",
+      "tokenizer/special_tokens_map.json": "5d5b662e421ea9fac075174bb0688ee0d9431699900b90662acd44b2a350503a",
+      "tokenizer/tokenizer.json": "343989712a36cd8b253efeaf8baf6a08b9d2583f78e395e83832e8ee9f8d8ee1",
+      "tokenizer/tokenizer_config.json": "91955163d30880d1ef0928cfdd729baaf413401dc4456f3ab1a48b3eec2ec624",
+      "tokenizer/vocab.txt": "eeaa9875b23b04b4c54ef759d03db9d1ba1554838f8fb26c5d96fa551df93d02"
+    },
+    "distilbert-mlp-w000-none-e3-s42": {
+      "encoder/config.json": "7973787872361b47543a6372f26f208b5be61dcfd8810d9bf18adf561093c9a1",
+      "encoder/model.safetensors": "89b91c8f52f8932b556ad287238844488f71892a53b27c95b93a2103c975a37b",
+      "head.pt": "80875cad872e3c206746a0a100f37d6e1e147604c825722f3a17b712fe2bf084",
+      "metadata.json": "c651fdb4e0d0abb1f324b1c9f03488bb3468cf64d4822354731677a797e5b4c7",
+      "tokenizer/special_tokens_map.json": "5d5b662e421ea9fac075174bb0688ee0d9431699900b90662acd44b2a350503a",
+      "tokenizer/tokenizer.json": "343989712a36cd8b253efeaf8baf6a08b9d2583f78e395e83832e8ee9f8d8ee1",
+      "tokenizer/tokenizer_config.json": "91955163d30880d1ef0928cfdd729baaf413401dc4456f3ab1a48b3eec2ec624",
+      "tokenizer/vocab.txt": "eeaa9875b23b04b4c54ef759d03db9d1ba1554838f8fb26c5d96fa551df93d02"
+    },
+    "distilbert-mlp-w064-compact-e3-s42": {
+      "encoder/config.json": "7973787872361b47543a6372f26f208b5be61dcfd8810d9bf18adf561093c9a1",
+      "encoder/model.safetensors": "24c9f40ce020c7878f236b70284745407f39c113a1ace614f0c2916968a8054e",
+      "head.pt": "ae5848c1f8e39d81a4bd0446bc664020fedbae1da718eebf2363ffc68ce2a85c",
+      "metadata.json": "743f251ac2e75faa7e5e06fdd52eda5c19a11b27287773cf7b4089d764900a8f",
+      "tokenizer/special_tokens_map.json": "5d5b662e421ea9fac075174bb0688ee0d9431699900b90662acd44b2a350503a",
+      "tokenizer/tokenizer.json": "343989712a36cd8b253efeaf8baf6a08b9d2583f78e395e83832e8ee9f8d8ee1",
+      "tokenizer/tokenizer_config.json": "91955163d30880d1ef0928cfdd729baaf413401dc4456f3ab1a48b3eec2ec624",
+      "tokenizer/vocab.txt": "eeaa9875b23b04b4c54ef759d03db9d1ba1554838f8fb26c5d96fa551df93d02"
+    },
+    "distilbert-mlp-w000-none-e1-s43": {
+      "encoder/config.json": "7973787872361b47543a6372f26f208b5be61dcfd8810d9bf18adf561093c9a1",
+      "encoder/model.safetensors": "041b956f58f32ddcba9226dc4d2bcf3157685088375e2570b478b91192262749",
+      "head.pt": "f6e524fa59845077944dd0e3bc8a38d88fb573f93519e0bc2650c87474e54caf",
+      "metadata.json": "55d4698bf998ae44b99b9b25d387de0fabfe57d059651d76329de6e36be7f694",
+      "tokenizer/special_tokens_map.json": "5d5b662e421ea9fac075174bb0688ee0d9431699900b90662acd44b2a350503a",
+      "tokenizer/tokenizer.json": "343989712a36cd8b253efeaf8baf6a08b9d2583f78e395e83832e8ee9f8d8ee1",
+      "tokenizer/tokenizer_config.json": "91955163d30880d1ef0928cfdd729baaf413401dc4456f3ab1a48b3eec2ec624",
+      "tokenizer/vocab.txt": "eeaa9875b23b04b4c54ef759d03db9d1ba1554838f8fb26c5d96fa551df93d02"
+    },
+    "distilbert-mlp-w016-compact-e1-s43": {
+      "encoder/config.json": "7973787872361b47543a6372f26f208b5be61dcfd8810d9bf18adf561093c9a1",
+      "encoder/model.safetensors": "e1bd661429133b189231f43b182515310a118eb1bd24dd2dd432a760d9fde6c0",
+      "head.pt": "0b64211379efd2819dc6c033b994fcc9aaea0783d37df6515634cb28de258fe0",
+      "metadata.json": "f166b4aafc68b9106898fb83650f075429ff6a63a6ce83b51ea4b6dfc62b2748",
+      "tokenizer/special_tokens_map.json": "5d5b662e421ea9fac075174bb0688ee0d9431699900b90662acd44b2a350503a",
+      "tokenizer/tokenizer.json": "343989712a36cd8b253efeaf8baf6a08b9d2583f78e395e83832e8ee9f8d8ee1",
+      "tokenizer/tokenizer_config.json": "91955163d30880d1ef0928cfdd729baaf413401dc4456f3ab1a48b3eec2ec624",
+      "tokenizer/vocab.txt": "eeaa9875b23b04b4c54ef759d03db9d1ba1554838f8fb26c5d96fa551df93d02"
+    },
+    "distilbert-mlp-w000-none-e1-s44": {
+      "encoder/config.json": "7973787872361b47543a6372f26f208b5be61dcfd8810d9bf18adf561093c9a1",
+      "encoder/model.safetensors": "583f6ec6e50f78a6c8031be0b97ee81412e7b1541cadbf1a4c03a7993fef2bbf",
+      "head.pt": "c7e009caf9b974c6b64fa5dd258b6f4a5359bb3386b08abbe6ef59318ed67c3f",
+      "metadata.json": "7b9453253cb55c5a6bfe8d21fefe03005ba2a36076a1bd7b2df8e4460eab96e6",
+      "tokenizer/special_tokens_map.json": "5d5b662e421ea9fac075174bb0688ee0d9431699900b90662acd44b2a350503a",
+      "tokenizer/tokenizer.json": "343989712a36cd8b253efeaf8baf6a08b9d2583f78e395e83832e8ee9f8d8ee1",
+      "tokenizer/tokenizer_config.json": "91955163d30880d1ef0928cfdd729baaf413401dc4456f3ab1a48b3eec2ec624",
+      "tokenizer/vocab.txt": "eeaa9875b23b04b4c54ef759d03db9d1ba1554838f8fb26c5d96fa551df93d02"
+    },
+    "distilbert-mlp-w016-compact-e1-s44": {
+      "encoder/config.json": "7973787872361b47543a6372f26f208b5be61dcfd8810d9bf18adf561093c9a1",
+      "encoder/model.safetensors": "0f3d45c66929ab619b9dc165fb239995458da6891f62af79f9a933028bb2077f",
+      "head.pt": "f4b93a3eab463fee9cf1d1ba1db49b364aacf55c1d019bae5f3de04cb3724348",
+      "metadata.json": "f860ab8df72bceed2218cd9685994d64714c651b75f6d630efe9e4b0fe2489b5",
+      "tokenizer/special_tokens_map.json": "5d5b662e421ea9fac075174bb0688ee0d9431699900b90662acd44b2a350503a",
+      "tokenizer/tokenizer.json": "343989712a36cd8b253efeaf8baf6a08b9d2583f78e395e83832e8ee9f8d8ee1",
+      "tokenizer/tokenizer_config.json": "91955163d30880d1ef0928cfdd729baaf413401dc4456f3ab1a48b3eec2ec624",
+      "tokenizer/vocab.txt": "eeaa9875b23b04b4c54ef759d03db9d1ba1554838f8fb26c5d96fa551df93d02"
+    },
+    "distilbert-mlp-w000-none-e3-s43": {
+      "encoder/config.json": "7973787872361b47543a6372f26f208b5be61dcfd8810d9bf18adf561093c9a1",
+      "encoder/model.safetensors": "772b8c3ad7b1c731c58c24ccb824cb343e1894b79e4da899286a14057ca000a9",
+      "head.pt": "b3c99ffbb7cbcee2241a7a03e6fa7c4e3e70724c08a34476af6f9b18312b3614",
+      "metadata.json": "78756ee105137c0363356e991d838e639973f31d539d671f77d6d0fc010fd2bb",
+      "tokenizer/special_tokens_map.json": "5d5b662e421ea9fac075174bb0688ee0d9431699900b90662acd44b2a350503a",
+      "tokenizer/tokenizer.json": "343989712a36cd8b253efeaf8baf6a08b9d2583f78e395e83832e8ee9f8d8ee1",
+      "tokenizer/tokenizer_config.json": "91955163d30880d1ef0928cfdd729baaf413401dc4456f3ab1a48b3eec2ec624",
+      "tokenizer/vocab.txt": "eeaa9875b23b04b4c54ef759d03db9d1ba1554838f8fb26c5d96fa551df93d02"
+    },
+    "distilbert-mlp-w064-compact-e3-s43": {
+      "encoder/config.json": "7973787872361b47543a6372f26f208b5be61dcfd8810d9bf18adf561093c9a1",
+      "encoder/model.safetensors": "1fd86f00c61211813882be889fbff297539b743e3434ef4392b0561207c36e00",
+      "head.pt": "8977667b10edea50ae3c22a71bcf4d4aab742fa317cf68af51a25c6db463b758",
+      "metadata.json": "2544006e7b2eef3cab50806c49c12a85f6d8cf1409f99a116d7c6e844a2e1f8d",
+      "tokenizer/special_tokens_map.json": "5d5b662e421ea9fac075174bb0688ee0d9431699900b90662acd44b2a350503a",
+      "tokenizer/tokenizer.json": "343989712a36cd8b253efeaf8baf6a08b9d2583f78e395e83832e8ee9f8d8ee1",
+      "tokenizer/tokenizer_config.json": "91955163d30880d1ef0928cfdd729baaf413401dc4456f3ab1a48b3eec2ec624",
+      "tokenizer/vocab.txt": "eeaa9875b23b04b4c54ef759d03db9d1ba1554838f8fb26c5d96fa551df93d02"
+    },
+    "distilbert-mlp-w000-none-e3-s44": {
+      "encoder/config.json": "7973787872361b47543a6372f26f208b5be61dcfd8810d9bf18adf561093c9a1",
+      "encoder/model.safetensors": "003b9d1f4df749eaafe6cd4c507e1444c080a88ca890cde69288777053d89542",
+      "head.pt": "30e6b066b3d3542a1eef844aeb40c7f13f6f06a7eed3fb52237ba8cd59f2a77b",
+      "metadata.json": "7648c3997881f656c7f0fd6b75e3d5bbff0b8b61778e2a5ced436c106b8f85a3",
+      "tokenizer/special_tokens_map.json": "5d5b662e421ea9fac075174bb0688ee0d9431699900b90662acd44b2a350503a",
+      "tokenizer/tokenizer.json": "343989712a36cd8b253efeaf8baf6a08b9d2583f78e395e83832e8ee9f8d8ee1",
+      "tokenizer/tokenizer_config.json": "91955163d30880d1ef0928cfdd729baaf413401dc4456f3ab1a48b3eec2ec624",
+      "tokenizer/vocab.txt": "eeaa9875b23b04b4c54ef759d03db9d1ba1554838f8fb26c5d96fa551df93d02"
+    },
+    "distilbert-mlp-w064-compact-e3-s44": {
+      "encoder/config.json": "7973787872361b47543a6372f26f208b5be61dcfd8810d9bf18adf561093c9a1",
+      "encoder/model.safetensors": "72280cc83bbd54c6fa0020f41a565f7155c975c4c318422332d7dbc535288f1d",
+      "head.pt": "4aa41eb3b21e3e5192ca0023d82bd285fe64977519582cd168dfe06440c71da7",
+      "metadata.json": "68badf3124c31950326b810dcbf91b0a358d99752265f5c63a3d03f05cc2c1c8",
+      "tokenizer/special_tokens_map.json": "5d5b662e421ea9fac075174bb0688ee0d9431699900b90662acd44b2a350503a",
+      "tokenizer/tokenizer.json": "343989712a36cd8b253efeaf8baf6a08b9d2583f78e395e83832e8ee9f8d8ee1",
+      "tokenizer/tokenizer_config.json": "91955163d30880d1ef0928cfdd729baaf413401dc4456f3ab1a48b3eec2ec624",
+      "tokenizer/vocab.txt": "eeaa9875b23b04b4c54ef759d03db9d1ba1554838f8fb26c5d96fa551df93d02"
+    }
+  },
+  "first_epoch_checks": [
+    {
+      "one_epoch": "distilbert-mlp-w000-none-e1-s42",
+      "three_epochs": "distilbert-mlp-w000-none-e3-s42",
+      "max_abs_training_loss_difference": 0.0
+    },
+    {
+      "one_epoch": "distilbert-mlp-w064-compact-e1-s42",
+      "three_epochs": "distilbert-mlp-w064-compact-e3-s42",
+      "max_abs_training_loss_difference": 0.0
+    },
+    {
+      "one_epoch": "distilbert-mlp-w000-none-e1-s43",
+      "three_epochs": "distilbert-mlp-w000-none-e3-s43",
+      "max_abs_training_loss_difference": 0.0
+    },
+    {
+      "one_epoch": "distilbert-mlp-w000-none-e1-s44",
+      "three_epochs": "distilbert-mlp-w000-none-e3-s44",
+      "max_abs_training_loss_difference": 0.0
+    }
+  ],
+  "hardware": {
+    "gpu_inventory": [
+      "0, NVIDIA GeForce RTX 3090, 595.99.02, 24576 MiB",
+      "1, NVIDIA GeForce RTX 3090, 595.99.02, 24576 MiB",
+      "2, NVIDIA GeForce RTX 3090, 595.99.02, 24576 MiB"
+    ],
+    "shared_server": true,
+    "exclusive_gpu_reservation": false
+  },
+  "assignment_control_comparison": {
+    "direction": "swapped profiles minus correct 64-action profiles",
+    "paired_changes": {
+      "accuracy": {
+        "estimate": 0.0068359375,
+        "interval_95": [
+          -0.007783736978939471,
+          0.021459628200350238
+        ]
+      },
+      "log_loss": {
+        "estimate": 0.0012205924267788045,
+        "interval_95": [
+          -0.009478157656879507,
+          0.0127430080110415
+        ]
+      }
+    },
+    "scope": "Preserves causal profile set; tests seat assignment, not removal of all historical information."
+  },
+  "execution": {
+    "gpu_indices": [
+      "1",
+      "2"
+    ],
+    "hosts": [
+      "temescal"
+    ],
+    "torch_versions": [
+      "2.14.1+cu130"
+    ],
+    "sum_fit_elapsed_seconds": 3149.173297009984,
+    "dtype": "float32",
+    "TF32": false
+  },
+  "independent_verification": {
+    "checked_utc": "2026-11-14T04:47:00.909763+00:00",
+    "fits": 22,
+    "all_metrics_recomputed": true,
+    "all_target_ids_menus_and_memberships_verified": true,
+    "all_paired_intervals_recomputed": true,
+    "all_reload_checks_passed": true,
+    "tests": {
+      "full_passed": 169,
+      "core_passed": 112,
+      "core_optional_skips": 33
+    },
+    "mypy": {
+      "full_source_files": 31,
+      "core_source_files": 27
+    },
+    "ruff": "passed",
+    "lockfile": "passed"
+  }
+}

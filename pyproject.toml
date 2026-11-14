@@ -46,3 +46,8 @@ files = ["src/poker_decision"]
 [[tool.mypy.overrides]]
 module = ["sklearn.*", "pyspiel", "pokerkit.*", "threadpoolctl"]
 ignore_missing_imports = true
+
+# Hold’em CLI imports PyTorch lazily; check its real types when the ML extra is installed.
+[[tool.mypy.overrides]]
+module = ["torch"]
+ignore_missing_imports = true

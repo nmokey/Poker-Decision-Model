@@ -1,6 +1,6 @@
 # Project context
 
-Updated November 6, 2026. This is the current implementation brief. The
+Updated November 13, 2026. This is the current implementation brief. The
 [original proposal](archive/original-proposal.md) preserves the early goals and
 examples as historical planning material.
 
@@ -8,8 +8,9 @@ examples as historical planning material.
 
 Study structured poker decisions with a compact model that scores supplied
 alternatives directly, and investigate how observed opponent behavior can inform
-future decisions. The system has two implemented research workflows and a live
-inference demo. See the [documentation index](README.md) for entry points.
+future decisions. The system has connected PokerBench, Leduc and Pluribus workflows and a live
+inference demo. See the [results index](results/README.md) for the study sequence
+and evidence, and the [documentation index](README.md) for workflow guides.
 
 ## Decision scoring
 
@@ -63,6 +64,32 @@ History hurts in the small immediate post-switch slice. These are controlled
 simulation results. See [run guide](opponent-experiments.md),
 [complete results](meeting4-results.md), and [source reconciliation](meeting4-integration.md).
 
+## Hold’em history integration
+
+The [Hold’em walkthrough](../notebooks/holdem_opponent_integration.ipynb) transfers
+causal Leduc summaries to Pluribus histories and appends the same type of
+information to the decision scorer’s context. A public forecaster observes as
+Pluribus and summarizes the target human's prior actions; the transformer sees
+the acting human’s own cards and summaries of other active opponents. Both inputs
+precede their separate observed-action label. Histories use completed co-observed
+hands, reset per directory and keep related session directories in one split group.
+
+On a fixed 1,024-decision validation set, increasing training from 128 to 4,096
+examples raised the no-history BERT Mini from 55.3% to 73.1% accuracy. History
+reached 72.5% and worsened log loss. The 4,096-example forecaster had a modest
+history gain. These one-seed development results demonstrate the integration;
+they do not show an improved reference-action policy. [Results and protocol](meeting5-scaling.md).
+
+A [GPU ablation follow-up](meeting5-ablation-results.md) compares BERT Mini and
+DistilBERT with linear/MLP heads, then varies the history window, wording, opponent
+assignment and training duration. The 22 completed fits include three-seed checks
+of selected DistilBERT/MLP pairs. Recent-16 history at one epoch averages +0.91
+accuracy points and −0.0102 loss; recent-64 at three epochs averages +0.42 points
+but +0.0043 worse loss. Neither metric improves uniformly across seeds. Swapping
+profile assignments has a similar result to correct assignments in its comparison,
+limiting evidence for precise opponent-specific use. The sampling and session
+split remain fixed, and additional selection is recorded as development analysis.
+
 ## Live PocketSolver
 
 The [demo](https://www.nmokey.com/poker/) defaults to ModernBERT linear and serves
@@ -84,8 +111,9 @@ being syntactically accepted does not establish generalization. Softmax alone do
 not calibrate probabilities or recover a solver's mixed strategy. Reference-action
 agreement and opponent prediction accuracy do not demonstrate profitable play.
 
-Opponent forecasting currently runs separately from Hero decision inference.
-Using its output to improve Hero's choices requires opponent-dependent response
-labels or repeated-play reward evaluation. Learned history encoders, human-opponent
-validation, fitted calibration, retraining variability and independent final
-policy evaluation remain future work. [Roadmap](roadmap.md).
+Learned forecast outputs still run separately from Hero decision inference. The
+Hold’em experiment injects summaries and predicts observed actions; improving
+Hero’s responses still requires response labels or repeated-play reward evaluation.
+Real human histories and selected training-seed repeats are now tested; unseen-human
+generalization, learned history encoders, fitted calibration and an independent
+final policy evaluation remain future work. [Roadmap](roadmap.md).
