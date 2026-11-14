@@ -41,14 +41,31 @@ def test_root_discovery_and_unified_help():
         text=True,
         check=True,
     )
-    assert all(task in result.stdout for task in ["prepare", "train", "evaluate", "opponents"])
-    result = subprocess.run(
-        [sys.executable, "-m", "poker_decision", "prepare", "--help"],
-        capture_output=True,
-        text=True,
-        check=True,
+    assert all(
+        task in result.stdout
+        for task in [
+            "prepare",
+            "train",
+            "evaluate",
+            "opponents",
+            "holdem",
+            "holdem-scale",
+            "holdem-ablate",
+        ]
     )
-    assert "--sample-per-kind" in result.stdout
+    for task, option in (
+        ("prepare", "--sample-per-kind"),
+        ("holdem", "download-data"),
+        ("holdem-scale", "--train-sizes"),
+        ("holdem-ablate", "--gpu"),
+    ):
+        result = subprocess.run(
+            [sys.executable, "-m", "poker_decision", task, "--help"],
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+        assert option in result.stdout
 
 
 def test_notebooks_are_task_clients_with_one_setup():
@@ -60,6 +77,7 @@ def test_notebooks_are_task_clients_with_one_setup():
         "evaluation",
         "data_sources",
         "opponent_modeling",
+        "holdem_opponent_integration",
     }
     for path in paths:
         notebook = json.loads(path.read_text())

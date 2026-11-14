@@ -1,142 +1,58 @@
 # Poker Decision Model
 
-A small transformer that scores supplied poker actions in one forward pass, plus
-experiments that learn an opponent's tendencies from earlier play. Built by ACM AI
-Fall 2026, with a live [PocketSolver demo](https://www.nmokey.com/poker/).
+A compact transformer that scores supplied poker actions in one forward pass,
+plus experiments that predict opponents’ actions from earlier play. Built by
+ACM AI Fall 2026. Try the [PocketSolver demo](https://www.nmokey.com/poker/).
 
-The project studies two connected questions:
+The project connects three studies through one Python package:
 
-1. Can a compact model imitate solver-derived decisions over changing action menus?
-2. Does an opponent's observed history help predict their next action, especially
-   when their behavior changes?
+| Study | What we built | Result |
+| --- | --- | --- |
+| PokerBench decision scoring | Four encoders × linear/MLP heads, evaluated on five scenario folds | ModernBERT linear: **71.92% accuracy**, **0.6078 log loss** |
+| Leduc opponent forecasting | Causal histories, matched statistical models and Bayesian updates | Matched accuracy: **59.26% → 69.87%** with history |
+| Pluribus Hold’em integration | Opponent summaries added to the existing transformer, followed by 22 GPU fits | Modest, configuration-dependent gains; neither accuracy nor log loss improves across every repeated seed |
 
-One shared Python package supports both tasks. The first workflow uses PokerBench and a pretrained encoder with a shared action
-scorer. The second uses chronological Leduc sessions and statistical forecasting
-models. Connecting those forecasts to better Hero decisions is the next research
-step; it requires opponent-dependent response targets or repeated-play evaluation.
-
-## How it works
-
-| Workflow | Input | Target | Current implementation |
-| --- | --- | --- | --- |
-| Hero decision scoring | Poker situation, question, candidate actions | PokerBench reference action | Joint transformer encoding with a shared linear or MLP head |
-| Opponent forecasting | Observer-visible situation and earlier opponent actions | Opponent's next observed legal action | Priors, Naive Bayes, logistic variants, equity controls, history windows and Bayesian style updates |
-
-The decision scorer returns probabilities aligned to the supplied action menu,
-including exact bet/raise amounts. It does not generate answer tokens. Reference
-labels stay outside inference inputs. All candidate tokens share the same scoring
-head; unsupported padding choices receive zero probability.
-
-The forecasting workflow makes predictions before revealing the current action.
-Opponent identities stay together across splits, histories reset by session, and
-engine traces support replay checks. Five simulated policy families and explicit
-visibility/history settings preserve different experimental approaches.
-
-## Results so far
-
-- **Decision scoring:** four pretrained encoders × two heads × five scenario
-  folds, totaling 40 fits on the same 10,000-example working pool. ModernBERT with
-  a linear head has the highest observed accuracy, **71.92%**, and log loss
-  **0.6078**; DistilBERT linear is close at **71.78% / 0.6164**.
-  [All model scores and provenance](docs/week2-results.md).
-- **Opponent forecasting:** in the recorded controlled Leduc experiment, accuracy
-  rose from **59.3% without history to 69.9% with a validation-selected history
-  window**; a Bayesian filter reached **73.3%**. All methods used the same 2,506
-  test decisions. History sometimes hurt immediately after a behavior switch.
-  [All methods, uncertainty and limitations](docs/meeting4-results.md).
-
-These are distinct, one-seed development experiments with different labels and
-populations. Action agreement does not establish a GTO mixed strategy, calibrated
-probabilities or profitable play. Simulated behavior changes do not establish
-human tilt detection. See the [scientific audit](docs/scientific-audit.md).
+See the **[results index](docs/results/README.md)** for protocols, complete tables
+and verified evidence. These studies predict different targets. Hold’em injects
+history summaries and predicts observed human actions; it does not establish
+better strategic decisions or poker profit.
 
 ## Get started
 
-Use Python 3.12 (3.13 is supported) and [uv](https://docs.astral.sh/uv/).
-For the data, evaluation and opponent-forecasting notebooks:
+Use Python 3.12 (3.13 is supported) and [uv](https://docs.astral.sh/uv/):
 
 ```sh
 uv sync --locked --extra analysis --extra experiments
 uv run --locked --extra analysis --extra experiments jupyter lab
 ```
 
-Select the project kernel and choose a walkthrough:
+Choose a walkthrough in the [notebook guide](notebooks/README.md): data preparation,
+decision modeling, scenario evaluation, alternative sources, opponent forecasting
+or Hold’em integration. Add `--extra ml` to both commands for neural work.
+PokerBench training and Hold’em GPU ablations require CUDA; the small Hold’em
+integration and statistical forecasts run on CPU. Research notebooks need no API key.
 
-| Notebook | Purpose |
-| --- | --- |
-| [PokerBench pipeline](notebooks/data_pipeline.ipynb) | Audit pinned source data, create input/target records and compare CPU baselines |
-| [Transformer decision scorer](notebooks/decision_model.ipynb) | Tokenize state/question/options, train a shared head, save and reload checkpoints |
-| [Scenario evaluation](notebooks/evaluation.ipynb) | Fixed scenario folds, controlled head comparisons and reliability/error diagnostics |
-| [Alternative data sources](notebooks/data_sources.ipynb) | Separate Pluribus replay and Leduc teacher-policy experiments |
-| [Opponent forecasting](notebooks/opponent_modeling.ipynb) | Generate chronological sessions, compare history representations and inspect behavior changes |
+The same workflows run through `python -m poker_decision TASK --help`.
+See the [command guide](docs/development.md#commands-and-checks) and
+[GPU ablation protocol](docs/meeting5-ablations.md) for reproduction.
 
-The notebooks are task-based views of the package. Preparation feeds both decision
-training and grouped evaluation; source and opponent adapters reuse the same input
-interface with explicit task questions. [Architecture and artifact flow](docs/architecture.md)
-explain these connections and how existing saved runs remain usable.
+## Demo and development
 
-The same workflows are available without Jupyter (add the appropriate extras):
-
-```sh
-uv run --locked --extra analysis python -m poker_decision prepare
-uv run --locked --extra analysis --extra ml python -m poker_decision train --backbone bert_mini
-uv run --locked --extra analysis --extra ml python -m poker_decision evaluate --backbone bert_mini
-uv run --locked --extra analysis --extra experiments python -m poker_decision opponents --help
-```
-
-Training/evaluation commands require CUDA. `evaluate` runs the fixed scenario
-comparison; `train` uses validation loss to select an introductory holdout checkpoint.
-Use `python -m poker_decision TASK --help` for that workflow's options.
-
-Pretrained transformer training also needs `--extra ml` and a local CUDA GPU or
-Colab GPU. Opponent forecasting runs on CPU. No API key is needed for either
-training workflow. See [notebook setup](notebooks/README.md),
-[transformer reproduction](docs/week2-training.md), and
-[opponent experiment commands](docs/opponent-experiments.md).
-
-The PokerBench pipeline downloads only checksum-pinned training CSVs, audits all
-63,200 preflop and 500,000 postflop rows, then uses 5,000 examples per source by
-default. The official test is not loaded. Scenario-grouped evaluation is stronger
-than the introductory context split; both remain development evidence. Raw data,
-checkpoints and example-level generated outputs stay in ignored directories.
-
-## PocketSolver
-
-The [live demo](https://www.nmokey.com/poker/) serves all eight trained encoder/head
-combinations and defaults to ModernBERT + linear. It compares predictions with a
-live Groq model on the same 256 hands held out by every serving checkpoint. The
-results table shows saved development scores and separately measured CPU latency;
-click a row to select that model. One model stays resident in server memory.
-
-Groq calls require a key and have public request limits. The current demo displays
-PokerBench decision predictions; the opponent-forecasting experiment runs in its
-own notebook and command-line workflow. [Deployment and local serving](docs/deployment.md)
-cover assets, setup, model selection and measurement boundaries.
-
-## Development
-
-Core parsing and metrics need only the base environment. Optional extras separate
-analysis, neural models, simulation, the demo and hosted LLM calls:
+PocketSolver serves all eight PokerBench encoder/head combinations, defaults to
+ModernBERT linear, and optionally compares them with Groq on shared held-out hands.
+It displays development quality scores alongside separately measured CPU latency.
+Hold’em history models remain research artifacts. [Run or deploy the demo](docs/deployment.md).
 
 ```sh
-uv sync --locked
 uv run --locked pytest
 uv run --locked ruff check .
 uv run --locked ruff format --check .
-uv run --locked mypy --exclude 'src/poker_decision/(training|cross_validation|experiments|models/encoder)\.py$'
 ```
 
-For all offline model and simulator safeguards:
+Tests use synthetic fixtures and tiny random encoders without pretrained downloads
+or live API calls. Raw data, predictions and weights stay in ignored directories;
+reviewed aggregates live under `docs/results/`.
 
-```sh
-uv sync --locked --extra analysis --extra ml --extra experiments
-uv run --locked --extra analysis --extra ml --extra experiments pytest
-uv run --locked --extra analysis --extra ml --extra experiments mypy
-```
-
-Tests use synthetic fixtures and tiny randomly initialized encoders, with no
-pretrained downloads or live API calls. Reviewed aggregate evidence is versioned
-under `docs/results/`. Start with the [documentation index](docs/README.md),
-[development guide](docs/development.md), [test guide](tests/README.md), or
-[current roadmap](docs/roadmap.md). Historical contribution reviews remain linked
-from the documentation index.
+[Documentation](docs/README.md) · [Architecture](docs/architecture.md) ·
+[Development and full checks](docs/development.md) · [Tests](tests/README.md) ·
+[Scientific limits](docs/scientific-audit.md)

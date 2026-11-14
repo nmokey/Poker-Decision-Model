@@ -1,5 +1,8 @@
 # Meeting 3 submission review and canonical decisions
 
+Historical review. See the [deployment guide](deployment.md) for the maintained
+app and the [results index](results/README.md) for current experiment evidence.
+
 Reviewed November 2, 2026, against the current working tree, including the existing
 Week 2 experiment changes. This document records the review and proposed integration;
 it does not merge the application or modify training, data, dependencies, or weights.

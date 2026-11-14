@@ -165,6 +165,39 @@ def test_learning_and_local_checkpoint_roundtrip(tokenizer, tmp_path, head_type)
         train_epoch(model, encoded, [2, 0], pad_token_id=0, optimizer=optimizer)
 
 
+def test_accumulated_microbatches_match_full_effective_batch(tokenizer):
+    import copy
+
+    torch.set_num_threads(1)
+    seed_everything(42)
+    full = make_model(tokenizer)
+    accumulated = copy.deepcopy(full)
+    data = (rows() * 2)[:5]
+    encoded = encode_examples(data, tokenizer, max_length=128)
+    targets = [e.target_index for e in data]
+    optimizers = [torch.optim.SGD(m.parameters(), lr=0.01) for m in (full, accumulated)]
+    losses = [
+        train_epoch(
+            model,
+            encoded,
+            targets,
+            pad_token_id=0,
+            optimizer=optimizer,
+            batch_size=3,
+            seed=42,
+            micro_batch_size=micro,
+        )
+        for model, optimizer, micro in zip((full, accumulated), optimizers, (None, 2), strict=True)
+    ]
+    assert losses[0] == pytest.approx(losses[1], abs=1e-6)
+    for a, b in zip(full.parameters(), accumulated.parameters(), strict=True):
+        torch.testing.assert_close(a, b, atol=1e-6, rtol=1e-5)
+    with pytest.raises(ValueError, match="Microbatch"):
+        train_epoch(
+            full, encoded, targets, pad_token_id=0, optimizer=optimizers[0], micro_batch_size=0
+        )
+
+
 def test_saved_membership_and_provenance(tmp_path, monkeypatch):
     from test_pipeline import source
 
