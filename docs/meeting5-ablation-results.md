@@ -1,5 +1,10 @@
 # Meeting 5: history ablation results
 
+Stage 3: the GPU follow-up to the [CPU learning curve](meeting5-scaling.md).
+History has modest average benefits in some DistilBERT/MLP settings, but they vary
+by training seed and metric. The [results index](results/README.md) places this
+study alongside the original integration and the project's other benchmarks.
+
 Completed November 13, 2026 on temescal's RTX 3090 GPUs 1 and 2. All 22 fits
 completed and their saved predictions were independently rescored. The
 [aggregate evidence](results/meeting5-ablations.json) records exact metrics,
@@ -120,8 +125,9 @@ observed action categories, rather than PokerBench reference actions or payoff.
 - Source files match experiment commit `7561eb4`. The earlier CPU learning curve
   remains separate: these GPU fits use float32 and microbatches of two, accumulating
   an effective batch of 16. The first-epoch checks are saved with the evidence.
-- All 169 full-environment tests pass; core-only checks pass 112 tests with 33
-  expected optional-dependency skips. Full/core mypy, Ruff and lockfile checks pass.
+- At experiment completion, all 169 full-environment tests passed; core-only checks
+  passed 112 tests with 33 expected optional-dependency skips. Full/core mypy, Ruff
+  and lockfile checks passed.
 - One additional seed-43 worker could not allocate a GPU context after another
   workload filled GPU 0. It failed before training and was rerun on GPU 2 with
   unchanged settings. Every reported result is from a successful, reload-verified fit.

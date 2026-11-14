@@ -7,7 +7,9 @@ order, targets, current states, menus and session groups. The validation set has
 already been inspected; all selection here is development analysis.
 
 See [the recorded comparisons](meeting5-ablation-results.md) for scores and
-training-seed variability.
+training-seed variability, or the [results index](results/README.md) for the full
+experiment sequence. All 22 recorded fits have completed; the default `suite`
+below reproduces the original 18-fit plan.
 
 ## Declared experiment sequence
 
@@ -50,13 +52,20 @@ are preserved separately.
 
 ```sh
 uv sync --locked --extra analysis --extra ml --extra experiments
-python -m poker_decision holdem-ablate prepare \
+.venv/bin/python -m poker_decision holdem-ablate prepare \
   --out artifacts/holdem_ablations \
   --reference-out artifacts/holdem_scaling/train_04096
-python -m poker_decision holdem-ablate suite \
+.venv/bin/python -m poker_decision holdem-ablate suite \
   --out artifacts/holdem_ablations --gpu 0
-python -m poker_decision holdem-ablate report --out artifacts/holdem_ablations
+.venv/bin/python -m poker_decision holdem-ablate report --out artifacts/holdem_ablations
 ```
+
+Start from a completed [Hold’em integration](meeting5-integration.md#run-it) and
+[training-size run](meeting5-integration.md#larger-training-samples) in the same
+checkout. `--reference-out` points to the larger run's `train_04096` directory;
+it must contain `shared_sample.json` and `preparation.json`. Server artifacts are
+not required: the maintained workflow downloads and builds them locally or in a
+supported GPU environment. Use the environment's Python equivalent on Colab.
 
 `--checkpoint-root` selects cached published asset directories. Missing bundles
 are downloaded from the existing release catalog; manifests and checkpoint hashes

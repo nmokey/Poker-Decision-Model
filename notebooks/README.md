@@ -98,13 +98,24 @@ available. See [integration details](../docs/meeting5-integration.md),
 [recorded results](../docs/meeting5-results.md), and
 [larger-run evidence](../docs/meeting5-scaling.md).
 
+The [GPU ablation CLI](../docs/meeting5-ablations.md) continues from the 4,096-row
+scaling output; it is not an additional notebook. `holdem-ablate prepare` verifies
+that sample and builds the 16/64/256-action histories, `suite` runs the original
+18-fit comparison on CUDA, and `report` verifies saved results. The completed
+study also includes a separately recorded four-fit replication, totaling 22 fits.
+Encoder/head, formatting, assignment, epochs and selected training-seed repeats
+are configured through [the JSON configuration](../configs/holdem_ablations.json).
+See [latest findings](../docs/meeting5-ablation-results.md) and the
+[results index](../docs/results/README.md) before interpreting an individual run.
+
 ## Artifact conventions
 
 Keep notebook outputs and execution counts cleared in Git. Validate executable
 changes in the supported environment; prose-only edits require schema/code-cell
 checks without repeating training. Source data, generated sessions, split files,
 per-example predictions and weights stay in ignored `data/` or `artifacts/` paths.
-Reviewed aggregate evidence is versioned under `docs/results/`.
+Reviewed aggregate evidence is versioned under `docs/results/` and organized in
+the [results index](../docs/results/README.md).
 
 See the [development guide](../docs/development.md),
 [scientific audit](../docs/scientific-audit.md), and
@@ -129,6 +140,8 @@ human actions, with opponent summaries added to the context.
 New outputs use `data/processed/pokerbench`, `artifacts/baselines`,
 `artifacts/decision_model`, `artifacts/scenario_evaluation`,
 `artifacts/decision_matrix`, `artifacts/alternative_sources`, `artifacts/opponents`,
-`artifacts/holdem_integration`, and `artifacts/holdem_scaling`.
+`artifacts/holdem_integration`, `artifacts/holdem_scaling`, and
+`artifacts/holdem_ablations`. The completed GPU study used the explicit output
+`artifacts/holdem_ablations_gpu`; historical paths are retained in its evidence.
 The package still reads an existing `data/processed/pokerbench_meeting1` dataset
 when the canonical directory is absent, with the same provenance checks.

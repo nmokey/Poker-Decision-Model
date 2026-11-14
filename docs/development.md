@@ -1,7 +1,7 @@
 # Development setup and conventions
 
 The package supports audited PokerBench preparation, shared-head transformer
-training, grouped evaluation, controlled opponent forecasting and PocketSolver
+training, grouped evaluation, Leduc/real Hold’em history experiments and PocketSolver
 serving. See the [documentation index](README.md), [current context](project-context.md)
 and [deployment guide](deployment.md) for task boundaries and entry points.
 
@@ -40,6 +40,7 @@ and [locking](https://docs.astral.sh/uv/concepts/projects/sync/).
 - `diagnostics.py`: reliability/error diagnostics and conditional grouped intervals.
 - `opponents/`: chronological Leduc data, causal features, forecasters and run artifacts.
 - `holdem_history.py`, `holdem_integration.py`, `holdem_scaling.py`: causal Pluribus views, matched CPU model pairs, and fixed-validation training sizes.
+- `holdem_ablations.py`: matched CUDA encoder/head and history comparisons, microbatch settings, recorded selections and training-seed repeats.
 - `source_experiments.py`: separate observed-play and teacher-policy tasks.
 - `demo_models.py`, `demo_results.py`: serving catalogue and checked result-table data.
 - `apps/`: interactive presentation of package functionality.
@@ -70,8 +71,9 @@ environment, then clear outputs and execution counts. For prose-only changes,
 validate notebook schema and code-cell preservation without restarting training.
 Commit notebook source and supporting package changes together. Keep downloaded data, generated datasets, split manifests,
 example-level predictions, and model files in the ignored output directories.
-Publish reviewed aggregate metrics and provenance in `docs/results/` and explain
-their interpretation in `docs/week2-results.md`. Preserve links to the
+Publish reviewed aggregate metrics and provenance in `docs/results/`, explain
+their interpretation in the study's results report, and link both from the
+[results index](results/README.md). Preserve links to the
 team's original notebooks in the integration notes instead of keeping competing
 copies of the pipeline in the repository.
 
@@ -89,10 +91,11 @@ tiny training loss reduction, and checkpoint round trips. Keep routine tests
 CPU-only and offline; separate pretrained downloads and live API calls.
 
 The completed grouped experiment reports agreement, log loss, Brier score, and
-reliability diagnostics. Opponent-history ablations now run in the separate Leduc workflow, and saved local
-CPU latency measurements appear in the demo results table. Further work includes
-retraining across seeds, independent evaluation, fitted calibration, representative
-hosted latency/throughput, and connecting opponent forecasts to Hero decisions.
+reliability diagnostics. History experiments cover simulated Leduc forecasts and
+real Hold’em transformer inputs; selected Hold’em pairs have three training-seed
+repeats. Saved local CPU latency measurements appear in the demo results table.
+Further work includes independent evaluation, fitted calibration, representative
+hosted latency/throughput, and measuring whether inferred opponents improve Hero's responses.
 Fit calibration on validation only and preserve an untouched test set. Record hardware and workload when
 benchmarking; compare identical candidate options across systems.
 
@@ -112,8 +115,9 @@ calibration fitting, or reporting an unbiased score after tuning against them.
 Run `uv sync --locked --extra analysis --extra ml --extra experiments` and
 `uv run --locked --extra analysis --extra ml --extra experiments pytest` for all
 offline safeguards. No test downloads pretrained weights or data. Full training
-runs on a local CUDA GPU or Colab GPU; unit tests use tiny random encoders.
-The [completed results](week2-results.md) are a separate empirical artifact, not
+runs on a local CUDA GPU or Colab GPU for PokerBench and GPU ablations; the bounded
+Hold’em integration/scaling workflows use CPU. Unit tests use tiny random encoders.
+The [completed results](results/README.md) are separate empirical artifacts, not
 unit-test scores. Preserve the recorded training revision and package versions
 when resuming; current application changes can produce a new protocol hash.
 
@@ -125,3 +129,50 @@ CPU forecasters and reproducible selection/evaluation artifacts. The opponent-mo
 these functions. Keep this observed-action task separate from PokerBench decision
 labels. The analysis extra declares SciPy and threadpoolctl directly for the
 masked objective and bounded CPU fitting. See [the experiment guide](opponent-experiments.md).
+
+## Commands and checks
+
+Run commands from the repository root with the indicated optional extras retained
+on `uv run`. Each task exposes `--help` without launching training.
+
+| Command after `python -m poker_decision` | Extras | Purpose / compute |
+| --- | --- | --- |
+| `prepare` | `analysis` | Pinned PokerBench preparation and CPU baselines |
+| `train --backbone bert_mini` | `analysis`, `ml` | Introductory holdout training; CUDA |
+| `evaluate --backbone bert_mini` | `analysis`, `ml` | Fixed scenario-fold comparison; CUDA |
+| `opponents --help` | `analysis`, `experiments` | Chronological Leduc forecasts; CPU |
+| `holdem STEP` | `analysis`, `ml`, `experiments` | Downloads, preparation, forecasts, checks, CPU comparisons and reports |
+| `holdem-scale` | `analysis`, `ml`, `experiments` | Nested training sizes with fixed validation; CPU |
+| `holdem-ablate STEP` | `analysis`, `ml`, `experiments` | Fixed-membership model/history comparisons; CUDA for fits |
+
+For example, inspect the ablation options with:
+
+```sh
+uv run --locked --extra analysis --extra ml --extra experiments python -m poker_decision holdem-ablate --help
+```
+
+The [notebook guide](../notebooks/README.md), [PokerBench training guide](week2-training.md),
+[Leduc guide](opponent-experiments.md), [Hold’em guide](meeting5-integration.md) and
+[GPU guide](meeting5-ablations.md) describe preparation and artifact requirements.
+
+Core CI installs no optional dependencies:
+
+```sh
+uv sync --locked
+uv run --locked pytest
+uv run --locked ruff check .
+uv run --locked ruff format --check .
+uv run --locked mypy --exclude 'src/poker_decision/(training|cross_validation|experiments|models/encoder)\.py$'
+```
+
+Full offline checks include neural and simulator safeguards:
+
+```sh
+uv sync --locked --extra analysis --extra ml --extra experiments
+uv run --locked --extra analysis --extra ml --extra experiments pytest
+uv run --locked --extra analysis --extra ml --extra experiments mypy
+uv lock --check
+```
+
+See the [test guide](../tests/README.md) for dependency-specific coverage. Experiment
+test counts are historical verification records; they are not model-quality metrics.

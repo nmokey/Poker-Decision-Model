@@ -5,6 +5,11 @@ reviewed November 13, 2026. This is a substantive additional study, not a duplic
 of the original quick integration. Notebook SHA-256:
 `b2fcf6e89f3b682093c3ab2778e7a7d81bdabdc08a3ae4541767b8c89235edbb`.
 
+Review-only evidence. The [results index](results/README.md) keeps these submitted
+scores separate from the reproduced integration, CPU scaling and
+[22-fit GPU results](meeting5-ablation-results.md). The tree baseline remains a
+possible follow-up, not an implemented part of the canonical comparison.
+
 ## Meaningful additions
 
 - **An engineered-card boosted-tree baseline.** It encodes Hero's own rank/suit
@@ -94,4 +99,3 @@ the already verified transformer. The nested-selection machinery is useful for a
 separate expanded evaluation. Preserve the distinction between frozen-head and
 end-to-end training, and retain our verified results as their own experiment.
 This review does not rerun the large nested study or replace the canonical pipeline.
-

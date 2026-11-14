@@ -9,7 +9,8 @@ examples as historical planning material.
 Study structured poker decisions with a compact model that scores supplied
 alternatives directly, and investigate how observed opponent behavior can inform
 future decisions. The system has connected PokerBench, Leduc and Pluribus workflows and a live
-inference demo. See the [documentation index](README.md) for entry points.
+inference demo. See the [results index](results/README.md) for the study sequence
+and evidence, and the [documentation index](README.md) for workflow guides.
 
 ## Decision scoring
 
@@ -68,8 +69,10 @@ simulation results. See [run guide](opponent-experiments.md),
 The [Hold’em walkthrough](../notebooks/holdem_opponent_integration.ipynb) transfers
 causal Leduc summaries to Pluribus histories and appends the same type of
 information to the decision scorer’s context. A public forecaster observes as
-Pluribus; the transformer sees the acting human’s own cards and opponent
-summaries. Both inputs precede their separate observed-action label.
+Pluribus and summarizes the target human's prior actions; the transformer sees
+the acting human’s own cards and summaries of other active opponents. Both inputs
+precede their separate observed-action label. Histories use completed co-observed
+hands, reset per directory and keep related session directories in one split group.
 
 On a fixed 1,024-decision validation set, increasing training from 128 to 4,096
 examples raised the no-history BERT Mini from 55.3% to 73.1% accuracy. History
@@ -79,10 +82,13 @@ they do not show an improved reference-action policy. [Results and protocol](mee
 
 A [GPU ablation follow-up](meeting5-ablation-results.md) compares BERT Mini and
 DistilBERT with linear/MLP heads, then varies the history window, wording, opponent
-assignment and training duration. DistilBERT/MLP has conditional gains; the
-three-seed checks show that neither accuracy nor log loss improves uniformly.
-The sampling and session split remain fixed, and additional selection is recorded
-as development analysis.
+assignment and training duration. The 22 completed fits include three-seed checks
+of selected DistilBERT/MLP pairs. Recent-16 history at one epoch averages +0.91
+accuracy points and −0.0102 loss; recent-64 at three epochs averages +0.42 points
+but +0.0043 worse loss. Neither metric improves uniformly across seeds. Swapping
+profile assignments has a similar result to correct assignments in its comparison,
+limiting evidence for precise opponent-specific use. The sampling and session
+split remain fixed, and additional selection is recorded as development analysis.
 
 ## Live PocketSolver
 
@@ -107,6 +113,7 @@ agreement and opponent prediction accuracy do not demonstrate profitable play.
 
 Learned forecast outputs still run separately from Hero decision inference. The
 Hold’em experiment injects summaries and predicts observed actions; improving
-Hero’s responses still requires response labels or repeated-play reward evaluation. Learned history encoders, human-opponent
-validation, fitted calibration, retraining variability and independent final
-policy evaluation remain future work. [Roadmap](roadmap.md).
+Hero’s responses still requires response labels or repeated-play reward evaluation.
+Real human histories and selected training-seed repeats are now tested; unseen-human
+generalization, learned history encoders, fitted calibration and an independent
+final policy evaluation remain future work. [Roadmap](roadmap.md).

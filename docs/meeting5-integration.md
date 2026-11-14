@@ -5,6 +5,10 @@ tested the same information as an extra input to our existing decision model.
 The maintained workflow is [Hold’em integration notebook](../notebooks/holdem_opponent_integration.ipynb),
 backed by shared package code and a matching command-line runner.
 
+The integration check, CPU learning curve and completed 22-fit GPU follow-up are
+organized in the [results index](results/README.md). This guide describes the
+shared data contract and entry points; detailed scores belong to each study's report.
+
 ## Submission comparison
 
 These implementations use different splits, seeds, histories, and menus. Their
@@ -73,18 +77,19 @@ uv run --locked --extra analysis --extra ml --extra experiments \
   jupyter lab notebooks/holdem_opponent_integration.ipynb
 ~~~
 
-Equivalent steps with the project Python environment:
+Equivalent steps using the local environment created above:
 
 ~~~sh
-python -m poker_decision holdem download-data
-python -m poker_decision holdem download-model
-python -m poker_decision holdem prepare
-python -m poker_decision holdem forecast
-python -m poker_decision holdem check
-python -m poker_decision holdem compare
-python -m poker_decision holdem report
+.venv/bin/python -m poker_decision holdem download-data
+.venv/bin/python -m poker_decision holdem download-model
+.venv/bin/python -m poker_decision holdem prepare
+.venv/bin/python -m poker_decision holdem forecast
+.venv/bin/python -m poker_decision holdem check
+.venv/bin/python -m poker_decision holdem compare
+.venv/bin/python -m poker_decision holdem report
 ~~~
 
+Use the environment's Python equivalent on Colab.
 `scripts/run_holdem_integration.py STEP` calls the same entry point.
 `--out PATH` selects an output directory; `--checkpoint PATH` supplies an existing
 saved model. Preparation supports `--max-sessions` and `--hands-per-session` for
@@ -147,7 +152,8 @@ Meeting 4 functionality is already on main and is reused directly. Historical
 experiment hashes and original artifact paths remain unchanged in the reviewed
 result records; [publication checks](results/meeting5-publication.json) record a
 fresh notebook execution and exact prediction parity for both 128/64 model pairs.
-All 164 tests, full/core type checks, lint and formatting passed. Default fresh outputs
+At that publication revision, all 164 tests, full/core type checks, lint and
+formatting passed. Default fresh outputs
 are `artifacts/holdem_integration` and `artifacts/holdem_scaling`. No model weights
 or generated decision-level data are included in the code change.
 
@@ -156,6 +162,12 @@ or generated decision-level data are included in the code change.
 The [GPU follow-up](meeting5-ablations.md) keeps the larger run's 4,096/1,024
 memberships fixed, compares BERT Mini/DistilBERT and linear/MLP heads, then tests
 history windows, serialization, opponent assignment, training duration and seeds.
-It has its own source fingerprints and float32 microbatch protocol. The original
+All 22 fits completed: the original 18-fit sequence plus a separately recorded
+four-fit replication of the three-epoch pair. Selected DistilBERT/MLP pairs have
+three-seed repeats with mixed accuracy/log-loss benefits. It has its own source
+fingerprints and float32 microbatch protocol. The original
 CPU scores remain historical records. See [ablation results](meeting5-ablation-results.md)
 for the architecture-dependent effects and seed variability.
+Fresh ablation outputs default to `artifacts/holdem_ablations`; the completed
+server study used `artifacts/holdem_ablations_gpu`. Neither run replaces the
+PokerBench benchmark or the hosted demo's checkpoints.

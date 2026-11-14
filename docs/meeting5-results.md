@@ -1,5 +1,9 @@
 # Meeting 5: integrated Hold'em results
 
+Stage 1: the original 128/64 integration check. The [results index](results/README.md)
+connects this historical result to the [training-size study](meeting5-scaling.md)
+and [latest 22-fit GPU comparisons](meeting5-ablation-results.md).
+
 The combined notebook completed every step on the real, checksum-verified PHH v1
 archive and the published trained BERT Mini linear checkpoint. This is a small
 integration result, not evidence that history reliably improves poker decisions.
@@ -7,8 +11,8 @@ The exact protocol, code/source hashes, versions, memberships, and aggregate
 verification are in [the saved result](results/meeting5-canonical.json).
 
 The refactored notebook was rerun before publication: both model pairs reproduce
-all original validation probabilities exactly, and all 164 current tests pass.
-[Publication evidence](results/meeting5-publication.json) records current source
+all original validation probabilities exactly, and all 164 publication-time tests passed.
+[Publication evidence](results/meeting5-publication.json) records publication-time source
 hashes and checks separately from the historical run below.
 
 The [training-size follow-up](meeting5-scaling.md) preserves this baseline and
@@ -37,7 +41,7 @@ establish a reliable performance gain. There was no settings search or epoch
 selection on this validation set. Both transformer versions used the same
 checkpoint, one epoch, seed, sample, candidate menus, optimizer settings, and CPU.
 
-## Integration verification
+## Historical integration verification
 
 - The complete notebook executed successfully; the source notebook is stored with
   cleared outputs and execution counts. Its executed copy stays in ignored artifacts.

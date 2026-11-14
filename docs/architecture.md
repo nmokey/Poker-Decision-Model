@@ -14,12 +14,14 @@ flowchart TD
     T --> C[Portable checkpoint]
     E --> C
     C --> S[PocketSolver serving]
-    A[Pluribus replay and Leduc teacher] --> I[Shared DecisionInputs / DecisionExample adapters]
+    A[Pluribus replay] --> I[Shared DecisionInputs / DecisionExample adapters]
+    L[Leduc teacher-policy data] --> I
     H[Chronological Leduc opponent sessions] --> F[Causal features and statistical forecasts]
     H --> I
     A --> O[Observer-specific completed-hand Hold’em summaries]
-    O --> P[Matched public forecasters and own-card decision fits]
-    P --> V[Fixed-validation training-size comparison]
+    O --> M[Matched public forecasters and own-card decision fits]
+    M --> V[Fixed-validation training-size comparison]
+    V --> G[GPU architecture, history and training-seed ablations]
     I --> R[Reusable encoder and training interface]
 ```
 
@@ -38,10 +40,10 @@ response targets or repeated-play payoff evaluation.
 | Inspect and fit a decision scorer | [Decision model](../notebooks/decision_model.ipynb) | `models.encoder`, `training` | `artifacts/decision_model` |
 | Grouped comparisons and diagnostics | [Evaluation](../notebooks/evaluation.ipynb) | `scenarios`, `cross_validation`, `diagnostics`, `experiments` | `artifacts/scenario_evaluation` or `artifacts/decision_matrix` |
 | Replay and teacher-policy sources | [Data sources](../notebooks/data_sources.ipynb) | `source_experiments`, `tasks.source_task` | `artifacts/alternative_sources` |
-| Test Hold’em opponent summaries | [Hold’em integration](../notebooks/holdem_opponent_integration.ipynb) | `holdem_history`, `holdem_integration`, `holdem_scaling`, shared training helpers | `artifacts/holdem_integration`, `artifacts/holdem_scaling` |
+| Test Hold’em opponent summaries | [Hold’em integration](../notebooks/holdem_opponent_integration.ipynb) and [GPU CLI](meeting5-ablations.md) | `holdem_history`, `holdem_integration`, `holdem_scaling`, `holdem_ablations`, shared training helpers | `artifacts/holdem_integration`, `artifacts/holdem_scaling`, `artifacts/holdem_ablations` |
 | Forecast an opponent from earlier play | [Opponent modeling](../notebooks/opponent_modeling.ipynb) | `opponents`, `tasks.opponent_task` | `artifacts/opponents` |
 
-`python -m poker_decision {prepare,train,evaluate,opponents,holdem,holdem-scale}` dispatches to these
+`python -m poker_decision {prepare,train,evaluate,opponents,holdem,holdem-scale,holdem-ablate}` dispatches to these
 workflows. Each command has its own `--help` and loads only its task's dependencies.
 Existing module entry points remain available. `scripts/run_decision_matrix.py`
 queues the four backbone comparisons on three GPUs; its historical script name
@@ -63,6 +65,9 @@ The short opening cell only locates or clones a checkout and invokes that setup.
   shared by holdout and scenario training. `fit_holdout` initializes a fresh model,
   refuses to overwrite a run, saves split hashes and chooses on validation loss.
   Scenario CV instead keeps its fixed epoch budget and verified resume protocol.
+- `training.train_epoch` optionally accumulates size-weighted microbatches while
+  retaining the effective batch size. Hold’em GPU ablations use this with a new
+  recorded float32 protocol; dropout makes it distinct from historical CPU fits.
 - `tasks.DecisionTask` carries examples, external grouping, a question and label
   semantics. Source adapters preserve observed action categories or teacher argmax
   targets; teacher probability vectors remain in source records. The opponent
@@ -95,8 +100,9 @@ or opponent experiment.
 
 Keep reusable functionality in the package and explanatory plots/probes in the
 relevant task notebook. Keep a result table in its canonical results document,
-then link to it from walkthroughs. Meeting integration notes are provenance records,
-not parallel implementations. See [development](development.md) for dependencies
+link it from the [results index](results/README.md), then link to it from walkthroughs.
+Meeting integration notes are provenance records, not parallel implementations.
+See [development](development.md) for dependencies
 and [scientific audit](scientific-audit.md) for interpretation limits.
 
 ## Hold’em histories and publication evidence
@@ -104,11 +110,21 @@ and [scientific audit](scientific-audit.md) for interpretation limits.
 The Hold’em walkthrough uses the same setup and optimizer as the other task
 clients. Public forecasts exclude private cards; Hero sees its own cards and
 summaries built only from completed co-observed hands. Related suffix directories
-stay in one split group while memory resets per directory. The injected feature
-is the history summary, not a learned forecaster probability vector.
+stay in one split group while memory resets per directory. The public forecaster
+uses the target human's own observed history; the transformer uses summaries of
+the acting human's other active opponents. These are different prediction views.
+The injected feature is the history summary, not a learned forecaster probability vector.
+
+`holdem_ablations` preserves the larger study's ordered 4,096/1,024 source IDs and
+rebuilds profiles for each history window. It checks every input against the token
+budget, loads matching published encoder/head checkpoints, runs paired CUDA fits,
+then reloads and independently scores saved predictions. Its configuration and
+selection protocol are separate from the PokerBench matrix. See the
+[GPU guide](meeting5-ablations.md) and [recorded results](meeting5-ablation-results.md).
 
 Historical Meeting 5 runs used `artifacts/holdem_meeting5` and
 `artifacts/holdem_meeting5_scaling` in the original checkout. Their saved results
 and fingerprints remain historical records. The published workflow uses the
 current task-based default paths above; explicit `--out` is still supported.
+The completed GPU study explicitly used `artifacts/holdem_ablations_gpu`.
 Code changes require new preparation rather than silently accepting old hashes.

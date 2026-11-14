@@ -1,5 +1,9 @@
 # Decision-model GPU comparison
 
+This reproduces the PokerBench reference-action matrix. Hold’em feature studies
+use a separate [GPU ablation protocol](meeting5-ablations.md); the
+[results index](results/README.md) maps both to their recorded evidence.
+
 The local runner executes the same scenario-grouped development evaluation as
 [evaluation notebook](../notebooks/evaluation.ipynb). Four pinned pretrained encoders (`bert_mini`, `minilm`, `distilbert`,
 `modernbert`) each get independent `linear` and `mlp` heads across five fixed folds:

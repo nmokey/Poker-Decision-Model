@@ -1,10 +1,15 @@
-# Meeting 4: canonical opponent forecasting
+# Leduc opponent forecasting
 
 Use [opponent-modeling notebook](../notebooks/opponent_modeling.ipynb) for the walkthrough. The
 same code runs from `poker_decision.opponents`. This is a separate Leduc
 **next observed opponent action** task. PokerBench remains the source for Hero's
 reference-action imitation task; the deployed transformer is not retrained or
 connected to these forecasts.
+
+The [results index](results/README.md) separates this controlled simulation from
+the later [real Hold’em workflow](meeting5-integration.md), which reuses the
+summaries as transformer inputs. The [Leduc results](meeting4-results.md) remain
+their own recorded evaluation.
 
 ## Run the experiment
 
