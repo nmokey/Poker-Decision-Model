@@ -161,3 +161,14 @@ human actions; they are not deployed models or demonstrated better responses to
 opponents. Adding an adaptive policy to the product requires appropriate response
 targets or a payoff experiment. See the [results index](results/README.md),
 [current project context](project-context.md) and [Hold’em study](meeting5-ablation-results.md).
+
+## Waking a sleeping demo
+
+The website provides **Open demo in new tab** and **Reload demo** controls.
+If the app is asleep, open the direct Streamlit link, wake it there, then reload
+the embedded demo. The writeup offers the same direct-open and reload path.
+In the observed failure, Streamlit returned HTTP 403 to the embedded
+`/api/v2/app/resume` request and HTTP 204 to the top-level request.
+The embedded wake page can say it is waking despite a rejected request.
+This is a hosting wake-up issue; restarting the model code does not fix the
+embedded request. Community Cloud may hibernate the app again after inactivity.

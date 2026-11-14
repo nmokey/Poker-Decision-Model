@@ -379,7 +379,9 @@ the highest-scoring model in the development matrix.
 <p class="eyebrow">LIVE POCKETSOLVER</p>
 <p>Explore the trained model on held-out hands. The optional live LLM comparison uses the application's existing request allowance.</p>
 <button type="button" id="load-demo">Open the live demo here</button>
-<p><a href="https://www.nmokey.com/poker/" target="_blank" rel="noopener">Open the full demo in a separate tab ↗</a></p>
+<p><a href="https://nmokey-poker-decision-model-deploystreamlitapp-codexdepl-dhuhge.streamlit.app/" target="_blank" rel="noopener">Open demo in a new tab ↗</a></p>
+<p class="source-note">If the demo is asleep, open it in a new tab to wake it, then reload it here.</p>
+<button type="button" id="reload-article-demo" hidden>Reload demo</button>
 <div id="demo-frame"></div>
 </div>
 :::
